@@ -9,6 +9,7 @@ export default createContentLoader('posts/*.md', {
         title: page.frontmatter.title || page.url,
         url: page.url,
         date: page.frontmatter.date,
+        category: page.frontmatter.category || '未分类',
         tags: page.frontmatter.tags || [],
         excerpt: page.frontmatter.excerpt || page.excerpt || '',
       }))

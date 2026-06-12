@@ -2,6 +2,9 @@
   <div class="post-list">
     <article v-for="post in posts" :key="post.url" class="post-item">
       <a :href="post.url" class="post-link">
+        <div class="post-header">
+          <span class="post-category">{{ post.category }}</span>
+        </div>
         <h3 class="post-title">{{ post.title }}</h3>
         <p v-if="post.excerpt" class="post-excerpt">{{ post.excerpt }}</p>
         <div class="post-meta">
@@ -51,6 +54,23 @@ function formatDate(date: string) {
 .post-link {
   text-decoration: none;
   color: inherit;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.post-category {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 4px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
 }
 
 .post-title {

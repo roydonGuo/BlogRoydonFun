@@ -5,6 +5,10 @@
       <div v-for="post in group.posts" :key="post.url" class="archive-item">
         <time class="archive-date">{{ formatDate(post.date) }}</time>
         <a :href="post.url" class="archive-link">{{ post.title }}</a>
+        <span class="archive-category">{{ post.category }}</span>
+        <span class="archive-tags">
+          <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+        </span>
       </div>
     </div>
     <p v-if="!grouped.length" class="empty">还没有文章，敬请期待 ✨</p>
@@ -18,6 +22,7 @@ interface Post {
   title: string
   url: string
   date: string
+  category: string
   tags: string[]
   excerpt: string
 }
@@ -64,7 +69,7 @@ function formatDate(date: string) {
 .archive-item {
   display: flex;
   align-items: baseline;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0.5rem 0;
   transition: padding-left 0.2s;
 }
@@ -85,10 +90,34 @@ function formatDate(date: string) {
   text-decoration: none;
   color: var(--vp-c-text-1);
   font-size: 1rem;
+  flex-shrink: 0;
 }
 
 .archive-link:hover {
   color: var(--vp-c-brand-1);
+}
+
+.archive-category {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  flex-shrink: 0;
+}
+
+.archive-tags {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.archive-tags .tag {
+  font-size: 0.7rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-3);
 }
 
 .empty {
