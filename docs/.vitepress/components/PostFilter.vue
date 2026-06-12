@@ -46,7 +46,7 @@ import {
 } from '../composables/usePostFilter'
 
 const route = useRoute()
-const isPostsPage = computed(() => route.path.startsWith('/posts/'))
+const isPostsPage = computed(() => route.path === '/posts/')
 </script>
 
 <style scoped>
