@@ -1,12 +1,9 @@
 <template>
-  <div class="post-grid">
+  <div class="post-list">
     <article v-for="post in posts" :key="post.url" class="post-card">
       <a :href="post.url" class="card-link">
-        <div class="card-cover">
-          <img :src="post.cover" :alt="post.title" loading="lazy" />
-          <span class="card-category">{{ post.category }}</span>
-        </div>
         <div class="card-body">
+          <span class="card-category">{{ post.category }}</span>
           <h3 class="card-title">{{ post.title }}</h3>
           <p v-if="post.excerpt" class="card-excerpt">{{ post.excerpt }}</p>
           <div class="card-footer">
@@ -18,6 +15,9 @@
               <span v-for="tag in post.tags" :key="tag" class="card-tag">{{ tag }}</span>
             </div>
           </div>
+        </div>
+        <div class="card-cover">
+          <img :src="post.cover" :alt="post.title" loading="lazy" />
         </div>
       </a>
     </article>
@@ -38,24 +38,24 @@ function formatDate(date: string) {
 </script>
 
 <style scoped>
-.post-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.5rem;
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   margin: 2rem 0;
 }
 
 .post-card {
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-bg-soft);
-  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.25s, border-color 0.25s;
 }
 
 .post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   border-color: var(--vp-c-brand-soft);
 }
 
@@ -63,14 +63,103 @@ function formatDate(date: string) {
   text-decoration: none;
   color: inherit;
   display: flex;
+  flex-direction: row;
+  min-height: 150px;
+}
+
+.card-body {
+  flex: 1;
+  padding: 1.5rem 1.5rem;
+  display: flex;
   flex-direction: column;
-  height: 100%;
+  min-width: 0;
+}
+
+.card-category {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.3px;
+}
+
+.card-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  line-height: 1.45;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+
+.card-excerpt {
+  margin: 0 0 auto;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.card-date {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--vp-c-text-3);
+  white-space: nowrap;
+}
+
+.card-date svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.card-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
+  border-radius: 4px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-3);
+  transition: color 0.2s, background 0.2s;
+}
+
+.post-card:hover .card-tag {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
 }
 
 .card-cover {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  width: 200px;
+  min-width: 200px;
+  flex-shrink: 0;
   overflow: hidden;
   background: var(--vp-c-bg-mute);
 }
@@ -86,101 +175,25 @@ function formatDate(date: string) {
   transform: scale(1.05);
 }
 
-.card-category {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 0.25rem 0.7rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 6px;
-  background: rgba(36, 69, 235, 0.9);
-  color: #fff;
-  backdrop-filter: blur(4px);
-  letter-spacing: 0.3px;
-}
-
-.card-body {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.card-title {
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-  line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-}
-
-.card-excerpt {
-  margin: 0 0 1rem;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.6;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
-  flex: 1;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--vp-c-bg-mute);
-}
-
-.card-date {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.8rem;
-  color: var(--vp-c-text-3);
-}
-
-.card-date svg {
-  flex-shrink: 0;
-}
-
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.card-tag {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.72rem;
-  border-radius: 4px;
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
-}
-
 .empty {
   text-align: center;
   color: var(--vp-c-text-3);
   padding: 3rem 0;
-  grid-column: 1 / -1;
 }
 
 @media (max-width: 640px) {
-  .post-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .card-link {
+    flex-direction: column-reverse;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .card-cover {
+    width: 100%;
+    min-width: unset;
+    aspect-ratio: 16 / 9;
   }
 }
 </style>
