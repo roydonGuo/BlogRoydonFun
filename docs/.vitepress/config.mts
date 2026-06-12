@@ -1,28 +1,30 @@
 import { defineConfig } from 'vitepress'
 
-// https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "BlogRoydonFun",
-  description: "roydon",
+  title: 'Roydon',
+  description: 'Thoughts on code, design & life',
+
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+  ],
+
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: '首页', link: '/' },
+      { text: '文章', link: '/posts/' },
+      { text: '归档', link: '/archive/' },
+      { text: '关于', link: '/about/' },
     ],
 
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-    ],
+    sidebar: [],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/roydonGuo' }
-    ]
-  }
+      { icon: 'github', link: 'https://github.com/roydonGuo' },
+    ],
+
+    footer: {
+      message: 'Thoughts on code, design & life',
+      copyright: 'Copyright © 2026 Roydon',
+    },
+  },
 })
