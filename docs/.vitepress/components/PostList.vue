@@ -216,6 +216,7 @@ function formatDate(date: string) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  margin: 0;
   transition: transform 0.35s;
 }
 
