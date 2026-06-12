@@ -46,7 +46,10 @@ import {
 } from '../composables/usePostFilter'
 
 const route = useRoute()
-const isPostsPage = computed(() => route.path === '/posts/')
+const isPostsPage = computed(() => {
+  const p = route.path.replace(/\/+$/, '')
+  return p === '/posts'
+})
 </script>
 
 <style scoped>
