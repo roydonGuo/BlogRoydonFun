@@ -1,25 +1,26 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
-  name: "BlogRoydonFun"
-  text: "roydon"
-  tagline: My great project tagline
+  name: "Roydon"
+  text: "Thoughts on code, design & life"
+  tagline: 记录技术与生活的个人博客
+  image:
+    src: /favicon.svg
+    alt: Roydon
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 最新文章
+      link: /posts/
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 关于我
+      link: /about/
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 💻 技术
+    details: 前端开发、架构设计、工具链、最佳实践
+  - title: ✏️ 随笔
+    details: 生活记录、思考碎片、阅读笔记
+  - title: 🎨 设计
+    details: UI/UX、视觉风格、设计系统
 ---
-
