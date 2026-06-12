@@ -1,5 +1,6 @@
 ---
 title: 链接
+aside: false
 ---
 
 <div class="links-header">
