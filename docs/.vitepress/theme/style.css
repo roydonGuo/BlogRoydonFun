@@ -95,6 +95,11 @@
  * Scrollbar
  * -------------------------------------------------------------------------- */
 
+/* Reserve scrollbar space to prevent layout shift */
+html {
+  scrollbar-gutter: stable;
+}
+
 /* WebKit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 7px;
