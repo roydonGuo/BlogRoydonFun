@@ -4,6 +4,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PostList from '../components/PostList.vue'
 import ArchiveList from '../components/ArchiveList.vue'
+import LinksList from '../components/LinksList.vue'
 import PostFilter from '../components/PostFilter.vue'
 import './style.css'
 
@@ -17,5 +18,6 @@ export default {
   enhanceApp({ app, router, siteData }) {
     app.component('PostList', PostList)
     app.component('ArchiveList', ArchiveList)
+    app.component('LinksList', LinksList)
   }
 } satisfies Theme

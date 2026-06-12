@@ -13,6 +13,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '文章', link: '/posts/' },
       { text: '归档', link: '/archive/' },
+      { text: '链接', link: '/links/' },
       { text: '关于', link: '/about/' },
     ],
 
