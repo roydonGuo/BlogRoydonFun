@@ -4,16 +4,12 @@
       <h4 class="filter-title">📂 分类</h4>
       <ul class="filter-list">
         <li>
-          <button
-            :class="['filter-item', { active: !selectedCategory && !selectedTag }]"
-            @click="clearFilter"
-          >全部</button>
+          <button :class="['filter-item', { active: !selectedCategory && !selectedTag }]"
+            @click="clearFilter">全部</button>
         </li>
         <li v-for="cat in categories" :key="cat">
-          <button
-            :class="['filter-item', { active: selectedCategory === cat }]"
-            @click="filterByCategory(cat)"
-          >{{ cat }}</button>
+          <button :class="['filter-item', { active: selectedCategory === cat }]" @click="filterByCategory(cat)">{{ cat
+            }}</button>
         </li>
       </ul>
     </div>
@@ -21,12 +17,8 @@
     <div class="filter-section">
       <h4 class="filter-title">🏷️ 标签</h4>
       <div class="filter-tags">
-        <button
-          v-for="tag in tags"
-          :key="tag"
-          :class="['filter-tag', { active: selectedTag === tag }]"
-          @click="filterByTag(tag)"
-        >{{ tag }}</button>
+        <button v-for="tag in tags" :key="tag" :class="['filter-tag', { active: selectedTag === tag }]"
+          @click="filterByTag(tag)">{{ tag }}</button>
       </div>
     </div>
   </div>
@@ -110,9 +102,9 @@ const isPostsPage = computed(() => {
 }
 
 .filter-tag {
-  padding: 0.2rem 0.5rem;
+  padding: 0.15rem 0.75rem;
   border: 1px solid var(--vp-c-border);
-  border-radius: 5px;
+  border-radius: 99px;
   font-size: 0.75rem;
   cursor: pointer;
   background: transparent;
