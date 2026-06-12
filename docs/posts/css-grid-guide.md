@@ -2,6 +2,7 @@
 title: CSS Grid 布局完全指南
 date: 2026-06-03
 category: 前端开发
+cover: /covers/frontend.svg
 tags: [css, layout, frontend]
 excerpt: 从入门到精通 CSS Grid 布局，掌握现代 Web 页面中最强大的二维布局系统。
 ---

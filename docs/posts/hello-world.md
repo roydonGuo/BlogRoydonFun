@@ -2,6 +2,7 @@
 title: Hello World — 博客开篇
 date: 2026-06-12
 category: 随笔
+cover: /covers/life.svg
 tags: [life, blog]
 excerpt: 这是我的第一篇博客文章，很高兴在这里与你相遇。
 ---

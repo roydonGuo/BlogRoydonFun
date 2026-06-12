@@ -2,6 +2,7 @@
 title: 2026 上半年阅读书单
 date: 2026-06-01
 category: 随笔
+cover: /covers/life.svg
 tags: [reading, life, books]
 excerpt: 整理上半年读过的几本书，分享一些阅读感悟和值得推荐的好书。
 ---

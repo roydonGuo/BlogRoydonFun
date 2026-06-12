@@ -2,6 +2,7 @@
 title: MySQL 索引优化实战
 date: 2026-06-08
 category: 后端开发
+cover: /covers/backend.svg
 tags: [mysql, database, performance]
 excerpt: 通过实际案例学习 MySQL 索引的设计原则与优化技巧，提升查询性能。
 ---
