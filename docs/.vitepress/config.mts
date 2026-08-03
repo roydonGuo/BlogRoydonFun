@@ -15,6 +15,8 @@ export default defineConfig({
       { text: '归档', link: '/archive/' },
       { text: '链接', link: '/links/' },
       { text: '关于', link: '/about/' },
+      // 简历使用独立 Markdown 页面，方便后续直接维护内容。
+      { text: '简历', link: '/resume/' },
     ],
 
     sidebar: [],
