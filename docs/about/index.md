@@ -17,7 +17,3 @@ title: 关于
 ## 🔗 找到我
 
 - **GitHub**: [@roydonGuo](https://github.com/roydonGuo)
-
----
-
-*blog built with [VitePress](https://vitepress.dev)*
