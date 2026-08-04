@@ -7,9 +7,9 @@ tags: [ai, agent, memory, mem0, spring-ai]
 excerpt: 从工作、会话与长期记忆出发，拆解语义、情景、程序性记忆，比较主流 Agent 框架，并给出 Spring Boot 接入 Mem0 的完整工程方案。
 ---
 
-![Agent 分层记忆体系：从认知模型到 Mem0 工程实践知识串联图](/images/posts/agent-layered-memory-mem0-engineering-knowledge-map.png)
-
 # Agent 分层记忆体系：从认知模型到 Mem0 工程实践
+
+![Agent 分层记忆体系：从认知模型到 Mem0 工程实践知识串联图](/images/posts/agent-layered-memory-mem0-engineering-knowledge-map.png)
 
 大模型 API 本身通常是无状态的。一次请求结束后，模型不会天然记住用户身份、上一次工具调用结果，更不会自动总结“这个用户偏好简洁回答”或“上次部署因为数据库连接池耗尽而失败”。所谓 Agent 记忆，本质上是应用在模型外部建立的一套状态管理系统：它决定什么值得保存、保存到哪里、何时召回、怎样处理冲突，以及什么时候必须遗忘。
 
