@@ -157,6 +157,14 @@ body {
     font-weight: 500;
 }
 
+.outline-link {
+    font-weight: 600;
+}
+
+.VPNavBarMenuLink {
+    font-weight: 600;
+}
+
 /* WebKit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
     width: 7px;
