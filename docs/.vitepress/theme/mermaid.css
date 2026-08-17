@@ -7,3 +7,51 @@
     --mermaid-border-radius: 12px;
     --mermaid-background: var(--vp-c-bg-soft);
 }
+
+.mermaid-diagram {
+    width: var(--mermaid-width);
+    min-height: 180px;
+    margin: 24px 0;
+    display: grid;
+    place-items: center;
+    overflow: auto;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: var(--mermaid-border-radius);
+    background: var(--mermaid-background);
+}
+
+.mermaid-svg {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.mermaid-svg svg {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    height: var(--mermaid-height);
+    margin: 0;
+}
+
+.mermaid-status {
+    display: flex;
+    min-height: 180px;
+    align-items: center;
+    justify-content: center;
+    color: var(--vp-c-text-3);
+    font-size: 13px;
+}
+
+.mermaid-error {
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    color: var(--vp-c-danger-1);
+    text-align: center;
+}
+
+.mermaid-error span {
+    color: var(--vp-c-text-3);
+    font-size: 12px;
+}

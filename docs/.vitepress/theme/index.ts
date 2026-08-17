@@ -9,6 +9,7 @@ import LinksList from '../components/LinksList.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
 import KnowledgeGraph from '../components/KnowledgeGraph.vue'
+import MermaidDiagram from '../components/MermaidDiagram.vue'
 import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
@@ -87,6 +88,7 @@ export default {
     app.component('ArchiveList', ArchiveList)
     app.component('LinksList', LinksList)
     app.component('KnowledgeGraph', KnowledgeGraph)
+    app.component('MermaidDiagram', MermaidDiagram)
 
     // VitePress 客户端路由复用页面，需要在每次文章切换后处理新链接。
     if (typeof window !== 'undefined') {

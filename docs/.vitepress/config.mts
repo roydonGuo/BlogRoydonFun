@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import tailwindcss from '@tailwindcss/vite'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
-import mermaidPlugin from '@vitepress-plugin/mermaid'
+import { mermaidContainerPlugin } from './markdown/mermaid-container'
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -14,6 +14,8 @@ export default defineConfig({
     lineNumbers: true,
     config(md) {
       md.use(groupIconMdPlugin)
+      // 本地解析 :::mermaid 容器，避免绑定特定 VitePress alpha 版本。
+      md.use(mermaidContainerPlugin)
     },
   },
 
@@ -23,8 +25,6 @@ export default defineConfig({
       // Tailwind v4 通过 Vite 插件扫描并生成主题工具类。
       tailwindcss(),
       groupIconVitePlugin(),
-      // 将 :::mermaid 容器转换为可交互的 Mermaid 图表组件。
-      mermaidPlugin(),
     ],
   },
 
