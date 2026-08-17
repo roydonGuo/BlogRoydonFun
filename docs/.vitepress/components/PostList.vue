@@ -191,7 +191,7 @@ function formatDate(date: string) {
 .card-tag {
   display: inline-block;
   padding: 0.1rem 0.7rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   border-radius: 99px;
   background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-2);

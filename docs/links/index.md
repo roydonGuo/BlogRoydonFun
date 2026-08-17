@@ -15,7 +15,7 @@ aside: false
 <style scoped>
 .links-header {
   text-align: center;
-  padding: 2rem 0 0.5rem;
+  padding: 1rem 0;
 }
 
 .links-title {

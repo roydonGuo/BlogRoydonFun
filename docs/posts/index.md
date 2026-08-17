@@ -15,7 +15,7 @@ title: 文章
 <style scoped>
 .posts-header {
   text-align: center;
-  padding: 2rem 0 1rem;
+  padding: 1rem 0;
 }
 
 .posts-title {
