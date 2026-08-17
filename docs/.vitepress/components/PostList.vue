@@ -11,7 +11,7 @@
       <article v-for="post in filteredPosts" :key="post.url" class="post-card">
         <a :href="post.url" class="card-link">
           <div class="card-body">
-            <span class="card-category">{{ post.category }}</span>
+
             <h3 class="card-title">{{ post.title }}</h3>
             <p v-if="post.excerpt" class="card-excerpt">{{ post.excerpt }}</p>
             <div class="card-footer">
@@ -19,6 +19,7 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 {{ formatDate(post.date) }}
               </time>
+              <span class="card-category">{{ post.category }}</span>
               <div v-if="post.tags.length" class="card-tags">
                 <span v-for="tag in post.tags" :key="tag" class="card-tag">{{ tag }}</span>
               </div>
@@ -94,17 +95,16 @@ function formatDate(date: string) {
 }
 
 .post-card {
-  border-radius: 10px;
+  border-radius: 1rem;
   overflow: hidden;
   background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-border);
+  border: 1px solid var(--vp-c-border-1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   transition: box-shadow 0.25s, border-color 0.25s;
 }
 
 .post-card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border-color: var(--vp-c-brand-soft);
 }
 
 .card-link {
@@ -126,13 +126,12 @@ function formatDate(date: string) {
 .card-category {
   display: inline-block;
   align-self: flex-start;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 99px;
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
-  margin-bottom: 0.6rem;
   letter-spacing: 0.3px;
 }
 
@@ -191,11 +190,11 @@ function formatDate(date: string) {
 
 .card-tag {
   display: inline-block;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.72rem;
-  border-radius: 4px;
+  padding: 0.1rem 0.7rem;
+  font-size: 0.7rem;
+  border-radius: 99px;
   background: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-3);
+  color: var(--vp-c-text-2);
   transition: color 0.2s, background 0.2s;
 }
 
@@ -205,8 +204,7 @@ function formatDate(date: string) {
 }
 
 .card-cover {
-  width: 200px;
-  min-width: 200px;
+  width: 40%;
   flex-shrink: 0;
   overflow: hidden;
   background: var(--vp-c-bg-mute);

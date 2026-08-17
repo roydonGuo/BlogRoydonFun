@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: "Roydon"
+  name: "Ethan"
   text: "Thoughts on code, design & life"
   tagline: 记录技术与生活的个人博客
   image:
     src: /favicon.svg
-    alt: Roydon
+    alt: Ethan
   actions:
     - theme: brand
       text: 最新文章

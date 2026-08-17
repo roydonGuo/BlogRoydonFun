@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   lang: 'zh-CN',
-  title: 'Roydon',
+  title: 'Ethan',
   description: 'Thoughts on code, design & life',
 
   // Read each page timestamp from its latest Git commit.
@@ -69,7 +69,7 @@ export default defineConfig({
 
     footer: {
       message: 'Thoughts on code, design & life',
-      copyright: 'Copyright © 2026 Roydon',
+      copyright: 'Copyright © 2026 Ethan',
     },
   },
 })

@@ -54,8 +54,8 @@ const isPostsPage = computed(() => {
 }
 
 .filter-title {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 900;
   color: var(--vp-c-text-2);
   margin: 0 0 0.5rem;
   letter-spacing: 0.5px;
@@ -68,6 +68,7 @@ const isPostsPage = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  font-weight: 600;
 }
 
 .filter-item {
@@ -78,6 +79,7 @@ const isPostsPage = computed(() => {
   border: none;
   border-radius: 5px;
   font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
   background: transparent;
   color: var(--vp-c-text-2);
@@ -106,9 +108,10 @@ const isPostsPage = computed(() => {
   border: 1px solid var(--vp-c-border);
   border-radius: 99px;
   font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
   background: transparent;
-  color: var(--vp-c-text-3);
+  color: var(--vp-c-text-2);
   transition: all 0.2s;
 }
 
