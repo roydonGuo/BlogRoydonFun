@@ -171,6 +171,41 @@ body {
 .outline-link:hover, .outline-link.active {
     color: var(--vp-c-brand-1) !important;
 }
+/* 文章目录层级：h2 为主项，h3/h4 逐级缩进并用辅助线串联。 */
+.VPDocAsideOutline .VPDocOutlineItem.root > li > .outline-link {
+    color: var(--vp-c-text-1);
+    font-weight: 600 !important;
+}
+
+.VPDocAsideOutline .VPDocOutlineItem.nested {
+    margin-left: 4px;
+    padding-left: 14px;
+    border-left: 1px solid var(--vp-c-divider);
+}
+
+.VPDocAsideOutline .VPDocOutlineItem.nested .outline-link {
+    color: var(--vp-c-text-2);
+    font-size: 13px;
+    font-weight: 500 !important;
+    line-height: 28px;
+}
+
+.VPDocAsideOutline .VPDocOutlineItem.nested .VPDocOutlineItem.nested {
+    margin-left: 2px;
+    padding-left: 12px;
+    border-left-style: dashed;
+}
+
+.VPDocAsideOutline .VPDocOutlineItem.nested .VPDocOutlineItem.nested .outline-link {
+    color: var(--vp-c-text-3);
+    font-size: 12px;
+    line-height: 26px;
+}
+
+.VPDocAsideOutline .outline-link.active {
+    color: var(--vp-c-brand-1) !important;
+    font-weight: 600 !important;
+}
 
 .VPNavBarMenuLink {
     font-weight: 600;

@@ -8,8 +8,12 @@ import ArchiveList from '../components/ArchiveList.vue'
 import LinksList from '../components/LinksList.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
+import KnowledgeGraph from '../components/KnowledgeGraph.vue'
+import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
+// Tailwind v4 主题令牌与工具类。
+import './tailwind.css'
 // 基于教程改写的原生 CSS 代码块窗口样式。
 import './code.css'
 import './style.css'
@@ -17,6 +21,10 @@ import './style.css'
 import './block.css'
 // 主题切换时从点击位置扩散的 View Transition 动画。
 import './dark-transition.css'
+// 方案二：通过 favicon.im 为文章外链动态添加站点图标。
+import './link-icons.css'
+// Mermaid 图表容器尺寸与主题背景样式。
+import './mermaid.css'
 
 interface ThemeViewTransition {
   ready: Promise<void>
@@ -74,9 +82,21 @@ const AnimatedLayout = defineComponent({
 export default {
   extends: DefaultTheme,
   Layout: AnimatedLayout,
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     app.component('PostList', PostList)
     app.component('ArchiveList', ArchiveList)
     app.component('LinksList', LinksList)
+    app.component('KnowledgeGraph', KnowledgeGraph)
+
+    // VitePress 客户端路由复用页面，需要在每次文章切换后处理新链接。
+    if (typeof window !== 'undefined') {
+      router.onAfterRouteChange = () => {
+        window.requestAnimationFrame(initLinkIcons)
+      }
+    }
+  },
+  mounted() {
+    // 首次水合结束后处理当前文章中的外部链接。
+    initLinkIcons()
   },
 } satisfies Theme

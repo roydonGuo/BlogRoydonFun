@@ -1,0 +1,9 @@
+/**
+ * Mermaid 图表与当前文章卡片风格保持一致。
+ */
+:root {
+    --mermaid-width: 100%;
+    --mermaid-height: auto;
+    --mermaid-border-radius: 12px;
+    --mermaid-background: var(--vp-c-bg-soft);
+}

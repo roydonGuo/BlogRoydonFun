@@ -1,5 +1,9 @@
 {
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitepress-plugin/mermaid": "^1.0.0",
+    "autoprefixer": "^10.5.4",
+    "tailwindcss": "^4.3.3",
     "vitepress": "^2.0.0-alpha.17",
     "vitepress-plugin-group-icons": "^1.7.6"
   },

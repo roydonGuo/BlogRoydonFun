@@ -1,0 +1,42 @@
+/**
+ * 正文外链 favicon
+ * 图标地址由 link-icons.ts 写入 --link-favicon 变量。
+ */
+.vp-doc a.has-link-favicon:not(.not)::before {
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    border-radius: 4px;
+    background-color: var(--vp-c-bg-soft);
+    background-image: var(--link-favicon);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    content: '';
+    vertical-align: middle;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--vp-c-divider) 70%, transparent);
+}
+
+/* favicon 已经表达外链来源，隐藏 VitePress 默认的尾部外链图标以减少噪声。 */
+.vp-doc a.has-link-favicon.vp-external-link-icon::after {
+    display: none;
+}
+
+.dark .vp-doc a.has-link-favicon::before {
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .vp-doc a.has-link-favicon::before {
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .vp-doc a.has-link-favicon:hover::before {
+        transform: translateY(-1px) scale(1.06);
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14);
+    }
+}

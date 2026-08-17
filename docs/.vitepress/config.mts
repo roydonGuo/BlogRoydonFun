@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress'
+import tailwindcss from '@tailwindcss/vite'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import mermaidPlugin from '@vitepress-plugin/mermaid'
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -17,7 +19,13 @@ export default defineConfig({
 
   // 配套的 Vite 插件负责生成主题使用的虚拟图标样式。
   vite: {
-    plugins: [groupIconVitePlugin()],
+    plugins: [
+      // Tailwind v4 通过 Vite 插件扫描并生成主题工具类。
+      tailwindcss(),
+      groupIconVitePlugin(),
+      // 将 :::mermaid 容器转换为可交互的 Mermaid 图表组件。
+      mermaidPlugin(),
+    ],
   },
 
   // Read each page timestamp from its latest Git commit.
@@ -28,10 +36,16 @@ export default defineConfig({
   ],
 
   themeConfig: {
+    // 文章侧栏目录展示二至四级标题，并保留标题树层级。
+    outline: {
+      level: [2, 4],
+      label: '文章目录',
+    },
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/posts/' },
       { text: '归档', link: '/archive/' },
+      { text: '知识图谱', link: '/knowledge-graph/' },
       { text: '链接', link: '/links/' },
       { text: '关于', link: '/about/' },
       // 简历使用独立 Markdown 页面，方便后续直接维护内容。

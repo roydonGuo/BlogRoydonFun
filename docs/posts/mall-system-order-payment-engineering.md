@@ -26,7 +26,7 @@ excerpt: 以一套真实 Java 商城代码为基线，完整拆解商品与 SKU�
 7. **退款是独立业务单据**，申请受理不等于退款成功，必须通过回调或查单收敛；
 8. **数据库事务之外的动作要可补偿、可对账、可观测**，不能把“调用没有抛异常”当成最终一致。
 
-本文基于 `acteeth_mobilecenter` 中的实际实现进行源码走查，核心入口为 `WxPayController`、`MallPayService`、`PayOrderTimeoutTask`、`MallRefundService`、`MallOrderController`、`MallGoodController` 和地址服务。文章会明确区分“当前代码已经实现的行为”与“进一步演进建议”。微信支付接口事实核对日期为 **2026-08-17**，以微信支付官方的 [JSAPI 下单](https://pay.wechatpay.cn/doc/v3/merchant/4012791897)、[支付成功回调](https://pay.wechatpay.cn/doc/v3/merchant/4012791861)、[商户订单号查单](https://pay.wechatpay.cn/doc/v3/merchant/4012791900)、[关闭订单](https://pay.wechatpay.cn/doc/v3/merchant/4012791839) 和 [申请退款](https://pay.wechatpay.cn/doc/v3/merchant/4012587971) 文档为准。
+本文基于本人实际项目中的实际实现进行源码走查，核心入口为 `WxPayController`、`MallPayService`、`PayOrderTimeoutTask`、`MallRefundService`、`MallOrderController`、`MallGoodController` 和地址服务。文章会明确区分“当前代码已经实现的行为”与“进一步演进建议”。微信支付接口事实核对日期为 **2026-08-17**，以微信支付官方的 [JSAPI 下单](https://pay.wechatpay.cn/doc/v3/merchant/4012791897)、[支付成功回调](https://pay.wechatpay.cn/doc/v3/merchant/4012791861)、[商户订单号查单](https://pay.wechatpay.cn/doc/v3/merchant/4012791900)、[关闭订单](https://pay.wechatpay.cn/doc/v3/merchant/4012791839) 和 [申请退款](https://pay.wechatpay.cn/doc/v3/merchant/4012587971) 文档为准。
 
 ## 一、先划清模块边界
 
@@ -42,7 +42,7 @@ excerpt: 以一套真实 Java 商城代码为基线，完整拆解商品与 SKU�
 | 退款 | `MallRefundService` | 退款单幂等创建、退款申请、回调、状态收敛 |
 | 履约后续 | RabbitMQ 分佣结算队列 | 确认收货事务提交后触发下游结算 |
 
-```mermaid
+:::mermaid
 flowchart LR
     MP["微信小程序"] --> GOOD["商品与 SKU"]
     MP --> ADDR["收件地址"]
@@ -55,7 +55,7 @@ flowchart LR
     ORDER --> MQ["分佣结算队列"]
     REFUND["退款服务"] <--> WX
     REFUND --> DB
-```
+:::
 
 这个划分最重要的价值，是让“用户可调用的接口”“支付领域动作”和“后台收敛任务”各自负责一类问题。Controller 只完成参数接收和协议应答，金额计算、状态机、幂等与事务都在服务层完成。
 
@@ -103,7 +103,7 @@ flowchart LR
 
 列表展示时，再由这些底层状态推导用户看到的聚合状态，例如待付款、待发货、待收货、已退款、已取消、退款中、已完成。这样比一个不断膨胀的单字段状态更容易表达并行事实：订单可以“已支付 + 已发货 + 退款中”，而不是被迫创造一个难以维护的组合枚举。
 
-```mermaid
+:::mermaid
 stateDiagram-v2
     [*] --> UNPAID: 创建订单并扣库存
     UNPAID --> PAID: 支付回调或主动查单确认
@@ -114,7 +114,7 @@ stateDiagram-v2
     DELIVERED --> REFUNDING: 发货后售后退款
     REFUNDING --> REFUNDED: 退款成功通知或查单
     REFUNDING --> PAID: 退款关闭或异常后恢复
-```
+:::
 
 ## 三、收件地址：主数据要校验归属，订单要保存快照
 
@@ -135,7 +135,7 @@ stateDiagram-v2
 
 完整调用链如下：
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant MP as "微信小程序"
     participant C as "WxPayController"
@@ -157,7 +157,7 @@ sequenceDiagram
     S->>S: "SHA256withRSA 生成调起支付签名"
     S-->>C: "WxMiniPayVO"
     C-->>MP: "timeStamp、nonceStr、package、paySign、orderNo"
-```
+:::
 
 按源码顺序，可以拆成十四步：
 
@@ -269,7 +269,7 @@ private WxMiniPayVO buildMiniProgramPayParams(String prepayId, String orderNo) {
 
 微信官方文档要求先验签再解密，并说明支付通知可能重复发送，因此业务处理必须幂等。当前代码的幂等不是简单“查到已支付就 return”，而是多层校验加条件更新：
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant WX as "微信支付"
     participant C as "WxPayController"
@@ -294,7 +294,7 @@ sequenceDiagram
         end
     end
     C-->>WX: "2xx SUCCESS"
-```
+:::
 
 ### 为什么必须校验这么多字段
 
@@ -329,7 +329,7 @@ sequenceDiagram
 
 任务默认按固定间隔扫描超时的 `UNPAID` 订单，使用 Redisson 分布式锁避免多实例同时处理同一批任务，并限制每批数量。处理流程如下：
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant T as "PayOrderTimeoutTask"
     participant WX as "微信支付 API v3"
@@ -364,7 +364,7 @@ sequenceDiagram
     else "REFUND 等非取消状态"
         T->>T: "记录并停止自动取消"
     end
-```
+:::
 
 这个顺序体现三个原则：
 
@@ -378,7 +378,7 @@ sequenceDiagram
 
 支付成功不意味着退款可以用一条 `order.refunded = true` 完成。当前实现为退款建立独立记录，包含商户退款单号、原交易号、金额、原因、微信退款状态和时间。
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant MP as "微信小程序"
     participant C as "WxPayController"
@@ -406,7 +406,7 @@ sequenceDiagram
     else "CLOSED / ABNORMAL"
         R->>DB: "订单恢复 NOT_REFUNDED"
     end
-```
+:::
 
 ### 退款幂等如何实现
 
@@ -440,7 +440,7 @@ sequenceDiagram
 
 事务提交后，服务只向 RabbitMQ 分佣结算队列发送 `orderNo`，下游可再次读取权威订单数据并执行结算。只发业务 ID 而不是整份可变对象，能降低消息 Schema 耦合。
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant MP as "微信小程序"
     participant O as "MallOrderService"
@@ -456,7 +456,7 @@ sequenceDiagram
     O->>MQ: "事务提交后发送 orderNo"
     MQ->>B: "消费结算任务"
     B->>DB: "重新读取订单并幂等结算"
-```
+:::
 
 ## 十二、事务边界：哪些能强一致，哪些只能最终一致
 
