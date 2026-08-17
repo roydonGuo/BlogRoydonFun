@@ -116,31 +116,7 @@ stateDiagram-v2
     REFUNDING --> PAID: 退款关闭或异常后恢复
 ```
 
-## 三、移动端接口契约总览
-
-| 方法与路径 | 核心用途 | 关键校验 |
-|---|---|---|
-| `POST /mallGood/page` | 分页查询上架商品 | 页面参数、上架状态、可见范围 |
-| `GET /mallGood/detail?id=...` | 商品详情与 SKU | 商品存在、上架、SKU 可售 |
-| `GET /mallReceiverAddress/list` | 当前用户地址列表 | 登录用户隔离 |
-| `GET /mallReceiverAddress/default` | 默认地址 | 登录用户隔离 |
-| `POST /mallReceiverAddress/add` | 新增地址 | 字段校验，首地址自动默认 |
-| `POST /mallReceiverAddress/edit` | 编辑地址 | 地址必须属于当前用户 |
-| `POST /mallReceiverAddress/setDefault/{id}` | 设置默认地址 | 同用户只保留一个默认地址 |
-| `POST /mallReceiverAddress/delete/{id}` | 删除地址 | 删除默认地址后选择替代默认地址 |
-| `POST /wxpay/createOrder` | 创建订单并返回小程序支付参数 | 商品、SKU、库存、金额、用户、地址、归属 |
-| `POST /wxpay/rePay` | 原订单有效期内再次拉起支付 | 本人订单、未支付、微信状态、未过期 |
-| `POST /wxpay/notify/order` | 支付成功通知 | 验签、解密、商户与金额校验、幂等 |
-| `POST /wxpay/refund` | 申请退款 | 本人订单、可退款状态、退款单幂等 |
-| `POST /wxpay/notify/refund` | 退款结果通知 | 验签、解密、事件与资源状态一致 |
-| `GET /mallOrder/page` | 我的订单分页 | 本人数据、聚合状态筛选 |
-| `GET /mallOrder/status` | 查询本地支付状态 | `orderNo + personId` 双条件 |
-| `GET /mallOrder/logistics` | 查询物流轨迹 | 本人订单、运单存在、缓存与三方容错 |
-| `POST /mallOrder/confirmReceipt` | 确认收货 | 已支付、已发货、未签收、未退款 |
-
-注意：订单状态查询归 `MallOrderController`，而不是支付 Controller。这个细节反映了正确边界：支付服务负责让支付事实收敛，订单服务负责向用户呈现自己的订单状态。
-
-## 四、收件地址：主数据要校验归属，订单要保存快照
+## 三、收件地址：主数据要校验归属，订单要保存快照
 
 地址服务的所有读写都追加 `personId` 条件，避免攻击者枚举地址 ID 读取或修改他人信息。新增第一条地址时自动设为默认；主动设默认时先清除同用户旧默认；删除默认地址后把最近更新的一条剩余地址设为默认。
 
@@ -153,7 +129,7 @@ stateDiagram-v2
 
 生产环境还应给“同一用户最多一个默认地址”增加数据库或并发策略保障。单纯的“先清零、再设一”在同一事务里可以维护常规一致性，但多个并发请求仍可能互相覆盖；可考虑用户维度锁、版本号或可表达条件唯一性的表结构。
 
-## 五、创建订单：一次请求里发生了什么
+## 四、创建订单：一次请求里发生了什么
 
 创建参数 `MallPayCreateDTO` 的核心字段是：`goodId`、可选 `skuId`、大于等于 1 的 `quantity`、可选的页面展示总价、必填 `receiverAddressId`，以及可选的诊所/医生归属信息。
 
@@ -167,7 +143,7 @@ sequenceDiagram
     participant DB as "MySQL"
     participant WX as "微信支付 API v3"
 
-    MP->>C: "POST /wxpay/createOrder"
+    MP->>C: "提交商品、SKU、数量与收件地址"
     C->>S: "createOrder(dto)"
     S->>DB: "查询上架商品与可售 SKU"
     S->>S: "服务端计算单价 × 数量"
@@ -175,7 +151,7 @@ sequenceDiagram
     S->>DB: "校验本人收件地址和归属关系"
     S->>DB: "条件更新原子扣库存"
     S->>S: "生成订单号与商品/地址/分佣快照"
-    S->>WX: "POST /v3/pay/transactions/jsapi"
+    S->>WX: "发起 JSAPI 预下单"
     WX-->>S: "prepay_id"
     S->>DB: "插入 UNPAID 订单"
     S->>S: "SHA256withRSA 生成调起支付签名"
@@ -215,7 +191,7 @@ int totalFee = totalPrice.movePointRight(2).intValueExact();
 
 禁止用 `double` 直接计算金额，也不要在回调时再用最新 SKU 价格反推应付金额。回调必须与订单里已经固化的 `totalFee` 对比。
 
-## 六、库存并发：一条 SQL 决定谁真正买到
+## 五、库存并发：一条 SQL 决定谁真正买到
 
 当前 SKU 扣库存不是“先查询库存，再在 Java 中减一”，而是条件更新：
 
@@ -250,7 +226,7 @@ WHERE id = :skuId
 
 `stock + quantity <= total_stock` 防止重复回补把库存加穿。更关键的是，回补只在订单从 `UNPAID` 成功迁移到 `CANCELED` 的同一个本地事务内执行；如果支付回调已经把订单改成 `PAID`，取消的条件更新失败，也就不会回库。
 
-## 七、JSAPI 预下单与小程序调起支付
+## 六、JSAPI 预下单与小程序调起支付
 
 服务端向微信 JSAPI 下单时发送：`appid`、`mchid`、商品描述、商户订单号、支付截止时间、支付通知地址、金额与币种、付款人 `openid`。微信返回 `prepay_id` 后，服务端再生成小程序需要的二次签名。
 
@@ -276,11 +252,11 @@ private WxMiniPayVO buildMiniProgramPayParams(String prepayId, String orderNo) {
 }
 ```
 
-小程序拿到参数后调用 `wx.requestPayment`。这里要特别强调：前端 `success` 回调只说明小程序调用结果，不能替代服务端支付通知。前端应跳转结果页并轮询 `/mallOrder/status`，最终以本地订单状态为准；本地状态又只能由经过验签的微信回调或服务端主动查单推进。
+小程序拿到参数后调用 `wx.requestPayment`。这里要特别强调：前端 `success` 回调只说明小程序调用结果，不能替代服务端支付通知。前端应跳转结果页并持续查询订单状态，最终以服务端本地订单状态为准；本地状态又只能由经过验签的微信回调或服务端主动查单推进。
 
-## 八、支付回调：先证明“是谁说的”，再处理“说了什么”
+## 七、支付回调：先证明“是谁说的”，再处理“说了什么”
 
-`POST /wxpay/notify/order` 的处理顺序是：
+支付成功通知的处理顺序是：
 
 1. 读取 `Wechatpay-Serial`、`Wechatpay-Signature`、`Wechatpay-Timestamp`、`Wechatpay-Nonce`；
 2. 按 `timestamp + "\n" + nonce + "\n" + body + "\n"` 构造验签串；
@@ -300,7 +276,7 @@ sequenceDiagram
     participant S as "MallPayService"
     participant DB as "MySQL"
 
-    WX->>C: "POST /wxpay/notify/order"
+    WX->>C: "发送支付成功通知"
     C->>C: "平台证书/公钥验签"
     C->>C: "AES-256-GCM 解密 resource"
     C->>S: "handlePaid(transaction)"
@@ -332,9 +308,9 @@ sequenceDiagram
 
 状态更新使用 `WHERE id = ? AND pay_status = UNPAID`。回调、补支付查单和定时任务即使同时确认成功，也只有一个线程真正完成迁移；其他线程重新读取后看到相同的 `transaction_id`，按幂等成功处理。
 
-## 九、补支付：复用原订单，不重复扣库存
+## 八、补支付：复用原订单，不重复扣库存
 
-`POST /wxpay/rePay` 并不创建新订单。它按 `orderNo + 当前 personId` 查询本人订单，然后：
+补支付逻辑并不创建新订单。它按 `orderNo + 当前 personId` 查询本人订单，然后：
 
 1. 已支付则拒绝重复支付；
 2. 已取消则要求重新下单；
@@ -347,7 +323,7 @@ sequenceDiagram
 
 这样做避免“点一次重新支付就再扣一次库存、再生成一张订单”。如果原预支付信息缺失或已经过期，则明确要求重新下单。
 
-## 十、超时关单：先问微信，再决定本地订单和库存
+## 九、超时关单：先问微信，再决定本地订单和库存
 
 支付系统最危险的竞态之一是：用户刚支付成功，支付回调还在路上，定时任务却把本地订单取消并回补库存。当前任务采用“查单优先 + 关单后二次确认 + 本地 CAS”的策略。
 
@@ -398,7 +374,7 @@ sequenceDiagram
 
 微信官方关单接口明确用于未支付且无需继续支付的订单；如果订单已经支付，关单会失败。因此“关单失败后再次查单”不是多余动作，而是填补网络异常与并发时间窗。
 
-## 十一、退款：退款申请是另一张状态机
+## 十、退款：退款申请是另一张状态机
 
 支付成功不意味着退款可以用一条 `order.refunded = true` 完成。当前实现为退款建立独立记录，包含商户退款单号、原交易号、金额、原因、微信退款状态和时间。
 
@@ -410,16 +386,16 @@ sequenceDiagram
     participant DB as "MySQL"
     participant WX as "微信支付 API v3"
 
-    MP->>C: "POST /wxpay/refund"
+    MP->>C: "提交退款申请"
     C->>R: "createRefund(dto)"
     R->>DB: "按本人订单查询或复用退款记录"
     R->>DB: "锁订单并校验可退款状态"
     R->>DB: "创建唯一退款单"
     R->>DB: "NOT_REFUNDED → REFUNDING"
-    R->>WX: "POST /v3/refund/domestic/refunds"
+    R->>WX: "向微信申请退款"
     WX-->>R: "受理状态"
     Note over R,WX: "受理成功不等于退款成功"
-    WX->>C: "POST /wxpay/notify/refund"
+    WX->>C: "发送退款结果通知"
     C->>C: "验签、解密、事件状态交叉校验"
     C->>R: "handleRefundNotification"
     R->>DB: "锁定退款单并核对订单/金额/商户"
@@ -444,11 +420,11 @@ sequenceDiagram
 
 微信官方明确说明：申请退款接口返回成功只代表退款申请已受理，最终结果应通过退款通知或退款查单确认。这正是退款单必须独立建模的原因。
 
-## 十二、订单列表、物流与确认收货
+## 十一、订单聚合、物流与确认收货
 
 ### 1. 我的订单与状态查询
 
-订单分页始终以当前 `personId` 为条件，按创建时间倒序；再把数据库状态转换成前端聚合状态。支付结果页的 `/mallOrder/status` 同样使用 `orderNo + personId`，不能仅凭可猜测的订单号返回支付信息。
+订单分页始终以当前 `personId` 为条件，按创建时间倒序；再把数据库状态转换成前端聚合状态。支付结果查询同样使用 `orderNo + personId`，不能仅凭可猜测的订单号返回支付信息。
 
 订单 VO 优先使用 SKU 图片，其次才回退到商品封面；标题、规格、价格、地址全部取订单快照，而不是主表最新值。
 
@@ -482,7 +458,7 @@ sequenceDiagram
     B->>DB: "重新读取订单并幂等结算"
 ```
 
-## 十三、事务边界：哪些能强一致，哪些只能最终一致
+## 十二、事务边界：哪些能强一致，哪些只能最终一致
 
 ### 本地事务内可以保证
 
@@ -503,7 +479,7 @@ sequenceDiagram
 
 因此跨边界动作必须使用幂等键、状态机、主动查询、重试、补偿任务、对账和可靠消息，而不是扩大 `@Transactional` 范围。数据库事务开着时调用外部 HTTP 还会延长行锁和连接占用，流量上来后尤其危险。
 
-## 十四、源码走查中值得肯定的设计
+## 十三、源码走查中值得肯定的设计
 
 1. 价格由服务端 SKU 计算，客户端金额只做一致性提示；
 2. 商品、SKU、地址和分佣信息均写入订单快照；
@@ -518,7 +494,7 @@ sequenceDiagram
 11. 所有用户订单、地址和退款入口都带当前用户归属校验；
 12. 确认收货后才触发分佣，且动作安排在事务提交之后。
 
-## 十五、从“可用”走向“抗故障”的改进清单
+## 十四、从“可用”走向“抗故障”的改进清单
 
 ### 1. 缩短创建订单事务，处理远端孤儿单
 
@@ -605,7 +581,7 @@ ON mall_order (pay_status, pay_expire_time, id);
 
 应用层先查再插不是并发约束，唯一索引才是最后防线。
 
-## 十六、安全设计：订单接口也是越权与资损边界
+## 十五、安全设计：交易链路也是越权与资损边界
 
 ### 身份与对象归属
 
@@ -627,7 +603,7 @@ ON mall_order (pay_status, pay_expire_time, id);
 
 订单地址快照包含姓名、手机号和详细地址。列表接口只返回页面需要的字段；日志、Trace、告警和消息体不要记录完整手机号、地址、`openid`、密文或密钥。生产数据导出应有权限、审计和有效期。
 
-## 十七、可观测性：看到每次状态迁移为什么发生
+## 十六、可观测性：看到每次状态迁移为什么发生
 
 建议所有日志和 Trace 带上：`orderNo`、`transactionId`、`refundNo`、脱敏 `personId`、`traceId`、旧状态、新状态、触发来源和影响行数。
 
@@ -648,7 +624,7 @@ ON mall_order (pay_status, pay_expire_time, id);
 
 日志要记录“事实”，例如 `expectedStatus=UNPAID, affectedRows=0`，而不是只写“支付处理失败”。后者无法判断是重复回调、状态冲突还是数据库异常。
 
-## 十八、常见追问
+## 十七、常见追问
 
 ### 为什么下单时扣库存，而不是支付成功后扣
 
@@ -678,7 +654,7 @@ HTTP 超时无法证明微信没收到请求。未知结果应保持 `PROCESSING
 
 支付后立刻分佣会把退货退款变成复杂的冲正问题。以确认收货作为结算触发点，可以把履约完成作为更稳定的业务事实；即便如此，消费者仍要校验未退款和未结算，并支持冲正。
 
-## 十九、上线前检查清单
+## 十八、上线前检查清单
 
 ### 商品与库存
 
