@@ -1,0 +1,45 @@
+/**
+ * 暗黑模式圆形扩散动画
+ * 使用 View Transitions API；不支持时由主题切换逻辑自动降级。
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+    z-index: 9999;
+    animation: reveal-theme 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+@keyframes reveal-theme {
+    from {
+        clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+    }
+
+    to {
+        clip-path: circle(var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y));
+    }
+}
+
+/* 暗色主题适度降低正文图片亮度，减少切换后的视觉刺激。 */
+.dark .vp-doc img:not(.no-dark-filter) {
+    filter: brightness(0.86);
+    transition: filter 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
+
+    .dark .vp-doc img:not(.no-dark-filter) {
+        transition: none;
+    }
+}

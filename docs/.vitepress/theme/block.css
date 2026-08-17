@@ -1,0 +1,210 @@
+/**
+ * 自定义容器样式
+ * 基于参考教程的视觉方向，用原生 CSS 适配当前 VitePress 主题。
+ */
+
+/* 引用块使用品牌色强调，并保留舒适的正文间距。 */
+.vp-doc blockquote {
+    margin: 20px 0;
+    padding: 14px 18px;
+    border-left: 4px solid var(--vp-c-brand-1);
+    border-radius: 0 12px 12px 0;
+    background: color-mix(in srgb, var(--vp-c-brand-1) 8%, var(--vp-c-bg));
+}
+
+.vp-doc blockquote > p {
+    margin: 0;
+    color: var(--vp-c-text-2);
+    font-size: 14px;
+}
+
+/* 所有提示容器共享卡片结构，各类型只提供自己的强调色。 */
+.vp-doc .custom-block {
+    --custom-block-accent: var(--vp-c-brand-1);
+    position: relative;
+    margin: 20px 0;
+    padding: 16px 20px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--custom-block-accent) 28%, transparent);
+    border-left: 5px solid var(--custom-block-accent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--custom-block-accent) 8%, var(--vp-c-bg));
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.dark .vp-doc .custom-block {
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.14);
+}
+
+.vp-doc .custom-block.info {
+    --custom-block-accent: var(--vp-c-text-2);
+}
+
+.vp-doc .custom-block.note {
+    --custom-block-accent: var(--vp-c-indigo-1);
+}
+
+.vp-doc .custom-block.tip {
+    --custom-block-accent: var(--vp-c-green-1);
+}
+
+.vp-doc .custom-block.important {
+    --custom-block-accent: var(--vp-c-purple-1);
+}
+
+.vp-doc .custom-block.warning {
+    --custom-block-accent: var(--vp-c-yellow-1);
+}
+
+.vp-doc .custom-block.danger,
+.vp-doc .custom-block.caution {
+    --custom-block-accent: var(--vp-c-red-1);
+}
+
+/* 标题图标用纯 CSS 绘制，避免额外图片请求。 */
+.vp-doc .custom-block .custom-block-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    color: var(--vp-c-text-1);
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.vp-doc .custom-block .custom-block-title::before {
+    display: inline-grid;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--custom-block-accent);
+    color: var(--vp-c-bg);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    content: 'i';
+}
+
+.vp-doc .custom-block.tip .custom-block-title::before {
+    content: '✓';
+}
+
+.vp-doc .custom-block.important .custom-block-title::before,
+.vp-doc .custom-block.warning .custom-block-title::before {
+    content: '!';
+}
+
+.vp-doc .custom-block.danger .custom-block-title::before,
+.vp-doc .custom-block.caution .custom-block-title::before {
+    content: '×';
+}
+
+.vp-doc .custom-block p:last-child {
+    margin-bottom: 0;
+}
+
+.vp-doc .custom-block a {
+    color: var(--custom-block-accent);
+    font-weight: 600;
+}
+
+.vp-doc .custom-block code {
+    background: color-mix(in srgb, var(--custom-block-accent) 14%, transparent);
+}
+
+/* 折叠容器使用自定义箭头，打开时平滑旋转。 */
+.vp-doc details.custom-block {
+    --custom-block-accent: var(--vp-c-indigo-1);
+    padding: 0;
+}
+
+.vp-doc details.custom-block > summary {
+    position: relative;
+    padding: 16px 48px 16px 20px;
+    cursor: pointer;
+    color: var(--vp-c-text-1);
+    font-weight: 700;
+    list-style: none;
+    user-select: none;
+}
+
+.vp-doc details.custom-block > summary::-webkit-details-marker {
+    display: none;
+}
+
+.vp-doc details.custom-block > summary::after {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--custom-block-accent);
+    border-bottom: 2px solid var(--custom-block-accent);
+    content: '';
+    transform: translateY(-65%) rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.vp-doc details.custom-block[open] > summary::after {
+    transform: translateY(-30%) rotate(225deg);
+}
+
+.vp-doc details.custom-block > :not(summary) {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.vp-doc details.custom-block > :last-child {
+    margin-bottom: 16px;
+}
+
+/* 徽标统一为紧凑圆角胶囊，并强化不同语义的辨识度。 */
+.vp-doc .VPBadge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 2px 9px;
+    border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+.vp-doc .VPBadge.info {
+    color: var(--vp-c-text-2);
+    background: var(--vp-c-default-soft);
+}
+
+.vp-doc .VPBadge.tip {
+    color: var(--vp-c-green-1);
+    background: var(--vp-c-green-soft);
+}
+
+.vp-doc .VPBadge.warning {
+    color: var(--vp-c-yellow-1);
+    background: var(--vp-c-yellow-soft);
+}
+
+.vp-doc .VPBadge.danger {
+    color: var(--vp-c-red-1);
+    background: var(--vp-c-red-soft);
+}
+
+@media (max-width: 639px) {
+    .vp-doc .custom-block {
+        padding: 14px 16px;
+        border-radius: 10px;
+    }
+
+    .vp-doc details.custom-block {
+        padding: 0;
+    }
+
+    .vp-doc details.custom-block > summary {
+        padding: 14px 44px 14px 16px;
+    }
+}

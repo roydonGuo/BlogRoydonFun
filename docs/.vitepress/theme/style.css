@@ -165,7 +165,11 @@ body {
 }
 
 .outline-link {
-    font-weight: 600;
+    font-weight: 600 !important;
+}
+
+.outline-link:hover, .outline-link.active {
+    color: var(--vp-c-brand-1) !important;
 }
 
 .VPNavBarMenuLink {

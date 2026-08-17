@@ -1,0 +1,73 @@
+/**
+ * 代码块窗口样式
+ * 保留教程的 macOS 三色圆点设计，并使用原生 CSS 适配当前项目。
+ */
+:root {
+    --code-window-red: #ff5f57;
+    --code-window-yellow: #febc2e;
+    --code-window-green: #28c840;
+}
+
+/* 普通、带标题和代码组容器共用窗口圆点颜色。 */
+.vp-doc div[class*='language-'],
+.vp-doc .vp-code-group,
+.vp-doc .vp-code-block-title {
+    --code-red: var(--code-window-red);
+    --code-yellow: var(--code-window-yellow);
+    --code-green: var(--code-window-green);
+}
+
+/* 普通代码块顶部留出窗口工具栏，并绘制 macOS 三色圆点。 */
+.vp-doc div[class*='language-'] {
+    padding-top: 20px;
+}
+
+.vp-doc div[class*='language-']::before,
+.vp-doc .vp-code-group .tabs::before,
+.vp-doc .vp-code-block-title .vp-code-block-title-bar::before {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--code-red);
+    box-shadow: 20px 0 0 var(--code-yellow), 40px 0 0 var(--code-green);
+    content: '';
+}
+
+/* 代码组和带标题代码块由各自标题栏绘制圆点，避免内容区重复显示。 */
+.vp-doc .vp-code-group div[class*='language-'],
+.vp-doc .vp-code-block-title div[class*='language-'] {
+    padding-top: 0;
+}
+
+.vp-doc .vp-code-group div[class*='language-']::before,
+.vp-doc .vp-code-block-title div[class*='language-']::before {
+    display: none;
+}
+
+/* 为代码组标签预留圆点空间，同时保持横向滚动能力。 */
+.vp-doc .vp-code-group .tabs {
+    position: relative;
+    min-height: 48px;
+    padding-left: 74px;
+}
+
+/* 带文件名的标题栏也需要为窗口圆点预留左侧空间。 */
+.vp-doc .vp-code-block-title .vp-code-block-title-bar {
+    position: relative;
+    min-height: 48px;
+    padding-left: 74px;
+}
+
+/* 行号与代码正文同步下移，避免首行挤入窗口工具栏。 */
+.vp-doc div[class*='language-'].line-numbers-mode > .line-numbers-wrapper {
+    padding-top: 40px;
+}
+
+.vp-doc .vp-code-group div[class*='language-'].line-numbers-mode > .line-numbers-wrapper,
+.vp-doc .vp-code-block-title div[class*='language-'].line-numbers-mode > .line-numbers-wrapper {
+    padding-top: 0;
+}

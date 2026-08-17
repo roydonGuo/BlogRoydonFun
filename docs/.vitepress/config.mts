@@ -1,9 +1,24 @@
 import { defineConfig } from 'vitepress'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 
 export default defineConfig({
   lang: 'zh-CN',
   title: 'Ethan',
   description: 'Thoughts on code, design & life',
+
+  // 为代码组标签和带文件名的代码块生成对应的文件类型图标。
+  markdown: {
+    // 所有代码块默认显示行号，单个代码块仍可用 :no-line-numbers 关闭。
+    lineNumbers: true,
+    config(md) {
+      md.use(groupIconMdPlugin)
+    },
+  },
+
+  // 配套的 Vite 插件负责生成主题使用的虚拟图标样式。
+  vite: {
+    plugins: [groupIconVitePlugin()],
+  },
 
   // Read each page timestamp from its latest Git commit.
   lastUpdated: true,
