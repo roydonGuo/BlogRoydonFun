@@ -46,7 +46,6 @@ const isPostsPage = computed(() => {
 
 <style scoped>
 .post-filter {
-  padding: 0.5rem 0;
 }
 
 .filter-section {

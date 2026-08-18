@@ -140,6 +140,8 @@
     --vp-c-divider: rgba(226, 226, 227, 0.25);
     --vp-c-gutter: rgba(226, 226, 227, 0.25);
     --vp-sidebar-bg-color: rgba(255, 255, 255, 0.25);
+
+    --vp-layout-max-width: 1640px;
 }
 
 .dark {
@@ -283,13 +285,25 @@ body {
 
 @media (min-width: 1440px) {
     .VPDoc:not(.has-sidebar) .content {
-        max-width: 984px !important;
+        max-width: 1000px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPDoc:not(.has-sidebar) .content {
+        max-width: 1440px !important;
     }
 }
 
 @media (min-width: 1280px) {
     .content {
-        min-width: 800px !important;
+        min-width: 880px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPDoc:not(.has-sidebar) .container {
+        max-width: 1720px !important;
     }
 }
 
