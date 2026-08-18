@@ -6,7 +6,7 @@ hero:
   text: "Thoughts on code, design & life"
   tagline: 记录技术与生活的个人博客
   image:
-    src: /favicon.svg
+    src: /1fad0.svg
     alt: Ethan
   actions:
     - theme: brand
