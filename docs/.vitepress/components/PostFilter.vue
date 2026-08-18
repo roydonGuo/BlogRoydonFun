@@ -3,10 +3,10 @@
     <div class="filter-section">
       <h4 class="filter-title">📂 分类</h4>
       <ul class="filter-list">
-        <li>
-          <button :class="['filter-item', { active: !selectedCategory && !selectedTag }]"
-            @click="clearFilter">全部</button>
-        </li>
+<!--        <li>-->
+<!--          <button :class="['filter-item', { active: !selectedCategory && !selectedTag }]"-->
+<!--            @click="clearFilter">全部</button>-->
+<!--        </li>-->
         <li v-for="cat in categories" :key="cat">
           <button :class="['filter-item', { active: selectedCategory === cat }]" @click="filterByCategory(cat)">{{ cat
             }}</button>
