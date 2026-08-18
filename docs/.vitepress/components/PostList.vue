@@ -21,7 +21,7 @@
               </time>
               <span class="card-category">{{ post.category }}</span>
               <div v-if="post.tags.length" class="card-tags">
-                <span v-for="tag in post.tags" :key="tag" class="card-tag">{{ tag }}</span>
+                <span v-for="tag in post.tags" :key="tag" class="card-tag">#{{ tag }}</span>
               </div>
             </div>
           </div>

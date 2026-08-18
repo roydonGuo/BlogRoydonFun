@@ -104,8 +104,8 @@ const isPostsPage = computed(() => {
 
 .filter-tag {
   padding: 0.15rem 0.75rem;
-  border: 1px solid var(--vp-c-border);
-  border-radius: 99px;
+  border: 1px solid var(--vp-c-border-1);
+  border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;

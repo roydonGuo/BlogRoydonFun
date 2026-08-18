@@ -259,7 +259,6 @@ body {
 .VPSidebar {
     scrollbar-width: none;
     -ms-overflow-style: none;
-    background-color: var(--vp-c-bg) !important;
 }
 
 .post-sidebar {
@@ -304,6 +303,12 @@ body {
 @media (min-width: 1920px) {
     .VPDoc:not(.has-sidebar) .container {
         max-width: 1720px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPSidebar {
+        padding-left: max(32px, calc((100% - (var(--vp-layout-max-width))) / 2) - 32px) !important;
     }
 }
 
