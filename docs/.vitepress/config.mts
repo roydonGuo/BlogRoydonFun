@@ -36,6 +36,8 @@ export default defineConfig({
   ],
 
   themeConfig: {
+    // public 目录资源使用根路径，图标会显示在顶部站点名称 Ethan 前。
+    logo: '/1fad0.svg',
     // 文章侧栏目录展示二至四级标题，并保留标题树层级。
     outline: {
       level: [2, 4],
