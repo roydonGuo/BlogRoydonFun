@@ -8,6 +8,7 @@ import ArchiveList from '../components/ArchiveList.vue'
 import LinksList from '../components/LinksList.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
+import PostSidebar from '../components/PostSidebar.vue'
 import KnowledgeGraph from '../components/KnowledgeGraph.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import { initLinkIcons } from './link-icons'
@@ -73,8 +74,10 @@ const AnimatedLayout = defineComponent({
     })
 
     return () => h(DefaultTheme.Layout, null, {
+      // 文章页左侧栏复用 posts.data.ts，自动按分类展示全部文章。
+      'sidebar-nav-before': () => h(PostSidebar),
       'aside-top': () => h(PostFilter),
-      // Post pages have no sidebar, so provide pagination from the post data source.
+      // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
       'doc-after': () => h(PostPrevNext),
     })
   },
