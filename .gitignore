@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+.git
+.gitignore
+.gitmodules
+.vscode
+.idea
+build
+dist
+.npmrc
+# Visual companion mockups
+.superpowers/
+.reasonix/
