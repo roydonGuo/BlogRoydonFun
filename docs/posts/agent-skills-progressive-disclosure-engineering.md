@@ -1,7 +1,7 @@
 ---
 title: Agent Skills 工程实践：渐进式披露、可复用能力与安全边界
 date: 2026-08-11
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
 tags: [ai, agent, agent-skills, context-engineering, security]
 excerpt: 从开放格式、三阶段渐进式披露与执行边界出发，讲清 Agent Skill 如何封装可复用流程，并用 Java 落实导入校验、最小权限、审计与版本治理。

@@ -1,7 +1,7 @@
 ---
 title: Agent 分层记忆体系：从认知模型到 Mem0 工程实践
 date: 2026-08-04
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
 tags: [ai, agent, memory, mem0, spring-ai]
 excerpt: 从工作、会话与长期记忆出发，拆解语义、情景、程序性记忆，比较主流 Agent 框架，并给出 Spring Boot 接入 Mem0 的完整工程方案。

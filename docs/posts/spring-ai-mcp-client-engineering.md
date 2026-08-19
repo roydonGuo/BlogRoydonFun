@@ -1,9 +1,9 @@
 ---
 title: Spring AI 接入 MCP：从能力协商到安全工具调用
 date: 2026-08-04
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
-tags: [ai, agent, spring-ai, mcp, security]
+tags: [ai, agent, spring-ai, mcp]
 excerpt: 基于 MCP 2025-11-25 与 Spring AI 2.0.0，讲清协议生命周期、传输方式、工具发现、白名单接入、错误治理与安全边界。
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: Redis 过期删除与内存淘汰：从 TTL 到 LRU、LFU 与 LRM
 date: 2026-08-04
-category: 后端开发
+category: Redis
 cover: /covers/backend.svg
-tags: [redis, cache, performance, spring-boot, observability]
+tags: [redis, lru, lfu, lrm]
 excerpt: 区分 Redis 过期删除与内存淘汰，完整梳理 Redis 7.x 和 8.6+ 的淘汰策略，并给出 Spring Boot 缓存、参数配置与监控实践。
 ---
 

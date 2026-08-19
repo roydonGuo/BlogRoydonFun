@@ -1,9 +1,9 @@
 ---
 title: RAG 混合检索工程实践：BM25、向量召回、RRF 与重排序
 date: 2026-08-04
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
-tags: [ai, rag, spring-ai, elasticsearch, search]
+tags: [ai, rag, spring-ai, elasticsearch, bm25, rrf]
 excerpt: 从关键词与向量召回的互补性出发，讲清分数融合、RRF、语义重排的边界，并给出 Spring AI 2.0.0 混合检索实现与评测方法。
 ---
 

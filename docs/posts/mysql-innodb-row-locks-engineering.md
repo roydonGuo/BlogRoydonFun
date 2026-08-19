@@ -1,7 +1,7 @@
 ---
 title: MySQL 8.4 行锁工程实践：Record、Gap 与 Next-Key Lock
 date: 2026-08-17
-category: 后端开发
+category: MySQL
 cover: /covers/backend.svg
 tags: [mysql, innodb, row-lock, gap-lock, next-key-lock]
 excerpt: 从索引记录出发，讲清 InnoDB 的 Record Lock、Gap Lock、Next-Key Lock 与插入意向锁，并用库存预占场景串起隔离级别、加锁范围、阻塞诊断和死锁治理。

@@ -1,7 +1,7 @@
 ---
 title: MySQL 8.4 在线 DDL 工程实践：算法、锁与发布治理
 date: 2026-08-05
-category: 后端开发
+category: MySQL
 cover: /covers/backend.svg
 tags: [mysql, innodb, online-ddl, metadata-lock, database]
 excerpt: 从 INSTANT、INPLACE、COPY 与 LOCK 并发级别出发，识别表重建和 MDL 风险，建立可中止、可观测的 MySQL 生产变更流程。

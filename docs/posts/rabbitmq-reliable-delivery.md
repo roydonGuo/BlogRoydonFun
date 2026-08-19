@@ -1,9 +1,9 @@
 ---
 title: RabbitMQ 可靠投递：Confirm、Return 与消费幂等
 date: 2026-08-04
-category: 后端开发
+category: MQ
 cover: /covers/backend.svg
-tags: [rabbitmq, spring-amqp, message-queue, reliability, idempotency]
+tags: [rabbitmq, spring-amqp, message-queue]
 excerpt: 从生产者 Confirm、mandatory Return、消费确认到 Outbox 与幂等表，建立 RabbitMQ 端到端至少一次投递链路。
 ---
 

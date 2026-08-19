@@ -1,7 +1,7 @@
 ---
 title: Spring AI 结构化输出：从 JSON Schema 到校验重试
 date: 2026-08-06
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
 tags: [spring-ai, llm, structured-output, json-schema, java]
 excerpt: 从 Java DTO 契约出发，拆解提示式与模型原生结构化输出，并建立解析、Schema 校验、业务校验、有限重试和降级的完整链路。

@@ -1,7 +1,7 @@
 ---
 title: AI Agent 人机协同审批：HITL 状态机与高风险工具治理
 date: 2026-08-07
-category: 后端开发
+category: AI
 cover: /covers/backend.svg
 tags: [ai-agent, hitl, spring-ai, tool-calling, security]
 excerpt: 从“模型建议、应用决策、人工授权、系统执行”的职责分离出发，用 Spring AI 用户控制工具调用、持久化审批状态机与幂等执行器，构建可暂停、可恢复、可审计的高风险 Agent 工作流。
