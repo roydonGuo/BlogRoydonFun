@@ -105,7 +105,10 @@ function toggleCategory(category: string): void {
               </div>
               <div class="recommended-body">
                 <span class="recommended-name">{{ post.title }}</span>
-                <span class="recommended-cat">{{ post.category }}</span>
+                <div class="recommended-meta">
+                  <span class="recommended-cat">{{ post.category }}</span>
+                  <time v-if="post.date" class="recommended-date" :datetime="post.date">{{ post.date }}</time>
+                </div>
               </div>
             </a>
           </li>
@@ -468,7 +471,7 @@ function toggleCategory(category: string): void {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
   padding: 10px 12px;
 }
 
@@ -490,6 +493,19 @@ function toggleCategory(category: string): void {
 .recommended-cat {
   color: var(--vp-c-text-3);
   font-size: 11px;
+}
+
+.recommended-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.recommended-date {
+  flex-shrink: 0;
+  color: var(--vp-c-text-3);
+  font-size: 11px;
+  line-height: 1;
 }
 
 /* config.mts 中的占位分组只用于启用 VitePress 侧边栏布局。 */
