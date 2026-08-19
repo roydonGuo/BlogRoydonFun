@@ -140,6 +140,8 @@
     --vp-c-divider: rgba(226, 226, 227, 0.25);
     --vp-c-gutter: rgba(226, 226, 227, 0.25);
     --vp-sidebar-bg-color: rgba(255, 255, 255, 0.25);
+
+    --vp-layout-max-width: 1640px;
 }
 
 .dark {
@@ -257,7 +259,6 @@ body {
 .VPSidebar {
     scrollbar-width: none;
     -ms-overflow-style: none;
-    background-color: var(--vp-c-bg) !important;
 }
 
 .post-sidebar {
@@ -283,13 +284,31 @@ body {
 
 @media (min-width: 1440px) {
     .VPDoc:not(.has-sidebar) .content {
-        max-width: 984px !important;
+        max-width: 1000px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPDoc:not(.has-sidebar) .content {
+        max-width: 1440px !important;
     }
 }
 
 @media (min-width: 1280px) {
     .content {
-        min-width: 800px !important;
+        min-width: 880px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPDoc:not(.has-sidebar) .container {
+        max-width: 1720px !important;
+    }
+}
+
+@media (min-width: 1920px) {
+    .VPSidebar {
+        padding-left: max(32px, calc((100% - (var(--vp-layout-max-width))) / 2) - 32px) !important;
     }
 }
 
@@ -303,6 +322,7 @@ body {
 
 .aside-container {
     width: 320px !important;
+    padding-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + var(--vp-doc-top-height, 0px) + 1rem) !important;
 }
 
 @media (min-width: 960px) {
@@ -310,5 +330,4 @@ body {
         padding: 32px 32px 0 0 !important;
     }
 }
-
 

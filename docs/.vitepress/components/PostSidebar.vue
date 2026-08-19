@@ -1,10 +1,24 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, ref, onMounted} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
 
 const route = useRoute()
 const expandedCategories = ref(new Set(posts.map(post => post.category)))
+
+// 文章列表页挂载后随机抽 5 篇作为推荐，避免 SSR 与客户端水合结果不一致。
+const recommended = ref<typeof posts>([])
+
+function pickRecommended(): void {
+  const pool = [...posts]
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[pool[i], pool[j]] = [pool[j], pool[i]]
+  }
+  recommended.value = pool.slice(0, 5)
+}
+
+onMounted(pickRecommended)
 
 // /posts/ 是文章列表页，其余 /posts/* 路由均按文章详情页处理。
 const isPostListPage = computed(() => normalizePath(route.path) === '/posts')
@@ -20,6 +34,13 @@ const categoryGroups = computed(() => {
   })
 
   return Array.from(groups, ([category, items]) => ({category, items}))
+})
+
+// 统计全部文章去重后的标签总数，供资料卡展示。
+const tagCount = computed(() => {
+  const tags = new Set<string>()
+  posts.forEach(post => (post.tags || []).forEach(tag => tags.add(tag)))
+  return tags.size
 })
 
 function normalizePath(path: string): string {
@@ -39,17 +60,18 @@ function toggleCategory(category: string): void {
 
 <template>
   <section class="post-sidebar" :aria-label="isPostListPage ? '作者信息' : '文章导航'">
-    <div v-if="isPostListPage" class="ethan-profile">
-      <div class="ethan-profile-head">
-        <img class="ethan-avatar" src="/1fad0.svg" alt="Ethan">
-        <span class="ethan-status" title="持续创作中" aria-label="持续创作中"/>
-      </div>
+    <template v-if="isPostListPage">
+      <div class="ethan-profile">
+        <div class="ethan-profile-head">
+          <img class="ethan-avatar" src="/1fad0.svg" alt="Ethan">
+          <span class="ethan-status" title="持续创作中" aria-label="持续创作中"/>
+        </div>
 
-      <div class="ethan-profile-copy">
-        <h2 class="ethan-name">Ethan</h2>
-        <p class="ethan-role">全栈开发</p>
-        <p class="ethan-bio">热爱技术与设计，记录工程实践、生活思考与创意灵感。</p>
-      </div>
+        <div class="ethan-profile-copy">
+          <h2 class="ethan-name">Ethan</h2>
+          <p class="ethan-role">全栈开发</p>
+          <p class="ethan-bio">热爱技术与设计，记录工程实践、生活思考与创意灵感。</p>
+        </div>
 
       <dl class="ethan-stats">
         <div>
@@ -60,14 +82,36 @@ function toggleCategory(category: string): void {
           <dt>{{ categoryGroups.length }}</dt>
           <dd>分类</dd>
         </div>
+        <div>
+          <dt>{{ tagCount }}</dt>
+          <dd>标签</dd>
+        </div>
       </dl>
 
-      <nav class="ethan-links" aria-label="Ethan 个人链接">
-        <a href="/about/">关于我</a>
-        <a href="/resume/">个人简历</a>
-        <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </nav>
-    </div>
+        <nav class="ethan-links" aria-label="Ethan 个人链接">
+          <a href="/about/">关于我</a>
+          <a href="/resume/">个人简历</a>
+          <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </div>
+
+      <div class="recommended-articles">
+        <h3 class="recommended-title">📖 推荐阅读</h3>
+        <ul class="recommended-list">
+          <li v-for="post in recommended" :key="post.url">
+            <a :href="post.url" class="recommended-item">
+              <div class="recommended-cover">
+                <img :src="post.cover" :alt="post.title" loading="lazy">
+              </div>
+              <div class="recommended-body">
+                <span class="recommended-name">{{ post.title }}</span>
+                <span class="recommended-cat">{{ post.category }}</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </template>
 
     <template v-else>
       <a class="post-sidebar-home" href="/posts/">
@@ -121,12 +165,13 @@ function toggleCategory(category: string): void {
   background: radial-gradient(circle at 85% 8%, var(--vp-c-brand-soft), transparent 42%),
   var(--vp-c-bg);
   box-shadow: 0 14px 36px rgba(36, 69, 235, 0.08);
+  text-align: center;
 }
 
 .ethan-profile-head {
   position: relative;
   width: fit-content;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
 }
 
 .ethan-avatar {
@@ -138,6 +183,11 @@ function toggleCategory(category: string): void {
   border-radius: 72px;
   background: var(--vp-c-bg-soft);
   object-fit: contain;
+  transition: transform 0.7s ease;
+}
+
+.ethan-avatar:hover {
+  transform: rotate(360deg);
 }
 
 .ethan-status {
@@ -184,7 +234,7 @@ function toggleCategory(category: string): void {
 
 .ethan-stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin: 0 0 16px;
   padding: 13px 0;
   border-top: 1px solid var(--vp-c-divider);
@@ -350,6 +400,96 @@ function toggleCategory(category: string): void {
 .post-sidebar-list time {
   color: var(--vp-c-text-3);
   font-size: 10px;
+}
+
+.recommended-articles {
+  margin-top: 16px;
+  padding: 18px 16px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 14%, var(--vp-c-divider));
+  border-radius: 18px;
+  background: var(--vp-c-bg);
+  box-shadow: 0 14px 36px rgba(36, 69, 235, 0.08);
+}
+
+.recommended-title {
+  margin: 0 0 14px;
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.recommended-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recommended-item {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recommended-item:hover {
+  background: var(--vp-c-brand-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(36, 69, 235, 0.12);
+}
+
+.recommended-cover {
+  width: 38%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--vp-c-divider);
+}
+
+.recommended-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  transition: transform 0.35s ease;
+}
+
+.recommended-item:hover .recommended-cover img {
+  transform: scale(1.05);
+}
+
+.recommended-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 12px;
+}
+
+.recommended-name {
+  color: var(--vp-c-text-1);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recommended-item:hover .recommended-name {
+  color: var(--vp-c-brand-1);
+}
+
+.recommended-cat {
+  color: var(--vp-c-text-3);
+  font-size: 11px;
 }
 
 /* config.mts 中的占位分组只用于启用 VitePress 侧边栏布局。 */

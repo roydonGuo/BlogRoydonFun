@@ -4,7 +4,7 @@ title: 文章
 
 <!-- 文章列表页标题区 -->
 <div class="posts-header">
-  <h1 class="posts-title">所有文章</h1>
+  <h1 class="posts-title">文章</h1>
   <p class="posts-subtitle">技术探索、生活思考、设计灵感 — 都在这里</p>
 </div>
 
