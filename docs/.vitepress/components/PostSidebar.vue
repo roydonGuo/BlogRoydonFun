@@ -2,7 +2,14 @@
 import {computed, ref, onMounted} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
-import {RiUserSmileLine, RiProfileLine, RiGithubLine} from "@remixicon/vue";
+import {
+  RiUserSmileLine,
+  RiProfileLine,
+  RiGithubLine,
+  RiArticleLine,
+  RiFolder6Line,
+  RiPriceTag3Line
+} from "@remixicon/vue";
 
 const route = useRoute()
 const expandedCategories = ref(new Set(posts.map(post => post.category)))
@@ -77,15 +84,24 @@ function toggleCategory(category: string): void {
         <dl class="ethan-stats">
           <div>
             <dt>{{ posts.length }}</dt>
-            <dd>文章</dd>
+            <dd class="flex items-center justify-center gap-0.5">
+              <RiArticleLine size="12px"/>
+              文章
+            </dd>
           </div>
           <div>
             <dt>{{ categoryGroups.length }}</dt>
-            <dd>分类</dd>
+            <dd class="flex items-center justify-center gap-0.5">
+              <RiFolder6Line size="12px"/>
+              分类
+            </dd>
           </div>
           <div>
             <dt>{{ tagCount }}</dt>
-            <dd>标签</dd>
+            <dd class="flex items-center justify-center gap-0.5">
+              <RiPriceTag3Line size="12px"/>
+              标签
+            </dd>
           </div>
         </dl>
 
@@ -96,7 +112,8 @@ function toggleCategory(category: string): void {
           <a href="/resume/" class="flex items-center justify-center gap-1">
             <RiProfileLine size="18px"/>
             简历</a>
-          <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1">
+          <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer"
+             class="flex items-center justify-center gap-1">
             <RiGithubLine size="18px"/>
             GitHub</a>
         </nav>

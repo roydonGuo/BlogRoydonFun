@@ -94,7 +94,7 @@
     <Teleport to="body">
       <Transition name="project-modal">
         <div v-if="selected"
-             class="project-modal-backdrop fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/50 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
+             class="project-modal-backdrop fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/70 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
              role="dialog" aria-modal="true" aria-labelledby="project-modal-title" @click.self="closeProject">
           <article
               class="project-modal-card grid h-[min(648px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
