@@ -56,7 +56,7 @@
             v-for="(project, index) in visibleProjects"
             :key="`${project.name}-${index}`"
             type="button"
-            class="masonry-item group mb-4 w-[calc((100%-48px)/4)] cursor-pointer max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full overflow-hidden rounded-[20px] border border-black/10 bg-bg p-0 text-left text-text-1 shadow-sm dark:border-white/15 transition duration-300 hover:-translate-y-[5px] hover:border-brand hover:shadow-[0_18px_46px_rgba(15,23,42,.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="masonry-item group mb-4 w-[calc((100%-48px)/4)] cursor-pointer max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full overflow-hidden rounded-[20px] border border-black/10 bg-bg p-0 text-left text-text-1 shadow-sm dark:border-white/15 transition duration-300 hover:shadow-[0_18px_46px_rgba(15,23,42,.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             :aria-label="`查看 ${project.name} 项目详情`"
             @click="openProject(project)"
         >
@@ -67,7 +67,7 @@
                 class="block !m-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
                 :src="project.cover" :alt="project.coverAlt">
             <span
-                class="absolute left-3.5 top-3.5 rounded-full bg-white/60 px-2.5 py-1.5 text-[9px] !font-black tracking-[.08em] text-[#080b16] backdrop-blur-[10px]">{{
+                class="absolute left-3 top-3 rounded-full bg-white/60 px-3 py-0.5 !text-[10px] !font-black tracking-[.08em] text-[#080b16] backdrop-blur-[10px]">{{
                 project.featured ? 'FEATURED' : project.categoryLabel
               }} · {{ String(index + 1).padStart(2, '0') }}</span>
             <span
@@ -92,8 +92,8 @@
 
     <Teleport to="body">
       <Transition
-          enter-active-class="transition-opacity duration-300"
-          leave-active-class="transition-opacity duration-300"
+          enter-active-class="transition-opacity duration-250"
+          leave-active-class="transition-opacity duration-250"
           enter-from-class="opacity-0"
           leave-to-class="opacity-0"
       >
@@ -101,7 +101,7 @@
              class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/50 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
              role="dialog" aria-modal="true" aria-labelledby="project-modal-title" @click.self="closeProject">
           <article
-              class="grid h-[min(548px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
+              class="grid h-[min(648px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
             <section
                 class="relative min-w-0 overflow-hidden bg-[#080b16] max-[760px]:h-[42vh] max-[760px]:min-h-[300px]"
                 aria-label="项目截图轮播">
@@ -140,7 +140,7 @@
               <p class="m-0 text-[9px] !font-black tracking-[.2em] text-text-3">
                 {{ selected.featured ? 'FEATURED CASE' : selected.categoryLabel }} · {{ selected.year }}</p>
               <h2 id="project-modal-title"
-                  class="!mb-0 !mt-6 !border-0 text-[40px] !font-black leading-none tracking-[-.05em] max-[760px]:text-[34px]">
+                  class="!mb-0 !mt-6 !border-0 !text-[40px] !font-black leading-none tracking-[-.05em] max-[760px]:text-[34px]">
                 {{ selected.name }}</h2>
               <p class="mb-0 mt-5 text-[13px] leading-[1.75] text-text-2">{{ selected.description }}</p>
               <dl class="mt-7 grid grid-cols-2 gap-[22px] border-t border-divider pt-6">
