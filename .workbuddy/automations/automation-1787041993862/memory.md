@@ -86,3 +86,36 @@
 - **推送结果**: 失败。`git push origin main` 因 HTTPS origin 未配置可用凭证，报错 `fatal: could not read Username for 'https://github.com': terminal prompts disabled`。已按规则停止，未 force push。本地已 2 个 commit 领先 origin/main
 - **下一次应避开**: 框架.md → mysql → 日志（已用 1 次，下一次同月短期内勿再选 redo/binlog/undo log 同章节）；mysql 域其他章节（索引/锁/事务/MVCC/online-ddl）此前已写过；AI/Agent 域今日已用 1 次（反思），同源短期勿再选；建议 08-19 第 3 次优先从 框架.md 选 redis 高可用 / 设计模式 / java IO 模型 / jvm / spring SpringCloud / 操作系统 等其他域，避免 mysql 与 java 并发
 
+## 2026-08-19 第 3 次
+
+- **运行时间**: 2026-08-19 17:20 Asia/Shanghai
+- **来源文件**: `C:\Users\admin\Downloads\框架.md`
+- **原始条目**: `### jvm`（第 1311 行）→ `+ 垃圾回收`（标记算法 / 三色标记 / 回收算法 / 引用 / 收集器）
+- **最终题目/主题**: JVM 垃圾回收工程实践：可达性分析、三色标记、分代收集与收集器选型
+- **技术域**: 后端开发 / JVM
+- **文章文件**: `docs/posts/jvm-gc-garbage-collection-engineering.md`
+- **知识图文件**: `docs/public/images/posts/jvm-gc-garbage-collection-engineering-knowledge-map.png`
+- **ian-xiaohei-illustrations skill 使用结果**: 已使用；读取 SKILL.md + references/style-dna.md、xiaohei-ip.md、composition-patterns.md、prompt-template.md、qa-checklist.md；用内置 `image_gen` 生成（1536×864，16:9）；定向 image-to-image 修复因 DeferExecuteTool 序列化数组失败（已知问题，前次 08-19 第 2 次也遇到过）无法执行；改用文本再生成时 image_gen 服务返回 `RequestLimitExceeded.JobNumExceed`（250 任务上限）阻塞，遵循 qa-checklist "最多再生成 1 次" 预算不再消耗，保留真实图发布
+- **原创隐喻**: 清扫房间——小黑推清扫车进堆房间，沿"根"出发用橙色虚线路径摸活对象，把死对象贴红 X 扫进小车，再把活对象压到右侧腾出连续空间；若去掉小黑，"清扫-标记-压实"动作的隐喻不再成立
+- **小黑核心动作**: 居中推车、一手给活箱子点"活着"标签、另一手把死箱子扫进车——清扫工
+- **结构类型**: 概念隐喻（清扫房间）
+- **图片 QA**:
+  - 16:9 横版：是（1536×864，1.7778）
+  - 纯白背景 #FFFFFF：是
+  - 无水印 / 无签名 / 无角标：是
+  - 小黑承担核心动作：是
+  - 主题居中：是
+  - 内容丰富饱满：纸箱群、推车、根柱、压缩堆、地面碎屑 5 层细节
+  - 中文标注：根 / 活着 / 死了 / 清扫 / 压实 / 碎片（6 处，均 2 字）
+  - 颜色职责：黑主体+小黑，橙色根引用虚线路径（主路径），红色死对象 X 与扫除
+  - 小瑕疵：左侧根柱下一个箱子的 X 为橙色，按规则 X 应全为红；修复尝试因 image-to-image DeferExecuteTool 序列化失败 + image_gen 任务数 250 上限阻塞，最终未修复；该 X 紧贴橙色根路径，可能被解读为"路径标记交叉"而非"死对象标记"
+  - 6 标注中"停顿"（STW）本次未画出（标注 5-8 处，本次 6 处，省略 STW 蓝色标注），属可接受简化
+- **生图结果**: 首次生成成功，总 1 次生成（受 250 任务上限阻塞未能定向修复）。最终 998096 字节，SHA-256 `6dabc5e3c0626258a13cc821c4e7cd36d5c802a55fcd5770a7b9b764d119f1dc`
+- **知识图提示词摘要**: "16:9, 纯白 #FFFFFF, 严禁水印/签名/角标, 黑色手绘, 小黑推清扫车, 根柱+橙色虚线路径, 红 X 死对象, 活对象压实右侧, 6 中文标注(根/活着/死了/清扫/压实/碎片), ≥35% 留白"
+- **构建结果**: 成功（绕 WorkBuddy safe-delete shim：`env -u NODE_OPTIONS` 调托管 node 跑 vitepress.js build docs, 28.36s）。生成 HTML 中 H1→封面图→导语顺序正确，`/images/posts/jvm-gc-garbage-collection-engineering-knowledge-map.png` 引用正确，`border-radius:10px` 已应用（渲染去空格等价），frontmatter cover 精确指向本次 PNG，excerpt 导语位于封面图后
+- **事实核实**: JDK 8 默认 Parallel GC 按 JEP 248 说明 + 8u 时代事实确认；JDK 9 起 G1 默认按 [JEP 248](https://openjdk.org/jeps/248) 确认；ZGC JDK 15 生产可用按 [JEP 377](https://openjdk.org/jeps/377) 确认；Shenandoah JDK 15 生产可用按 [JEP 379](https://openjdk.org/jeps/379) 确认；分代 ZGC JDK 21 (`-XX:+UseZGC -XX:+ZGenerational`) 按 [JEP 439](https://openjdk.org/jeps/439) 确认；正文明确标注版本基线 JDK 9-21 LTS，事实核对 2026-08-19
+- **提交哈希**: `dcb7434`
+- **推送结果**: 失败。`git push origin main` 因 HTTPS origin 未配置可用凭证，报错 `fatal: could not read Username for 'https://github.com': terminal prompts disabled`。已按规则停止，未 force push。本地已 1 个 commit 领先 origin/main（`dcb7434` 之前本地还有 08-19 第 2 次的 `75e0924` 仍未推送 + 第三方提交的 `d67848b` Kafka 文章）
+- **下一次应避开**: 框架.md → java → jvm（已用 1 次，下一次同月短期内勿再选 GC/内存模型/类加载等同章节）；java 域几乎所有常见点（线程池/HashMap/NIO Selector/类加载/单例/虚拟线程/JFR/GC）均已覆盖，下次 java 方向只能挑偏门；AI/Agent 域今日已用 1 次（反思），短期勿再选；建议 08-19 之后的下次运行优先从 框架.md 选 redis 主从+Cluster / 设计模式（工厂/策略/观察者）/ SpringCloud 微服务治理 / 操作系统 / 计算机网络其他子层 等其他域；下次运行前确认工作区无遗留 `kafka-message-durability-engineering.md` 等无关未跟踪文件
+- **生图服务注意**: image_gen 任务数已达 250 上限，08-19 后续若需生图可能仍阻塞；image-to-image 在 DeferExecuteTool 序列化数组失败是已知问题，下次若需定向编辑建议换用文本再生成 + 极强约束
+
