@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": 1,
     "name": "Project Nebula",
     "category": "fullstack",
     "categoryLabel": "FULL STACK",
@@ -29,7 +29,7 @@
     ]
   },
   {
-    "id": "2",
+    "id": 2,
     "name": "Mall Engine",
     "category": "opensource",
     "categoryLabel": "OPEN SOURCE",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "id": "3",
+    "id": 3,
     "name": "Pulse Dashboard",
     "category": "fullstack",
     "categoryLabel": "DATA LAB",
@@ -82,7 +82,7 @@
     ]
   },
   {
-    "id": "4",
+    "id": 4,
     "name": "Prompt Observatory",
     "category": "ai",
     "categoryLabel": "AI EXPERIMENT",
@@ -109,7 +109,7 @@
     ]
   },
   {
-    "id": "5",
+    "id": 5,
     "name": "Dev Toolbox",
     "category": "opensource",
     "categoryLabel": "TOOLKIT",
@@ -135,7 +135,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -163,7 +163,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -191,7 +191,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -219,7 +219,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -247,7 +247,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -275,7 +275,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -303,7 +303,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",
@@ -331,7 +331,7 @@
     ]
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Daily Engineering",
     "category": "opensource",
     "categoryLabel": "CONTENT SYSTEM",

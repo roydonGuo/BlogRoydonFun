@@ -7,7 +7,7 @@
           class="pointer-events-none absolute -left-20 top-8 size-52 rounded-full bg-blue-200/80 blur-3xl dark:bg-blue-500/20"
           aria-hidden="true"></div>
       <div class="relative z-10">
-        <p class="!mb-4 !mt-0 flex items-center gap-2 text-[10px] font-black tracking-[.24em] text-text-1">
+        <p class="!mb-4 !mt-0 flex items-center gap-2 text-[10px] !font-black tracking-[.24em] text-text-1">
           <span class="size-2 rounded-full bg-brand shadow-[0_0_0_5px_var(--vp-c-brand-soft)]"></span>
           PROJECT CONSTELLATION · {{ currentYear }}
         </p>
@@ -17,13 +17,13 @@
         <p class="mb-0 mt-5 max-w-[230px] text-xs font-medium leading-5 text-text-2 opacity-55">
           这里不是项目清单，而是一座持续扩张的数字星图。每个坐标，都记录一次从想法到上线的完整旅程。</p>
         <div class="mt-7 flex items-end gap-6" aria-label="项目统计">
-          <div><strong class="block text-3xl font-black">{{ projects.length }}</strong><span
+          <div><strong class="block text-3xl !font-black">{{ projects.length }}</strong><span
               class="text-[10px] font-bold text-text-1 opacity-45">公开作品</span></div>
-          <div><strong class="block text-3xl font-black">{{ techCount }}</strong><span
+          <div><strong class="block text-3xl !font-black">{{ techCount }}</strong><span
               class="text-[10px] font-bold text-text-1 opacity-45">技术领域</span></div>
         </div>
         <div class="mt-8 border-t border-black/10 pt-5 dark:border-white/10">
-          <p class="!mb-3 !mt-0 text-[10px] font-black tracking-[.18em] text-text-1 opacity-40">EXPLORE BY ORBIT</p>
+          <p class="!mb-3 !mt-0 text-[10px] !font-black tracking-[.18em] text-text-1 opacity-40">EXPLORE BY ORBIT</p>
           <div class="flex flex-wrap gap-2" role="group" aria-label="项目分类筛选">
             <button
                 v-for="item in filters"
@@ -44,10 +44,8 @@
         class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7"
         aria-label="项目瀑布流">
       <header class="flex items-center justify-between">
-        <p class="m-0 text-[10px] font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
-        <button type="button" class="cursor-pointer border-0 bg-transparent text-[11px] font-extrabold text-text-1"
-                @click="newestFirst = !newestFirst">{{ newestFirst ? '从新到旧' : '从旧到新' }}
-        </button>
+        <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
+        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>
       </header>
 
       <div ref="masonryGrid" class="relative">
@@ -67,7 +65,7 @@
                 class="block !m-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
                 :src="project.cover" :alt="project.coverAlt">
             <span
-                class="absolute left-3.5 top-3.5 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-black tracking-[.08em] text-[#080b16] backdrop-blur-lg">{{
+                class="absolute left-3.5 top-3.5 rounded-full bg-white/60 px-2.5 py-1.5 text-[9px] !font-black tracking-[.08em] text-[#080b16] backdrop-blur-[10px]">{{
                 project.featured ? 'FEATURED' : project.categoryLabel
               }} · {{ String(index + 1).padStart(2, '0') }}</span>
             <span
@@ -76,13 +74,13 @@
           </div>
           <div class="p-[18px]">
             <div class="flex items-start justify-between gap-2.5">
-              <h2 class="!m-0 !border-0 text-[19px] font-black leading-[1.2] tracking-[-.03em]">{{ project.name }}</h2>
-              <small class="text-[10px] font-extrabold text-text-3">{{ project.year }}</small>
+              <h2 class="!m-0 !border-0 !text-[19px] !font-black leading-[1.2] tracking-[-.03em] !py-0">{{ project.name }}</h2>
+              <small class="text-[11px] font-extrabold text-text-3">{{ project.year }}</small>
             </div>
-            <p class="mb-0 mt-2 text-xs leading-[1.6] text-text-2">{{ project.summary }}</p>
+            <p class="mb-0 mt-2 !text-[14px] !leading-[1.6] !text-text-2">{{ project.summary }}</p>
             <footer class="mt-[15px] flex flex-wrap gap-x-[11px] gap-y-1.5"><span
                 v-for="language in project.languages.slice(0, 3)" :key="language"
-                class="text-[9px] font-black uppercase tracking-[.05em]">{{ language }}</span></footer>
+                class="text-[10px] !font-black uppercase tracking-[.05em]">{{ language }}</span></footer>
           </div>
         </button>
       </div>
@@ -96,7 +94,7 @@
           leave-to-class="opacity-0"
       >
         <div v-if="selected"
-             class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/70 p-[30px] backdrop-blur-[14px] max-[760px]:items-end max-[760px]:p-3"
+             class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/50 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
              role="dialog" aria-modal="true" aria-labelledby="project-modal-title" @click.self="closeProject">
           <article
               class="grid h-[min(548px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
@@ -105,12 +103,12 @@
                 aria-label="项目截图轮播">
               <img class="block !m-0 h-full w-full object-cover" :src="activeSlide.src" :alt="activeSlide.alt">
               <div class="absolute inset-0 bg-gradient-to-t from-[#040712]/80 via-transparent to-[#040712]/25"></div>
-              <p class="absolute left-6 top-6 m-0 rounded-full border border-white/30 px-[11px] py-[7px] text-[9px] font-black tracking-[.16em] text-white backdrop-blur-[10px]">
+              <p class="absolute left-6 top-6 m-0 rounded-full border border-white/30 px-[11px] py-[7px] text-[9px] !font-black tracking-[.16em] text-white backdrop-blur-[10px]">
                 {{ String(slideIndex + 1).padStart(2, '0') }} / {{ String(selected.slides.length).padStart(2, '0') }} ·
                 PRODUCT VIEW</p>
               <footer
                   class="absolute bottom-[26px] left-[26px] right-[26px] flex items-end justify-between gap-6 text-white max-[760px]:bottom-[18px] max-[760px]:left-[18px] max-[760px]:right-[18px]">
-                <div><span class="text-[9px] font-black tracking-[.2em] opacity-65">VISUAL ARCHIVE</span>
+                <div><span class="text-[9px] !font-black tracking-[.2em] opacity-65">VISUAL ARCHIVE</span>
                   <p class="mb-0 mt-1.5 max-w-[400px] text-[15px] font-bold leading-normal max-[760px]:text-xs">
                     {{ selected.tagline }}</p></div>
                 <div class="flex gap-2">
@@ -135,19 +133,19 @@
                       title="关闭" aria-label="关闭项目详情" @click="closeProject">
                 <RiCloseLine size="22px" aria-hidden="true"/>
               </button>
-              <p class="m-0 text-[9px] font-black tracking-[.2em] text-text-3">
+              <p class="m-0 text-[9px] !font-black tracking-[.2em] text-text-3">
                 {{ selected.featured ? 'FEATURED CASE' : selected.categoryLabel }} · {{ selected.year }}</p>
               <h2 id="project-modal-title"
-                  class="!mb-0 !mt-6 !border-0 text-[40px] font-black leading-none tracking-[-.05em] max-[760px]:text-[34px]">
+                  class="!mb-0 !mt-6 !border-0 text-[40px] !font-black leading-none tracking-[-.05em] max-[760px]:text-[34px]">
                 {{ selected.name }}</h2>
               <p class="mb-0 mt-5 text-[13px] leading-[1.75] text-text-2">{{ selected.description }}</p>
               <dl class="mt-7 grid grid-cols-2 gap-[22px] border-t border-divider pt-6">
                 <div>
-                  <dt class="text-[9px] font-black tracking-[.14em] text-text-3">DEVELOPMENT</dt>
+                  <dt class="text-[9px] !font-black tracking-[.14em] text-text-3">DEVELOPMENT</dt>
                   <dd class="mt-[7px] flex items-center gap-2 text-xs font-extrabold">{{ selected.development }}</dd>
                 </div>
                 <div>
-                  <dt class="text-[9px] font-black tracking-[.14em] text-text-3">STATUS</dt>
+                  <dt class="text-[9px] !font-black tracking-[.14em] text-text-3">STATUS</dt>
                   <dd class="mt-[7px] flex items-center gap-2 text-xs font-extrabold"><span
                       class="size-2 rounded-full bg-brand shadow-[0_0_0_5px_var(--vp-c-brand-soft)]"></span>{{
                       selected.status
@@ -155,7 +153,7 @@
                   </dd>
                 </div>
                 <div class="col-span-full">
-                  <dt class="text-[9px] font-black tracking-[.14em] text-text-3">LANGUAGES & STACK</dt>
+                  <dt class="text-[9px] !font-black tracking-[.14em] text-text-3">LANGUAGES & STACK</dt>
                   <dd class="mt-[7px] flex flex-wrap items-center gap-2"><span
                       v-for="(language, index) in selected.languages" :key="language"
                       class="rounded-full bg-bg-soft px-2.5 py-[7px] text-[10px] font-extrabold"
@@ -227,7 +225,6 @@ const filters = [{label: '全部', value: 'all'}, {label: '全栈', value: 'full
   value: 'ai'
 }, {label: '开源', value: 'opensource'}] as const
 const activeFilter = ref<(typeof filters)[number]['value']>('all')
-const newestFirst = ref(true)
 const selected = ref<Project | null>(null)
 const slideIndex = ref(0)
 const closeButton = ref<HTMLButtonElement | null>(null)
@@ -235,7 +232,8 @@ const masonryGrid = ref<HTMLElement | null>(null)
 let masonry: Masonry | null = null
 const currentYear = new Date().getFullYear()
 const techCount = computed(() => new Set(projects.flatMap(item => item.languages)).size)
-const visibleProjects = computed(() => projects.filter(item => activeFilter.value === 'all' || item.category === activeFilter.value).sort((a, b) => newestFirst.value ? b.year - a.year : a.year - b.year))
+// 项目始终按数值型 ID 升序展示，确保 10 不会排在 2 前面。
+const visibleProjects = computed(() => projects.filter(item => activeFilter.value === 'all' || item.category === activeFilter.value).sort((a, b) => Number(a.id) - Number(b.id)))
 const activeSlide = computed(() => selected.value?.slides[slideIndex.value] ?? {src: '', alt: ''})
 const countByFilter = (filter: string) => filter === 'all' ? projects.length : projects.filter(item => item.category === filter).length
 
@@ -285,7 +283,7 @@ async function initializeMasonry() {
   imagesLoaded(masonryGrid.value).on('progress', () => masonry?.layout())
 }
 
-watch([activeFilter, newestFirst], async () => {
+watch(activeFilter, async () => {
   await nextTick()
   masonry?.reloadItems()
   masonry?.layout()
@@ -329,9 +327,9 @@ onBeforeUnmount(() => {
   position: absolute;
   z-index: -1;
   right: -12%;
-  bottom: -200%;
+  bottom: -120%;
   left: -10%;
-  height: 300%;
+  height: 250%;
   border-radius: 999px;
   background: linear-gradient(90deg, rgba(47, 99, 255, .28), rgba(118, 196, 255, .2) 58%, transparent);
   filter: blur(18px);
