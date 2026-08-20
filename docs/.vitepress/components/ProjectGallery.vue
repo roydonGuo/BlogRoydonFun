@@ -45,7 +45,7 @@
         aria-label="项目瀑布流">
       <header class="flex items-center justify-between">
         <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
-        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>
+<!--        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>-->
       </header>
 
       <div ref="masonryGrid" class="relative">
@@ -70,7 +70,7 @@
               }} · {{ String(index + 1).padStart(2, '0') }}</span>
             <span
                 class="absolute bottom-3.5 right-[15px] flex translate-y-[5px] text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,.35)] transition duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                aria-hidden="true"><RiArrowRightUpLine size="24px"/></span>
+                aria-hidden="true"><RiArrowRightUpLine size="32px"/></span>
           </div>
           <div class="p-[18px]">
             <div class="flex items-start justify-between gap-2.5">
