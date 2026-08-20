@@ -6,6 +6,7 @@ import DefaultTheme from 'vitepress/theme'
 import PostList from '../components/PostList.vue'
 import ArchiveList from '../components/ArchiveList.vue'
 import LinksList from '../components/LinksList.vue'
+import ProjectGallery from '../components/ProjectGallery.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
 import PostSidebar from '../components/PostSidebar.vue'
@@ -90,6 +91,8 @@ export default {
     app.component('PostList', PostList)
     app.component('ArchiveList', ArchiveList)
     app.component('LinksList', LinksList)
+    // 项目页使用独立组件承载瀑布流、筛选与详情弹窗交互。
+    app.component('ProjectGallery', ProjectGallery)
     app.component('KnowledgeGraph', KnowledgeGraph)
     app.component('MermaidDiagram', MermaidDiagram)
 

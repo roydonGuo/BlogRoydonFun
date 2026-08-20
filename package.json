@@ -1,6 +1,8 @@
 {
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@types/imagesloaded": "^4.1.7",
+    "@types/masonry-layout": "^4.2.8",
     "autoprefixer": "^10.5.4",
     "markdown-it": "^15.0.0",
     "mermaid": "^11.16.1",
@@ -12,5 +14,10 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "@remixicon/vue": "^4.9.0",
+    "imagesloaded": "^5.0.0",
+    "masonry-layout": "^4.2.2"
   }
 }

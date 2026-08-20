@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethan · Project Constellation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    tailwind.config = { theme: { extend: { colors: { brand: '#2f63ff', ink: '#080b16' } } } };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background: radial-gradient(circle at 18% 10%, #c8d8ff 0, transparent 28%), linear-gradient(135deg, #eef3ff, #dfe8ff); }
+    .noise::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E"); }
+    .masonry { columns: 3; column-gap: 14px; }
+    .project-card { break-inside: avoid; margin-bottom: 14px; transform: translateZ(0); }
+    .project-card:hover .cover { transform: scale(1.045); }
+    .aurora { background: radial-gradient(circle at 75% 15%, rgba(63, 112, 255, .55), transparent 27%), radial-gradient(circle at 12% 75%, rgba(118, 196, 255, .35), transparent 30%), #080b16; }
+    .glass { background: rgba(255,255,255,.86); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .modal-shell { animation: modalIn .36s cubic-bezier(.2,.85,.2,1) both; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(24px) scale(.975); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <!-- 固定 1280×720 浏览器画板；本文件仅用于项目页视觉与交互评审。 -->
+  <section class="flex h-[720px] w-[1280px] flex-col overflow-hidden rounded-xl border border-black/10 bg-white shadow-2xl">
+    <div class="flex h-11 shrink-0 select-none items-center gap-3 border-b border-black/10 bg-black/5 px-4 text-black">
+      <div class="flex gap-[7px]" aria-hidden="true"><span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span><span class="h-3 w-3 rounded-full bg-[#febc2e]"></span><span class="h-3 w-3 rounded-full bg-[#28c840]"></span></div>
+      <div class="ml-3 flex h-7 items-center gap-2 rounded-md border border-black/10 bg-white px-3 text-xs font-semibold shadow-sm"><i class="ri-lock-2-line" aria-hidden="true"></i><span>ethan.fun / projects</span></div>
+      <div class="ml-auto flex items-center gap-3"><i class="ri-star-line opacity-50" aria-hidden="true"></i><i class="ri-more-2-fill opacity-50" aria-hidden="true"></i></div>
+    </div>
+
+    <main class="noise relative flex-1 overflow-hidden bg-white text-black">
+      <!-- 顶部悬浮导航保持与个人技术博客的简洁气质一致。 -->
+      <header class="absolute inset-x-0 top-0 z-20 flex h-16 items-center border-b border-black/10 bg-white/80 px-10 backdrop-blur-xl">
+        <a href="#" class="flex items-center gap-2 font-black tracking-tight focus:outline-none focus:ring-2 focus:ring-brand"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-black text-sm text-white">E</span><span>ETHAN®</span></a>
+        <nav class="ml-auto flex items-center gap-7 text-xs font-bold" aria-label="主导航"><a class="opacity-45 transition hover:opacity-100" href="#">文章</a><a class="border-b-2 border-black py-5" href="#">项目</a><a class="opacity-45 transition hover:opacity-100" href="#">关于</a><button type="button" class="cursor-pointer text-lg transition hover:rotate-12" aria-label="切换主题"><i class="ri-sun-line"></i></button></nav>
+      </header>
+
+      <div class="grid h-full grid-cols-[330px_1fr] pt-16">
+        <aside class="relative overflow-hidden border-r border-black/10 px-10 py-8">
+          <div class="absolute -left-20 top-8 h-52 w-52 rounded-full bg-blue-200/80 blur-3xl"></div>
+          <div class="relative z-10">
+            <p class="mb-4 flex items-center gap-2 text-[10px] font-black tracking-[.24em]"><span class="h-2 w-2 animate-pulse rounded-full bg-brand"></span>PROJECT CONSTELLATION · 2026</p>
+            <h1 class="text-[45px] font-black leading-[.94] tracking-[-.06em]">造一些<br>有趣的东西<span class="text-brand">。</span></h1>
+            <p class="mt-5 max-w-[230px] text-xs font-medium leading-5 opacity-55">这里不是项目清单，而是一座持续扩张的数字星图。每个坐标，都记录一次从想法到上线的完整旅程。</p>
+            <div class="mt-7 flex items-end gap-6"><div><strong class="block text-3xl font-black">12</strong><span class="text-[10px] font-bold opacity-45">公开作品</span></div><div><strong class="block text-3xl font-black">07</strong><span class="text-[10px] font-bold opacity-45">技术领域</span></div></div>
+            <div class="mt-8 border-t border-black/10 pt-5">
+              <p class="mb-3 text-[10px] font-black tracking-[.18em] opacity-40">EXPLORE BY ORBIT</p>
+              <div class="flex flex-wrap gap-2" role="group" aria-label="项目分类筛选">
+                <button type="button" class="rounded-full bg-black px-4 py-2 text-[10px] font-black text-white shadow-lg transition active:scale-95">全部 12</button>
+                <button type="button" class="rounded-full border border-black/10 bg-white px-4 py-2 text-[10px] font-black transition hover:border-black">全栈 05</button>
+                <button type="button" class="rounded-full border border-black/10 bg-white px-4 py-2 text-[10px] font-black transition hover:border-black">AI 实验 04</button>
+                <button type="button" class="rounded-full border border-black/10 bg-white px-4 py-2 text-[10px] font-black transition hover:border-black">开源 03</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="relative overflow-hidden bg-black/[.025] px-6 py-6" aria-label="项目瀑布流">
+          <div class="mb-4 flex items-center justify-between"><p class="text-[10px] font-black tracking-[.2em] opacity-40">SIGNALS FROM MY LAB</p><button type="button" class="flex cursor-pointer items-center gap-2 text-[10px] font-black">按时间排序 <i class="ri-arrow-down-s-line text-base"></i></button></div>
+          <div class="masonry h-[548px] overflow-hidden">
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] border border-black/10 bg-white text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand" aria-label="查看 Project Nebula 项目详情">
+              <div class="relative h-[210px] overflow-hidden bg-black"><img class="cover h-full w-full object-cover opacity-90 transition duration-500" src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=900&q=85" alt="深色界面设计工作台"><span class="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[9px] font-black text-black">FEATURED · 01</span><span class="absolute bottom-4 right-4 text-3xl text-white opacity-0 transition group-hover:opacity-100"><i class="ri-arrow-right-up-line"></i></span></div>
+              <div class="p-4"><div class="flex items-start justify-between"><h2 class="text-lg font-black tracking-tight">Project Nebula</h2><span class="text-[9px] font-black opacity-40">2026</span></div><p class="mt-1 text-[11px] font-medium leading-4 opacity-50">将散落的技术知识，连接成可探索的个人知识宇宙。</p><div class="mt-3 flex gap-2 text-[9px] font-black"><span>VUE</span><span>·</span><span>TYPESCRIPT</span><span>·</span><span>D3</span></div></div>
+            </button>
+
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] border border-black/10 bg-[#dce7ff] text-left transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand"><div class="p-5"><span class="text-[9px] font-black tracking-[.2em] opacity-45">OPEN SOURCE · 02</span><h2 class="mt-12 text-2xl font-black leading-6">Mall Engine<br>Commerce Core</h2><p class="mt-3 text-[11px] font-medium leading-4 opacity-55">支付、库存、物流与订单状态机的一体化实践。</p><div class="mt-6 flex items-center justify-between text-[10px] font-black"><span>JAVA / SPRING</span><i class="ri-arrow-right-up-line text-xl transition group-hover:rotate-45"></i></div></div></button>
+
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] border border-black/10 bg-white text-left transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand"><div class="relative h-[155px] overflow-hidden"><img class="cover h-full w-full object-cover transition duration-500" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85" alt="数据可视化仪表盘"></div><div class="p-4"><p class="text-[9px] font-black opacity-40">DATA LAB · 03</p><h2 class="mt-1 text-lg font-black">Pulse Dashboard</h2><div class="mt-2 flex gap-2 text-[9px] font-black"><span>REACT</span><span>ECHARTS</span></div></div></button>
+
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] bg-black text-left text-white transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand"><div class="aurora relative h-[265px] p-5"><div class="absolute right-4 top-4 h-24 w-24 rounded-full border border-white/20"></div><div class="absolute right-9 top-9 h-14 w-14 rounded-full border border-white/30"></div><span class="text-[9px] font-black tracking-[.2em] opacity-60">AI EXPERIMENT · 04</span><h2 class="absolute bottom-16 left-5 text-2xl font-black leading-6">Prompt<br>Observatory</h2><p class="absolute bottom-5 left-5 text-[10px] font-bold opacity-55">LLM / RAG / VECTOR DB</p></div></button>
+
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] border border-black/10 bg-white text-left transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand"><div class="p-5"><div class="mb-8 flex items-center justify-between"><span class="text-[9px] font-black opacity-40">TOOLKIT · 05</span><i class="ri-github-fill text-2xl"></i></div><h2 class="text-xl font-black">Dev Toolbox</h2><p class="mt-2 text-[11px] font-medium opacity-50">给开发者的轻量效率工具箱。</p></div></button>
+
+            <button type="button" onclick="openProject()" class="project-card group block w-full cursor-pointer overflow-hidden rounded-[22px] border border-black/10 bg-[#bad2ff] text-left transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand"><div class="relative h-[220px] overflow-hidden"><img class="cover h-full w-full object-cover mix-blend-multiply transition duration-500" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85" alt="笔记本电脑上的编程界面"></div><div class="p-4"><h2 class="text-lg font-black">Daily Engineering</h2><p class="mt-1 text-[10px] font-bold opacity-50">VITEPRESS · CONTENT SYSTEM</p></div></button>
+          </div>
+        </section>
+      </div>
+
+      <!-- 项目详情弹窗：左侧为沉浸式轮播，右侧为结构化项目信息。 -->
+      <div id="projectModal" class="absolute inset-0 z-50 hidden items-center justify-center bg-black/70 p-8 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-shell grid h-[548px] w-[1060px] grid-cols-[58%_42%] overflow-hidden rounded-[28px] bg-white shadow-2xl">
+          <section class="relative overflow-hidden bg-black" aria-label="项目截图轮播">
+            <img id="heroImage" class="h-full w-full object-cover opacity-90" src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=90" alt="Project Nebula 深色设计界面">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20"></div>
+            <div class="absolute left-6 top-6 rounded-full border border-white/30 bg-black/20 px-3 py-1 text-[9px] font-black tracking-[.2em] text-white backdrop-blur">01 / 03 · PRODUCT VIEW</div>
+            <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white"><div><p class="text-[10px] font-black tracking-[.22em] opacity-60">VISUAL ARCHIVE</p><p class="mt-1 max-w-sm text-sm font-semibold">让每一次知识探索，都拥有地图般清晰的方向感。</p></div><div class="flex gap-2"><button type="button" onclick="previousSlide()" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/30 transition hover:bg-white hover:text-black" aria-label="上一张"><i class="ri-arrow-left-line"></i></button><button type="button" onclick="nextSlide()" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-black transition hover:scale-105" aria-label="下一张"><i class="ri-arrow-right-line"></i></button></div></div>
+          </section>
+          <section class="relative flex flex-col p-8 text-black">
+            <button type="button" onclick="closeProject()" class="absolute right-6 top-6 cursor-pointer text-2xl opacity-45 transition hover:rotate-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-brand" aria-label="关闭项目详情"><i class="ri-close-line"></i></button>
+            <p class="text-[9px] font-black tracking-[.22em] opacity-40">FEATURED CASE · 2026</p>
+            <h2 id="modalTitle" class="mt-4 text-[34px] font-black leading-none tracking-[-.05em]">Project Nebula</h2>
+            <p class="mt-4 text-[12px] font-medium leading-5 opacity-55">一个面向独立开发者的可视化知识系统。它把文章、代码片段与灵感记录自动连接成图谱，让检索从“搜索答案”升级为“发现关系”。</p>
+            <div class="my-6 h-px bg-black/10"></div>
+            <dl class="grid grid-cols-2 gap-x-5 gap-y-5 text-[10px]"><div><dt class="font-black tracking-[.16em] opacity-35">DEVELOPMENT</dt><dd class="mt-1 text-xs font-black">2025.11 — 2026.04</dd></div><div><dt class="font-black tracking-[.16em] opacity-35">STATUS</dt><dd class="mt-1 flex items-center gap-2 text-xs font-black"><span class="h-2 w-2 rounded-full bg-brand"></span>持续迭代</dd></div><div class="col-span-2"><dt class="font-black tracking-[.16em] opacity-35">LANGUAGES & STACK</dt><dd class="mt-2 flex flex-wrap gap-2"><span class="rounded-full bg-black px-3 py-1.5 font-black text-white">Vue 3</span><span class="rounded-full bg-black/5 px-3 py-1.5 font-black">TypeScript</span><span class="rounded-full bg-black/5 px-3 py-1.5 font-black">D3.js</span><span class="rounded-full bg-black/5 px-3 py-1.5 font-black">Spring Boot</span></dd></div></dl>
+            <div class="mt-auto grid grid-cols-2 gap-3"><a href="https://github.com/roydonGuo" target="_blank" rel="noreferrer" class="flex items-center justify-center gap-2 rounded-xl border border-black/15 px-4 py-3 text-[11px] font-black transition hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-brand"><i class="ri-github-fill text-lg"></i>GitHub</a><a href="#" class="flex items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3 text-[11px] font-black text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-black">访问项目 <i class="ri-arrow-right-up-line text-lg"></i></a></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <script>
+    // 原型仅演示详情弹窗、键盘关闭与图片轮播，不依赖任何后端能力。
+    const modal = document.getElementById('projectModal');
+    const heroImage = document.getElementById('heroImage');
+    const slides = [
+      ['https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=90', 'Project Nebula 深色设计界面'],
+      ['https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=90', 'Project Nebula 数据关系仪表盘'],
+      ['https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=90', 'Project Nebula 开发过程界面']
+    ];
+    let slideIndex = 0;
+    function openProject() { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow = 'hidden'; modal.querySelector('button').focus(); }
+    function closeProject() { modal.classList.add('hidden'); modal.classList.remove('flex'); document.body.style.overflow = ''; }
+    function showSlide() { heroImage.src = slides[slideIndex][0]; heroImage.alt = slides[slideIndex][1]; }
+    function nextSlide() { slideIndex = (slideIndex + 1) % slides.length; showSlide(); }
+    function previousSlide() { slideIndex = (slideIndex - 1 + slides.length) % slides.length; showSlide(); }
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeProject(); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeProject(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+- generic [ref=e3]:
+  - link "Skip to content" [ref=e4] [cursor=pointer]:
+    - /url: "#VPContent"
+  - banner:
+    - generic:
+      - generic:
+        - generic:
+          - link "Ethan" [ref=e6] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e8]:
+            - button "搜索文章" [ref=e10] [cursor=pointer]:
+              - generic [ref=e13]:
+                - generic [ref=e14]: Ctrl
+                - generic [ref=e15]: K
+            - navigation "Main Navigation" [ref=e16]:
+              - link "🙌文章" [ref=e18] [cursor=pointer]:
+                - /url: /posts/
+              - link "📦归档" [ref=e20] [cursor=pointer]:
+                - /url: /archive/
+              - link "🌐知识图谱" [ref=e22] [cursor=pointer]:
+                - /url: /knowledge-graph/
+              - link "🦾项目" [ref=e24] [cursor=pointer]:
+                - /url: /projects/
+              - link "🔗链接" [ref=e26] [cursor=pointer]:
+                - /url: /links/
+              - link "😊关于" [ref=e28] [cursor=pointer]:
+                - /url: /about/
+              - link "📰简历" [ref=e30] [cursor=pointer]:
+                - /url: /resume/
+            - button "Change language" [ref=e33] [cursor=pointer]
+            - switch "Switch to dark theme" [ref=e38] [cursor=pointer]
+            - generic [ref=e43]:
+              - link "github" [ref=e44] [cursor=pointer]:
+                - /url: https://github.com/roydonGuo
+              - link "RSS Feed" [ref=e46] [cursor=pointer]:
+                - /url: /feed.xml
+  - generic [ref=e53]:
+    - main [ref=e54]:
+      - generic [ref=e57]:
+        - complementary [ref=e58]:
+          - generic [ref=e59]:
+            - paragraph [ref=e60]: PROJECT CONSTELLATION · 2026
+            - heading "造一些 有趣的东西。" [level=1] [ref=e62]: 造一些有趣的东西。
+            - paragraph [ref=e63]: 这里不是项目清单，而是一座持续扩张的数字星图。每个坐标，都记录一次从想法到上线的完整旅程。
+            - generic "项目统计" [ref=e64]:
+              - generic [ref=e65]:
+                - strong [ref=e66]: "13"
+                - generic [ref=e67]: 公开作品
+              - generic [ref=e68]:
+                - strong [ref=e69]: "18"
+                - generic [ref=e70]: 技术领域
+            - generic [ref=e71]:
+              - paragraph [ref=e72]: EXPLORE BY ORBIT
+              - group "项目分类筛选" [ref=e73]:
+                - button "全部 13" [pressed] [ref=e74] [cursor=pointer]
+                - button "全栈 2" [ref=e75] [cursor=pointer]
+                - button "AI 实验 1" [ref=e76] [cursor=pointer]
+                - button "开源 10" [ref=e77] [cursor=pointer]
+        - region "项目瀑布流" [ref=e78]:
+          - generic [ref=e79]:
+            - paragraph [ref=e80]: SIGNALS FROM MY LAB
+            - button "从新到旧" [ref=e81] [cursor=pointer]
+          - generic [ref=e82]:
+            - button "查看 Project Nebula 项目详情" [ref=e83] [cursor=pointer]:
+              - generic [ref=e84]:
+                - img "深色界面设计工作台" [ref=e85]
+                - generic [ref=e86]: FEATURED · 01
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - heading "Project Nebula" [level=2] [ref=e92]
+                  - generic [ref=e93]: "2026"
+                - paragraph [ref=e94]: 将散落的技术知识，连接成可探索的个人知识宇宙。
+                - generic [ref=e95]:
+                  - generic [ref=e96]: Vue 3
+                  - generic [ref=e97]: TypeScript
+                  - generic [ref=e98]: D3.js
+            - button "查看 Prompt Observatory 项目详情" [ref=e99] [cursor=pointer]:
+              - generic [ref=e100]:
+                - img "人工智能与数字网络概念图" [ref=e101]
+                - generic [ref=e102]: AI EXPERIMENT · 02
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - heading "Prompt Observatory" [level=2] [ref=e108]
+                  - generic [ref=e109]: "2026"
+                - paragraph [ref=e110]: 记录、评估并持续改进 LLM 提示词与智能体工作流。
+                - generic [ref=e111]:
+                  - generic [ref=e112]: Python
+                  - generic [ref=e113]: LLM
+                  - generic [ref=e114]: RAG
+            - button "查看 Daily Engineering 项目详情" [ref=e115] [cursor=pointer]:
+              - generic [ref=e116]:
+                - img "笔记本电脑上的编程界面" [ref=e117]
+                - generic [ref=e118]: CONTENT SYSTEM · 03
+              - generic [ref=e122]:
+                - generic [ref=e123]:
+                  - heading "Daily Engineering" [level=2] [ref=e124]
+                  - generic [ref=e125]: "2026"
+                - paragraph [ref=e126]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e127]:
+                  - generic [ref=e128]: VitePress
+                  - generic [ref=e129]: Vue 3
+                  - generic [ref=e130]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e131] [cursor=pointer]:
+              - generic [ref=e132]:
+                - img "笔记本电脑上的编程界面" [ref=e133]
+                - generic [ref=e134]: CONTENT SYSTEM · 04
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - heading "Daily Engineering" [level=2] [ref=e140]
+                  - generic [ref=e141]: "2026"
+                - paragraph [ref=e142]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e143]:
+                  - generic [ref=e144]: VitePress
+                  - generic [ref=e145]: Vue 3
+                  - generic [ref=e146]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e147] [cursor=pointer]:
+              - generic [ref=e148]:
+                - img "笔记本电脑上的编程界面" [ref=e149]
+                - generic [ref=e150]: CONTENT SYSTEM · 05
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - heading "Daily Engineering" [level=2] [ref=e156]
+                  - generic [ref=e157]: "2026"
+                - paragraph [ref=e158]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e159]:
+                  - generic [ref=e160]: VitePress
+                  - generic [ref=e161]: Vue 3
+                  - generic [ref=e162]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e163] [cursor=pointer]:
+              - generic [ref=e164]:
+                - img "笔记本电脑上的编程界面" [ref=e165]
+                - generic [ref=e166]: CONTENT SYSTEM · 06
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - heading "Daily Engineering" [level=2] [ref=e172]
+                  - generic [ref=e173]: "2026"
+                - paragraph [ref=e174]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e175]:
+                  - generic [ref=e176]: VitePress
+                  - generic [ref=e177]: Vue 3
+                  - generic [ref=e178]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e179] [cursor=pointer]:
+              - generic [ref=e180]:
+                - img "笔记本电脑上的编程界面" [ref=e181]
+                - generic [ref=e182]: CONTENT SYSTEM · 07
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - heading "Daily Engineering" [level=2] [ref=e188]
+                  - generic [ref=e189]: "2026"
+                - paragraph [ref=e190]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e191]:
+                  - generic [ref=e192]: VitePress
+                  - generic [ref=e193]: Vue 3
+                  - generic [ref=e194]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e195] [cursor=pointer]:
+              - generic [ref=e196]:
+                - img "笔记本电脑上的编程界面" [ref=e197]
+                - generic [ref=e198]: CONTENT SYSTEM · 08
+              - generic [ref=e202]:
+                - generic [ref=e203]:
+                  - heading "Daily Engineering" [level=2] [ref=e204]
+                  - generic [ref=e205]: "2026"
+                - paragraph [ref=e206]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e207]:
+                  - generic [ref=e208]: VitePress
+                  - generic [ref=e209]: Vue 3
+                  - generic [ref=e210]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e211] [cursor=pointer]:
+              - generic [ref=e212]:
+                - img "笔记本电脑上的编程界面" [ref=e213]
+                - generic [ref=e214]: CONTENT SYSTEM · 09
+              - generic [ref=e218]:
+                - generic [ref=e219]:
+                  - heading "Daily Engineering" [level=2] [ref=e220]
+                  - generic [ref=e221]: "2026"
+                - paragraph [ref=e222]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e223]:
+                  - generic [ref=e224]: VitePress
+                  - generic [ref=e225]: Vue 3
+                  - generic [ref=e226]: TypeScript
+            - button "查看 Daily Engineering 项目详情" [ref=e227] [cursor=pointer]:
+              - generic [ref=e228]:
+                - img "笔记本电脑上的编程界面" [ref=e229]
+                - generic [ref=e230]: CONTENT SYSTEM · 10
+              - generic [ref=e234]:
+                - generic [ref=e235]:
+                  - heading "Daily Engineering" [level=2] [ref=e236]
+                  - generic [ref=e237]: "2026"
+                - paragraph [ref=e238]: 以工程案例沉淀 Java、数据库与 AI 实践的技术博客。
+                - generic [ref=e239]:
+                  - generic [ref=e240]: VitePress
+                  - generic [ref=e241]: Vue 3
+                  - generic [ref=e242]: TypeScript
+            - button "查看 Mall Engine 项目详情" [ref=e243] [cursor=pointer]:
+              - generic [ref=e244]:
+                - img "移动支付与电商应用界面" [ref=e245]
+                - generic [ref=e246]: OPEN SOURCE · 11
+              - generic [ref=e250]:
+                - generic [ref=e251]:
+                  - heading "Mall Engine" [level=2] [ref=e252]
+                  - generic [ref=e253]: "2025"
+                - paragraph [ref=e254]: 支付、库存、物流与订单状态机的一体化工程实践。
+                - generic [ref=e255]:
+                  - generic [ref=e256]: Java
+                  - generic [ref=e257]: Spring Boot
+                  - generic [ref=e258]: MySQL
+            - button "查看 Pulse Dashboard 项目详情" [ref=e259] [cursor=pointer]:
+              - generic [ref=e260]:
+                - img "数据可视化仪表盘" [ref=e261]
+                - generic [ref=e262]: DATA LAB · 12
+              - generic [ref=e266]:
+                - generic [ref=e267]:
+                  - heading "Pulse Dashboard" [level=2] [ref=e268]
+                  - generic [ref=e269]: "2025"
+                - paragraph [ref=e270]: 把业务数据组织成可以快速阅读和行动的实时仪表盘。
+                - generic [ref=e271]:
+                  - generic [ref=e272]: React
+                  - generic [ref=e273]: TypeScript
+                  - generic [ref=e274]: ECharts
+            - button "查看 Dev Toolbox 项目详情" [ref=e275] [cursor=pointer]:
+              - generic [ref=e276]:
+                - img "开发者桌面与代码编辑器" [ref=e277]
+                - generic [ref=e278]: TOOLKIT · 13
+              - generic [ref=e282]:
+                - generic [ref=e283]:
+                  - heading "Dev Toolbox" [level=2] [ref=e284]
+                  - generic [ref=e285]: "2024"
+                - paragraph [ref=e286]: 给开发者的轻量效率工具箱，让重复操作更少一点。
+                - generic [ref=e287]:
+                  - generic [ref=e288]: Vue
+                  - generic [ref=e289]: JavaScript
+                  - generic [ref=e290]: Vite
+    - contentinfo
+  - contentinfo [ref=e291]:
+    - generic [ref=e292]:
+      - paragraph [ref=e293]: Thoughts on code, design & life
+      - paragraph [ref=e294]: Copyright © 2026 Ethan
