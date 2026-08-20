@@ -45,11 +45,13 @@
         aria-label="项目瀑布流">
       <header class="flex items-center justify-between">
         <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
-<!--        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>-->
+        <!--        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>-->
       </header>
 
       <div ref="masonryGrid" class="relative">
-        <div class="masonry-sizer w-[calc((100%-48px)/4)] max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full" aria-hidden="true"></div>
+        <div
+            class="masonry-sizer w-[calc((100%-48px)/4)] max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full"
+            aria-hidden="true"></div>
         <button
             v-for="(project, index) in visibleProjects"
             :key="`${project.name}-${index}`"
@@ -74,7 +76,9 @@
           </div>
           <div class="p-[18px]">
             <div class="flex items-start justify-between gap-2.5">
-              <h2 class="!m-0 !border-0 !text-[19px] !font-black leading-[1.2] tracking-[-.03em] !py-0">{{ project.name }}</h2>
+              <h2 class="!m-0 !border-0 !text-[19px] !font-black leading-[1.2] tracking-[-.03em] !py-0">{{
+                  project.name
+                }}</h2>
               <small class="text-[11px] font-extrabold text-text-3">{{ project.year }}</small>
             </div>
             <p class="mb-0 mt-2 !text-[14px] !leading-[1.6] !text-text-2">{{ project.summary }}</p>
@@ -156,7 +160,7 @@
                   <dt class="text-[9px] !font-black tracking-[.14em] text-text-3">LANGUAGES & STACK</dt>
                   <dd class="mt-[7px] flex flex-wrap items-center gap-2"><span
                       v-for="(language, index) in selected.languages" :key="language"
-                      class="rounded-full bg-bg-soft px-2.5 py-[7px] text-[10px] font-extrabold"
+                      class="rounded-full bg-bg-soft px-3 py-[3px] !text-[10px] !font-extrabold"
                       :class="index === 0 ? '!bg-text-1 !text-bg' : ''">{{ language }}</span></dd>
                 </div>
               </dl>
