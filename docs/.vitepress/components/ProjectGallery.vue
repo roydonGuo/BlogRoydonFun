@@ -61,7 +61,7 @@
             @click="openProject(project)"
         >
           <div
-              class="relative overflow-hidden bg-bg-soft "
+              class="relative overflow-hidden bg-bg-soft"
           >
             <img
                 class="block !m-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
@@ -71,8 +71,8 @@
                 project.featured ? 'FEATURED' : project.categoryLabel
               }} · {{ String(index + 1).padStart(2, '0') }}</span>
             <span
-                class="absolute bottom-3.5 right-[15px] flex translate-y-[5px] text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,.35)] transition duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                aria-hidden="true"><RiArrowRightUpLine size="32px"/></span>
+                class="absolute bottom-3 right-3 flex translate-y-[5px] text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,.35)] transition duration-200 group-hover:translate-y-0 group-hover:opacity-100"
+                aria-hidden="true"><RiArrowRightUpLine size="36px"/></span>
           </div>
           <div class="p-[18px]">
             <div class="flex items-start justify-between gap-2.5">
@@ -90,20 +90,16 @@
       </div>
     </section>
 
+    <!-- 项目详情弹窗卡片 -->
     <Teleport to="body">
-      <Transition
-          enter-active-class="transition-opacity duration-250"
-          leave-active-class="transition-opacity duration-250"
-          enter-from-class="opacity-0"
-          leave-to-class="opacity-0"
-      >
+      <Transition name="project-modal">
         <div v-if="selected"
-             class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/50 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
+             class="project-modal-backdrop fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/50 p-[16px] backdrop-blur-[10px] max-[760px]:items-center max-[760px]:p-3"
              role="dialog" aria-modal="true" aria-labelledby="project-modal-title" @click.self="closeProject">
           <article
-              class="grid h-[min(648px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
+              class="project-modal-card grid h-[min(648px,86vh)] w-[min(1060px,94vw)] grid-cols-[58%_42%] overflow-hidden rounded-[30px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[1100px]:grid-cols-[54%_46%] max-[760px]:block max-[760px]:h-[min(90vh,760px)] max-[760px]:overflow-y-auto max-[760px]:rounded-3xl">
             <section
-                class="relative min-w-0 overflow-hidden bg-[#080b16] max-[760px]:h-[42vh] max-[760px]:min-h-[300px]"
+                class="project-modal-media relative min-w-0 overflow-hidden bg-[#080b16] max-[760px]:h-[42vh] max-[760px]:min-h-[300px]"
                 aria-label="项目截图轮播">
               <img class="block !m-0 h-full w-full object-cover" :src="activeSlide.src" :alt="activeSlide.alt">
               <div class="absolute inset-0 bg-gradient-to-t from-[#040712]/80 via-transparent to-[#040712]/25"></div>
@@ -131,7 +127,7 @@
             </section>
 
             <section
-                class="relative flex min-w-0 flex-col px-10 pb-9 pt-11 max-[760px]:min-h-[420px] max-[760px]:px-6 max-[760px]:pb-6 max-[760px]:pt-9">
+                class="project-modal-info relative flex min-w-0 flex-col px-10 pb-9 pt-11 max-[760px]:min-h-[420px] max-[760px]:px-6 max-[760px]:pb-6 max-[760px]:pt-9">
               <button ref="closeButton" type="button"
                       class="absolute right-5 top-5 flex size-9 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-text-2 transition hover:rotate-90 hover:bg-bg-soft hover:text-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                       title="关闭" aria-label="关闭项目详情" @click="closeProject">
@@ -341,4 +337,83 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
+/* 项目详情弹窗：仅动画合成友好的 opacity 与 transform，避免首次打开闪白。 */
+.project-modal-enter-active,
+.project-modal-leave-active {
+  transition: opacity .2s ease;
+}
+
+.project-modal-enter-active .project-modal-card {
+  transition: opacity .28s ease, transform .44s cubic-bezier(.16, 1, .3, 1);
+}
+
+.project-modal-leave-active .project-modal-card {
+  transition: opacity .16s ease, transform .22s cubic-bezier(.4, 0, 1, 1);
+}
+
+.project-modal-enter-active .project-modal-media,
+.project-modal-enter-active .project-modal-info {
+  transition: opacity .3s ease, transform .46s cubic-bezier(.16, 1, .3, 1);
+}
+
+.project-modal-enter-active .project-modal-info > * {
+  transition: opacity .28s ease, transform .4s cubic-bezier(.16, 1, .3, 1);
+}
+
+.project-modal-enter-active .project-modal-info > :nth-child(2) { transition-delay: .04s; }
+.project-modal-enter-active .project-modal-info > :nth-child(3) { transition-delay: .07s; }
+.project-modal-enter-active .project-modal-info > :nth-child(4) { transition-delay: .1s; }
+.project-modal-enter-active .project-modal-info > :nth-child(5) { transition-delay: .13s; }
+.project-modal-enter-active .project-modal-info > :nth-child(6) { transition-delay: .16s; }
+
+.project-modal-enter-from,
+.project-modal-leave-to {
+  opacity: 0;
+}
+
+.project-modal-enter-from .project-modal-card {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0) scale(.965);
+}
+
+.project-modal-leave-to .project-modal-card {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(.985);
+}
+
+.project-modal-enter-from .project-modal-media {
+  opacity: 0;
+  transform: translate3d(-18px, 0, 0) scale(1.025);
+}
+
+.project-modal-enter-from .project-modal-info {
+  opacity: 0;
+  transform: translate3d(20px, 0, 0);
+}
+
+.project-modal-enter-from .project-modal-info > * {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+}
+
+.project-modal-card,
+.project-modal-media,
+.project-modal-info {
+  backface-visibility: hidden;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-modal-enter-active,
+  .project-modal-leave-active,
+  .project-modal-enter-active .project-modal-card,
+  .project-modal-leave-active .project-modal-card,
+  .project-modal-enter-active .project-modal-media,
+  .project-modal-enter-active .project-modal-info,
+  .project-modal-enter-active .project-modal-info > * {
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
 </style>

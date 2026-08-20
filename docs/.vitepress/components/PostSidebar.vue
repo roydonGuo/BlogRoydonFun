@@ -2,6 +2,7 @@
 import {computed, ref, onMounted} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
+import {RiUserSmileLine, RiProfileLine, RiGithubLine} from "@remixicon/vue";
 
 const route = useRoute()
 const expandedCategories = ref(new Set(posts.map(post => post.category)))
@@ -73,25 +74,31 @@ function toggleCategory(category: string): void {
           <p class="ethan-bio">热爱技术与设计，记录工程实践、生活思考与创意灵感。</p>
         </div>
 
-      <dl class="ethan-stats">
-        <div>
-          <dt>{{ posts.length }}</dt>
-          <dd>文章</dd>
-        </div>
-        <div>
-          <dt>{{ categoryGroups.length }}</dt>
-          <dd>分类</dd>
-        </div>
-        <div>
-          <dt>{{ tagCount }}</dt>
-          <dd>标签</dd>
-        </div>
-      </dl>
+        <dl class="ethan-stats">
+          <div>
+            <dt>{{ posts.length }}</dt>
+            <dd>文章</dd>
+          </div>
+          <div>
+            <dt>{{ categoryGroups.length }}</dt>
+            <dd>分类</dd>
+          </div>
+          <div>
+            <dt>{{ tagCount }}</dt>
+            <dd>标签</dd>
+          </div>
+        </dl>
 
         <nav class="ethan-links" aria-label="Ethan 个人链接">
-          <a href="/about/">关于我</a>
-          <a href="/resume/">个人简历</a>
-          <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="/about/" class="flex items-center justify-center gap-1">
+            <RiUserSmileLine size="18px"/>
+            关于</a>
+          <a href="/resume/" class="flex items-center justify-center gap-1">
+            <RiProfileLine size="18px"/>
+            简历</a>
+          <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1">
+            <RiGithubLine size="18px"/>
+            GitHub</a>
         </nav>
       </div>
 
