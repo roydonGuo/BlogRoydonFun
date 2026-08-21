@@ -1,5 +1,5 @@
 // https://vitepress.dev/guide/custom-theme
-import { defineComponent, h, nextTick, provide } from 'vue'
+import { defineComponent, Fragment, h, nextTick, provide } from 'vue'
 import { useData } from 'vitepress'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -13,6 +13,7 @@ import PostSidebar from '../components/PostSidebar.vue'
 import KnowledgeGraph from '../components/KnowledgeGraph.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import ArticleReader from '../components/ArticleReader.vue'
+import ArticleImagePreview from '../components/ArticleImagePreview.vue'
 import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
@@ -82,7 +83,11 @@ const AnimatedLayout = defineComponent({
       // 在文章正文前提供浏览器原生语音朗读控件。
       'doc-before': () => h(ArticleReader),
       // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
-      'doc-after': () => h(PostPrevNext),
+      'doc-after': () => h(Fragment, null, [
+        h(PostPrevNext),
+        // 大图组件通过 Teleport 展示，不改变文章正文和上一篇/下一篇布局。
+        h(ArticleImagePreview),
+      ]),
     })
   },
 })

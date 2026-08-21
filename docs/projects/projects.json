@@ -19,11 +19,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/knowledge-graph/",
-    "cover": "/images/projects/1/cover.jpg",
+    "cover": "/images/projects/1/cover.webp",
     "coverAlt": "深色界面设计工作台",
     "slides": [
       {
-        "src": "/images/projects/1/slide-01.jpg",
+        "src": "/images/projects/1/slide-01.webp",
         "alt": "Project Nebula 深色设计界面"
       }
     ]
@@ -46,11 +46,11 @@
       "Redis"
     ],
     "github": "https://github.com/roydonGuo",
-    "cover": "/images/projects/2/cover.jpg",
+    "cover": "/images/projects/2/cover.webp",
     "coverAlt": "移动支付与电商应用界面",
     "slides": [
       {
-        "src": "/images/projects/2/slide-01.jpg",
+        "src": "/images/projects/2/slide-01.webp",
         "alt": "Mall Engine 支付流程界面"
       }
     ]
@@ -72,11 +72,11 @@
       "ECharts"
     ],
     "github": "https://github.com/roydonGuo",
-    "cover": "/images/projects/3/cover.jpg",
+    "cover": "/images/projects/3/cover.webp",
     "coverAlt": "数据可视化仪表盘",
     "slides": [
       {
-        "src": "/images/projects/3/slide-01.jpg",
+        "src": "/images/projects/3/slide-01.webp",
         "alt": "Pulse Dashboard 数据总览"
       }
     ]
@@ -99,11 +99,11 @@
       "Vector DB"
     ],
     "github": "https://github.com/roydonGuo",
-    "cover": "/images/projects/4/cover.jpg",
+    "cover": "/images/projects/4/cover.webp",
     "coverAlt": "人工智能与数字网络概念图",
     "slides": [
       {
-        "src": "/images/projects/4/slide-01.jpg",
+        "src": "/images/projects/4/slide-01.webp",
         "alt": "Prompt Observatory 人工智能实验界面"
       }
     ]
@@ -125,11 +125,11 @@
       "Vite"
     ],
     "github": "https://github.com/roydonGuo",
-    "cover": "/images/projects/5/cover.jpg",
+    "cover": "/images/projects/5/cover.webp",
     "coverAlt": "开发者桌面与代码编辑器",
     "slides": [
       {
-        "src": "/images/projects/5/slide-01.jpg",
+        "src": "/images/projects/5/slide-01.webp",
         "alt": "Dev Toolbox 开发工具界面"
       }
     ]
@@ -153,11 +153,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -181,11 +181,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -209,11 +209,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -237,11 +237,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -265,11 +265,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -293,11 +293,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -321,11 +321,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
@@ -349,11 +349,11 @@
     ],
     "github": "https://github.com/roydonGuo",
     "website": "/",
-    "cover": "/images/projects/6/cover.jpg",
+    "cover": "/images/projects/6/cover.webp",
     "coverAlt": "笔记本电脑上的编程界面",
     "slides": [
       {
-        "src": "/images/projects/6/slide-01.jpg",
+        "src": "/images/projects/6/slide-01.webp",
         "alt": "Daily Engineering 内容创作界面"
       }
     ]

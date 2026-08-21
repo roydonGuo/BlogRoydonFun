@@ -109,6 +109,7 @@ export default defineConfig({
       { text: '📦归档', link: '/archive/' },
       { text: '🌐知识图谱', link: '/knowledge-graph/' },
       { text: '🦾项目', link: '/projects/' },
+      { text: '🧩Skills', link: '/skills/' },
       { text: '🔗链接', link: '/links/' },
       { text: '😊关于', link: '/about/' },
       { text: '📰简历', link: '/resume/' },

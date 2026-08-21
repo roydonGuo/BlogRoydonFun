@@ -276,15 +276,15 @@ body {
 /**
  * 文章正文布局
  */
-@media (min-width: 1440px) {
+@media (min-width: 1920px) {
     .VPDoc:not(.has-sidebar) .container {
-        max-width: 1304px !important;
+        max-width: 1720px !important;
     }
 }
 
 @media (min-width: 1440px) {
-    .VPDoc:not(.has-sidebar) .content {
-        max-width: 1000px !important;
+    .VPDoc:not(.has-sidebar) .container {
+        max-width: 1304px !important;
     }
 }
 
@@ -294,15 +294,15 @@ body {
     }
 }
 
-@media (min-width: 1280px) {
-    .content {
-        min-width: 880px !important;
+@media (min-width: 1440px) {
+    .VPDoc:not(.has-sidebar) .content {
+        max-width: 1000px !important;
     }
 }
 
-@media (min-width: 1920px) {
-    .VPDoc:not(.has-sidebar) .container {
-        max-width: 1720px !important;
+@media (min-width: 1280px) {
+    .content {
+        min-width: 880px !important;
     }
 }
 
