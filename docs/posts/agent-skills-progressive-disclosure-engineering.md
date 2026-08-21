@@ -9,7 +9,7 @@ excerpt: 从开放格式、三阶段渐进式披露与执行边界出发，讲�
 
 # Agent Skills 工程实践：渐进式披露、可复用能力与安全边界
 
-<img src="/images/posts/agent-skills-progressive-disclosure-engineering-knowledge-map.png" alt="Agent Skills 工程实践：渐进式披露、可复用能力与安全边界知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/agent-skills-progressive-disclosure-engineering-knowledge-map.webp" alt="Agent Skills 工程实践：渐进式披露、可复用能力与安全边界知识串联图" style="border-radius: 10px;" />
 
 从开放格式、三阶段渐进式披露与执行边界出发，讲清 Agent Skill 如何封装可复用流程，并用 Java 落实导入校验、最小权限、审计与版本治理。
 

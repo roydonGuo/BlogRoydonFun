@@ -9,7 +9,7 @@ excerpt: 从 INSTANT、INPLACE、COPY 与 LOCK 并发级别出发，识别表重
 
 # MySQL 8.4 在线 DDL 工程实践：算法、锁与发布治理
 
-<img src="/images/posts/mysql-online-ddl-engineering-knowledge-map.png" alt="MySQL 8.4 在线 DDL 工程实践：算法、锁与发布治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/mysql-online-ddl-engineering-knowledge-map.webp" alt="MySQL 8.4 在线 DDL 工程实践：算法、锁与发布治理知识串联图" style="border-radius: 10px;" />
 
 从 INSTANT、INPLACE、COPY 与 LOCK 并发级别出发，识别表重建和 MDL 风险，建立可中止、可观测的 MySQL 生产变更流程。
 

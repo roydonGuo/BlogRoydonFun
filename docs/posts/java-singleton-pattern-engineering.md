@@ -2,14 +2,14 @@
 title: Java 单例模式工程实践：七种实现、JMM 与 Spring 边界
 date: 2026-08-18
 category: 后端开发
-cover: /images/posts/java-singleton-pattern-engineering-knowledge-map.png
+cover: /images/posts/java-singleton-pattern-engineering-knowledge-map.webp
 tags: [java, design-patterns, singleton, concurrency, spring]
 excerpt: 从对象唯一性与安全发布出发，完整比较 Java 单例的七种实现，讲清双重检查锁、静态内部类、枚举、ClassLoader、序列化以及 Spring 容器边界。
 ---
 
 # Java 单例模式工程实践：七种实现、JMM 与 Spring 边界
 
-<img src="/images/posts/java-singleton-pattern-engineering-knowledge-map.png" alt="Java 单例模式工程实践：七种实现、JMM 与 Spring 边界知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/java-singleton-pattern-engineering-knowledge-map.webp" alt="Java 单例模式工程实践：七种实现、JMM 与 Spring 边界知识串联图" style="border-radius: 10px;" />
 
 从对象唯一性与安全发布出发，完整比较 Java 单例的七种实现，讲清双重检查锁、静态内部类、枚举、ClassLoader、序列化以及 Spring 容器边界。
 

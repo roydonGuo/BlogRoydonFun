@@ -2,14 +2,14 @@
 title: Spring Bean 生命周期工程实践：创建、初始化、代理与销毁
 date: 2026-08-20
 category: 后端开发
-cover: /images/posts/spring-bean-lifecycle-engineering-knowledge-map.png
+cover: /images/posts/spring-bean-lifecycle-engineering-knowledge-map.webp
 tags: [spring, spring-framework, bean, ioc, lifecycle]
 excerpt: Spring Bean 的生命周期不只是实例化、初始化和销毁三个词，而是一条由 BeanDefinition、依赖注入、Aware 回调、BeanPostProcessor、AOP 代理与作用域共同决定的处理链。本文以 Spring Framework 7.0.8 为基线，讲清完整顺序、扩展点和工程边界。
 ---
 
 # Spring Bean 生命周期工程实践：创建、初始化、代理与销毁
 
-<img src="/images/posts/spring-bean-lifecycle-engineering-knowledge-map.png" alt="Spring Bean 生命周期工程实践：创建、初始化、代理与销毁知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/spring-bean-lifecycle-engineering-knowledge-map.webp" alt="Spring Bean 生命周期工程实践：创建、初始化、代理与销毁知识串联图" style="border-radius: 10px;" />
 
 Spring Bean 的生命周期不只是实例化、初始化和销毁三个词，而是一条由 BeanDefinition、依赖注入、Aware 回调、BeanPostProcessor、AOP 代理与作用域共同决定的处理链。本文以 Spring Framework 7.0.8 为基线，讲清完整顺序、扩展点和工程边界。
 

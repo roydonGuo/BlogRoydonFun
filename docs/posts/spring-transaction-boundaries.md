@@ -9,7 +9,7 @@ excerpt: 从 AOP 代理调用链出发，厘清 Spring 声明式事务何时创�
 
 # Spring 事务边界：代理、自调用与七种传播行为
 
-<img src="/images/posts/spring-transaction-boundaries-knowledge-map.png" alt="Spring 事务边界：代理、自调用与七种传播行为知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/spring-transaction-boundaries-knowledge-map.webp" alt="Spring 事务边界：代理、自调用与七种传播行为知识串联图" style="border-radius: 10px;" />
 
 从 AOP 代理调用链出发，厘清 Spring 声明式事务何时创建、加入、挂起或失效，并用七种传播行为设计可验证的业务边界。
 

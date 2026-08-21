@@ -9,7 +9,7 @@ excerpt: 从数据安全目标出发，讲清 RDB 快照、AOF 写回与 Redis 7
 
 # Redis 持久化工程实践：RDB、AOF、重写与故障恢复
 
-<img src="/images/posts/redis-persistence-rdb-aof-engineering-knowledge-map.png" alt="Redis 持久化工程实践：RDB、AOF、重写与故障恢复知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/redis-persistence-rdb-aof-engineering-knowledge-map.webp" alt="Redis 持久化工程实践：RDB、AOF、重写与故障恢复知识串联图" style="border-radius: 10px;" />
 
 从数据安全目标出发，讲清 RDB 快照、AOF 写回与 Redis 7.0+ 多文件重写机制，并把大 Key、磁盘故障、监控告警和恢复演练串成一套可落地的持久化方案。
 

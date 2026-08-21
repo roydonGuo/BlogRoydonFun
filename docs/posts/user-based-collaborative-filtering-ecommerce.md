@@ -2,14 +2,14 @@
 title: 基于用户的协同过滤实战：用 UserCF 为商城推荐商品
 date: 2026-08-20
 category: 后端开发
-cover: /images/posts/user-based-collaborative-filtering-ecommerce-knowledge-map.png
+cover: /images/posts/user-based-collaborative-filtering-ecommerce-knowledge-map.webp
 tags: [recommendation-system, collaborative-filtering, usercf, java, ecommerce]
 excerpt: UserCF 的核心是找到兴趣相近的用户，再把邻居喜欢而目标用户尚未接触的商品推荐给他。本文从用户—商品矩阵、相似度和推荐分数讲起，并用 Java 伪代码实现商城商品推荐链路。
 ---
 
 # 基于用户的协同过滤实战：用 UserCF 为商城推荐商品
 
-<img src="/images/posts/user-based-collaborative-filtering-ecommerce-knowledge-map.png" alt="基于用户的协同过滤实战：用 UserCF 为商城推荐商品知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/user-based-collaborative-filtering-ecommerce-knowledge-map.webp" alt="基于用户的协同过滤实战：用 UserCF 为商城推荐商品知识串联图" style="border-radius: 10px;" />
 
 UserCF 的核心是找到兴趣相近的用户，再把邻居喜欢而目标用户尚未接触的商品推荐给他。本文从用户—商品矩阵、相似度和推荐分数讲起，并用 Java 伪代码实现商城商品推荐链路。
 

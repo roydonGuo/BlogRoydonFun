@@ -2,14 +2,14 @@
 title: LLM 反思机制工程实践：让模型自我批判与迭代修订的 Agent 闭环
 date: 2026-08-18
 category: AI
-cover: /images/posts/llm-reflection-self-critique-engineering-knowledge-map.png
+cover: /images/posts/llm-reflection-self-critique-engineering-knowledge-map.webp
 tags: [llm, reflection, self-reflection, agent, spring-ai, prompt-engineering]
 excerpt: 反思机制让 LLM 先产出草稿，再让模型（或另一个角色）以评论家身份挑毛病，然后修订，反复逼近更可靠的答案。本文讲清它的组成、适用边界、Spring AI 2.0.0 的 Java 闭环实现、预算与停止条件、常见追问和踩坑。
 ---
 
 # LLM 反思机制工程实践：让模型自我批判与迭代修订的 Agent 闭环
 
-<img src="/images/posts/llm-reflection-self-critique-engineering-knowledge-map.png" alt="LLM 反思机制工程实践：让模型自我批判与迭代修订的 Agent 闭环知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/llm-reflection-self-critique-engineering-knowledge-map.webp" alt="LLM 反思机制工程实践：让模型自我批判与迭代修订的 Agent 闭环知识串联图" style="border-radius: 10px;" />
 
 反思机制让 LLM 先产出草稿，再让模型（或另一个角色）以评论家身份挑毛病，然后修订，反复逼近更可靠的答案。本文讲清它的组成、适用边界、Spring AI 2.0.0 的 Java 闭环实现、预算与停止条件、常见追问和踩坑。
 

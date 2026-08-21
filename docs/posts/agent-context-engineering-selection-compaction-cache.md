@@ -2,14 +2,14 @@
 title: Agent 上下文工程实践：选择、压缩与缓存治理
 date: 2026-08-17
 category: AI
-cover: /images/posts/agent-context-engineering-selection-compaction-cache-knowledge-map.png
+cover: /images/posts/agent-context-engineering-selection-compaction-cache-knowledge-map.webp
 tags: [agent, context-engineering, spring-ai, llm, observability]
 excerpt: 从“最小但足够的高信号上下文”出发，讲清 Agent 每轮调用中的指令、历史、检索、工具与运行态如何选择、排序、压缩、缓存和观测，并给出 Java 上下文装配器示例。
 ---
 
 # Agent 上下文工程实践：选择、压缩与缓存治理
 
-<img src="/images/posts/agent-context-engineering-selection-compaction-cache-knowledge-map.png" alt="Agent 上下文工程实践：选择、压缩与缓存治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/agent-context-engineering-selection-compaction-cache-knowledge-map.webp" alt="Agent 上下文工程实践：选择、压缩与缓存治理知识串联图" style="border-radius: 10px;" />
 
 从“最小但足够的高信号上下文”出发，讲清 Agent 每轮调用中的指令、历史、检索、工具与运行态如何选择、排序、压缩、缓存和观测，并给出 Java 上下文装配器示例。
 

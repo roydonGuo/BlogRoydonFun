@@ -9,7 +9,7 @@ excerpt: 从三次握手、两级监听队列和 listen backlog 出发，定位 
 
 # Linux TCP 监听队列：SYN Queue、Accept Queue 与连接洪峰治理
 
-<img src="/images/posts/linux-tcp-listen-queues-knowledge-map.png" alt="Linux TCP 监听队列：SYN Queue、Accept Queue 与连接洪峰治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/linux-tcp-listen-queues-knowledge-map.webp" alt="Linux TCP 监听队列：SYN Queue、Accept Queue 与连接洪峰治理知识串联图" style="border-radius: 10px;" />
 
 从三次握手、两级监听队列和 listen backlog 出发，定位 Java 服务连接洪峰中的握手积压、Accept 溢出与过载边界。
 

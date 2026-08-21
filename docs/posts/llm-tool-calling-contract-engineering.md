@@ -9,7 +9,7 @@ excerpt: 从模型只负责提出调用请求这一边界出发，讲清工具�
 
 # LLM 工具调用工程实践：Schema 契约、执行边界与失败恢复
 
-<img src="/images/posts/llm-tool-calling-contract-engineering-knowledge-map.png" alt="LLM 工具调用工程实践：Schema 契约、执行边界与失败恢复知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/llm-tool-calling-contract-engineering-knowledge-map.webp" alt="LLM 工具调用工程实践：Schema 契约、执行边界与失败恢复知识串联图" style="border-radius: 10px;" />
 
 从模型只负责提出调用请求这一边界出发，讲清工具定义、JSON Schema、应用侧执行、权限与幂等、结果回传、失败恢复和可观测性，并给出 Spring AI 2.0.0 的订单售后示例。
 

@@ -9,7 +9,7 @@ excerpt: 从五种 I/O 模型与 Selector 就绪通知出发，讲清 Channel、
 
 # Java NIO Selector 工程实践：事件循环、半包处理与连接治理
 
-<img src="/images/posts/java-nio-selector-engineering-knowledge-map.png" alt="Java NIO Selector 工程实践：事件循环、半包处理与连接治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/java-nio-selector-engineering-knowledge-map.webp" alt="Java NIO Selector 工程实践：事件循环、半包处理与连接治理知识串联图" style="border-radius: 10px;" />
 
 从五种 I/O 模型与 Selector 就绪通知出发，讲清 Channel、Buffer、SelectionKey 和事件循环，并用长度字段协议落实半包、粘包、写回压、跨线程唤醒与连接治理。
 

@@ -2,14 +2,14 @@
 title: Deep Research Agent 工程实践：检索规划、证据账本与可中断执行
 date: 2026-08-21
 category: AI
-cover: /images/posts/deep-research-agent-engineering-knowledge-map.png
+cover: /images/posts/deep-research-agent-engineering-knowledge-map.webp
 tags: [ai, agent, deep-research, spring-ai, observability]
 excerpt: Deep Research 不是让模型一次生成更长的答案，而是把澄清、检索、取证、核验和写作做成可恢复的研究任务。本文从 Java 后端视角拆解证据账本、引用校验、预算控制与长任务状态机。
 ---
 
 # Deep Research Agent 工程实践：检索规划、证据账本与可中断执行
 
-<img src="/images/posts/deep-research-agent-engineering-knowledge-map.png" alt="Deep Research Agent 工程实践：检索规划、证据账本与可中断执行知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/deep-research-agent-engineering-knowledge-map.webp" alt="Deep Research Agent 工程实践：检索规划、证据账本与可中断执行知识串联图" style="border-radius: 10px;" />
 
 Deep Research 不是让模型一次生成更长的答案，而是把澄清、检索、取证、核验和写作做成可恢复的研究任务。本文从 Java 后端视角拆解证据账本、引用校验、预算控制与长任务状态机。
 

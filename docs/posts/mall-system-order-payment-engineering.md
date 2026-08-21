@@ -2,14 +2,14 @@
 title: 商城系统设计与实现：商品、订单、库存与微信支付全链路
 date: 2026-08-17
 category: 后端开发
-cover: /images/posts/mall-system-order-payment-engineering-knowledge-map.png
+cover: /images/posts/mall-system-order-payment-engineering-knowledge-map.webp
 tags: [java, spring-boot, mall, mysql, wechat-pay]
 excerpt: 以一套真实 Java 商城代码为基线，完整拆解商品与 SKU、地址快照、原子扣库存、订单状态、微信 JSAPI 支付、回调幂等、超时关单、退款、物流、确认收货与分佣触发。
 ---
 
 # 商城系统设计与实现：商品、订单、库存与微信支付全链路
 
-<img src="/images/posts/mall-system-order-payment-engineering-knowledge-map.png" alt="商城系统设计与实现：商品、订单、库存与微信支付全链路知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/mall-system-order-payment-engineering-knowledge-map.webp" alt="商城系统设计与实现：商品、订单、库存与微信支付全链路知识串联图" style="border-radius: 10px;" />
 
 以一套真实 Java 商城代码为基线，完整拆解商品与 SKU、地址快照、原子扣库存、订单状态、微信 JSAPI 支付、回调幂等、超时关单、退款、物流、确认收货与分佣触发。
 

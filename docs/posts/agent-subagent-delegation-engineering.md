@@ -2,14 +2,14 @@
 title: AI Agent 的 SubAgent 工程实践：任务委派、上下文隔离与结果回收
 date: 2026-08-17
 category: AI
-cover: /images/posts/agent-subagent-delegation-engineering-knowledge-map.png
+cover: /images/posts/agent-subagent-delegation-engineering-knowledge-map.webp
 tags: [agent, subagent, multi-agent, orchestration, java]
 excerpt: 从“主 Agent 保留控制权、SubAgent 只完成有边界的子任务”出发，讲清拆分条件、委派契约、上下文与权限隔离、并行调度、结果回收、冲突处理、取消传播和 Java 编排实现。
 ---
 
 # AI Agent 的 SubAgent 工程实践：任务委派、上下文隔离与结果回收
 
-<img src="/images/posts/agent-subagent-delegation-engineering-knowledge-map.png" alt="AI Agent 的 SubAgent 工程实践：任务委派、上下文隔离与结果回收知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/agent-subagent-delegation-engineering-knowledge-map.webp" alt="AI Agent 的 SubAgent 工程实践：任务委派、上下文隔离与结果回收知识串联图" style="border-radius: 10px;" />
 
 从“主 Agent 保留控制权、SubAgent 只完成有边界的子任务”出发，讲清拆分条件、委派契约、上下文与权限隔离、并行调度、结果回收、冲突处理、取消传播和 Java 编排实现。
 

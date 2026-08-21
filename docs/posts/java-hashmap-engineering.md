@@ -9,7 +9,7 @@ excerpt: 以 JDK 21 为基线，从一次 put/get 的真实路径出发，讲清
 
 # Java HashMap 工程实践：哈希定位、冲突树化与扩容边界
 
-<img src="/images/posts/java-hashmap-engineering-knowledge-map.png" alt="Java HashMap 工程实践：哈希定位、冲突树化与扩容边界知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/java-hashmap-engineering-knowledge-map.webp" alt="Java HashMap 工程实践：哈希定位、冲突树化与扩容边界知识串联图" style="border-radius: 10px;" />
 
 以 JDK 21 为基线，从一次 put/get 的真实路径出发，讲清 HashMap 的桶定位、链表与红黑树、扩容拆分、容量估算及并发边界。
 

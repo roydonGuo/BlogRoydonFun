@@ -2,14 +2,14 @@
 title: Java 工厂模式工程实践：简单工厂、工厂方法与抽象工厂
 date: 2026-08-20
 category: 后端开发
-cover: /images/posts/java-factory-pattern-engineering-knowledge-map.png
+cover: /images/posts/java-factory-pattern-engineering-knowledge-map.webp
 tags: [java, design-patterns, factory-method, abstract-factory, spring]
 excerpt: 工厂模式的价值不是隐藏 new，而是把对象创建规则从业务流程中剥离。本文用支付渠道示例讲清简单工厂、工厂方法、抽象工厂的边界，并说明在 Spring 中如何用类型安全注册表替代不断增长的分支。
 ---
 
 # Java 工厂模式工程实践：简单工厂、工厂方法与抽象工厂
 
-<img src="/images/posts/java-factory-pattern-engineering-knowledge-map.png" alt="Java 工厂模式工程实践：简单工厂、工厂方法与抽象工厂知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/java-factory-pattern-engineering-knowledge-map.webp" alt="Java 工厂模式工程实践：简单工厂、工厂方法与抽象工厂知识串联图" style="border-radius: 10px;" />
 
 工厂模式的价值不是隐藏 new，而是把对象创建规则从业务流程中剥离。本文用支付渠道示例讲清简单工厂、工厂方法、抽象工厂的边界，并说明在 Spring 中如何用类型安全注册表替代不断增长的分支。
 

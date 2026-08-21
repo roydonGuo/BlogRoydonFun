@@ -9,7 +9,7 @@ excerpt: 从一次域名查询出发，讲清 Stub Resolver、递归与迭代查
 
 # DNS 解析工程实践：递归查询、缓存与故障治理
 
-<img src="/images/posts/dns-resolution-cache-engineering-knowledge-map.png" alt="DNS 解析工程实践：递归查询、缓存与故障治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/dns-resolution-cache-engineering-knowledge-map.webp" alt="DNS 解析工程实践：递归查询、缓存与故障治理知识串联图" style="border-radius: 10px;" />
 
 从一次域名查询出发，讲清 Stub Resolver、递归与迭代查询、权威数据、正负缓存和 Java 地址缓存，并给出超时隔离、切流发布与可观测性实践。
 

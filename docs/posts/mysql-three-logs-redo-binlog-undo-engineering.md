@@ -2,14 +2,14 @@
 title: MySQL 三大日志工程实践：redo log、binlog 与 undo log 的分工与协作
 date: 2026-08-19
 category: MySQL
-cover: /images/posts/mysql-three-logs-redo-binlog-undo-engineering-knowledge-map.png
+cover: /images/posts/mysql-three-logs-redo-binlog-undo-engineering-knowledge-map.webp
 tags: [mysql, innodb, redo-log, binlog, undo-log, wal]
 excerpt: 一次 UPDATE 会同时留下三条日志：redo log 负责崩溃后重放已提交数据，binlog 负责把逻辑变更复制到从库，undo log 负责回滚与 MVCC 旧版本。本文讲清三者分工、两阶段提交、刷盘参数与常见踩坑。
 ---
 
 # MySQL 三大日志工程实践：redo log、binlog 与 undo log 的分工与协作
 
-<img src="/images/posts/mysql-three-logs-redo-binlog-undo-engineering-knowledge-map.png" alt="MySQL 三大日志工程实践：redo log、binlog 与 undo log 的分工与协作知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/mysql-three-logs-redo-binlog-undo-engineering-knowledge-map.webp" alt="MySQL 三大日志工程实践：redo log、binlog 与 undo log 的分工与协作知识串联图" style="border-radius: 10px;" />
 
 一次 UPDATE 会同时留下三条日志：redo log 负责崩溃后重放已提交数据，binlog 负责把逻辑变更复制到从库，undo log 负责回滚与 MVCC 旧版本。本文讲清三者分工、两阶段提交、刷盘参数与常见踩坑。
 

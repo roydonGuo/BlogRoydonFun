@@ -9,7 +9,7 @@ excerpt: 从缓存键、失效传播和 Cache Mount 出发，为 Java 镜像建�
 
 # Docker BuildKit 构建缓存：从层复用到 CI 远程缓存
 
-<img src="/images/posts/docker-buildkit-cache-engineering-knowledge-map.png" alt="Docker BuildKit 构建缓存：从层复用到 CI 远程缓存知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/docker-buildkit-cache-engineering-knowledge-map.webp" alt="Docker BuildKit 构建缓存：从层复用到 CI 远程缓存知识串联图" style="border-radius: 10px;" />
 
 从缓存键、失效传播和 Cache Mount 出发，为 Java 镜像建立可复用、可迁移且不泄露凭据的 BuildKit 缓存链路。
 

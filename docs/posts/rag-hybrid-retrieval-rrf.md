@@ -9,7 +9,7 @@ excerpt: 从关键词与向量召回的互补性出发，讲清分数融合、RR
 
 # RAG 混合检索工程实践：BM25、向量召回、RRF 与重排序
 
-<img src="/images/posts/rag-hybrid-retrieval-rrf-knowledge-map.png" alt="RAG 混合检索工程实践：BM25、向量召回、RRF 与重排序知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/rag-hybrid-retrieval-rrf-knowledge-map.webp" alt="RAG 混合检索工程实践：BM25、向量召回、RRF 与重排序知识串联图" style="border-radius: 10px;" />
 
 很多 RAG 项目在 Demo 阶段只做一件事：把问题向量化，从向量数据库取 Top-K 文档，再拼进 Prompt。这个方案面对自然语言问答通常能工作，但进入真实业务后，会暴露出一类稳定问题：语义相近的内容能找到，订单号、错误码、产品型号和专有名词却经常丢失。
 

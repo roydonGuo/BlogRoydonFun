@@ -9,7 +9,7 @@ excerpt: 从 Query、Context、Response 三元关系出发，建立检索层、�
 
 # RAG 评测工程实践：检索、生成与端到端回归
 
-<img src="/images/posts/rag-evaluation-engineering-knowledge-map.png" alt="RAG 评测工程实践：检索、生成与端到端回归知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/rag-evaluation-engineering-knowledge-map.webp" alt="RAG 评测工程实践：检索、生成与端到端回归知识串联图" style="border-radius: 10px;" />
 
 从 Query、Context、Response 三元关系出发，建立检索层、生成层与端到端评测体系，并用版本化数据集、Java 评测流水线和发布门禁把 RAG 调优变成可重复的工程过程。
 

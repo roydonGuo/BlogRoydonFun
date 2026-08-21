@@ -2,14 +2,14 @@
 title: Plan-and-Execute Agent 工程实践：规划、执行与重规划
 date: 2026-08-20
 category: AI
-cover: /images/posts/plan-and-execute-agent-engineering-knowledge-map.png
+cover: /images/posts/plan-and-execute-agent-engineering-knowledge-map.webp
 tags: [ agent, plan-and-execute, spring-ai, tool-calling, workflow ]
 excerpt: Plan-and-Execute 的价值是把长任务拆成可检查的显式计划，再由应用逐步执行、验证和重规划。本文用 Spring AI 2.0.0 讲清状态机、数据契约、工具边界、终止条件与可观测性。
 ---
 
 # Plan-and-Execute Agent 工程实践：规划、执行与重规划
 
-<img src="/images/posts/plan-and-execute-agent-engineering-knowledge-map.png" alt="Plan-and-Execute Agent 工程实践：规划、执行与重规划知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/plan-and-execute-agent-engineering-knowledge-map.webp" alt="Plan-and-Execute Agent 工程实践：规划、执行与重规划知识串联图" style="border-radius: 10px;" />
 
 Plan-and-Execute 的价值是把长任务拆成可检查的显式计划，再由应用逐步执行、验证和重规划。本文用 Spring AI 2.0.0
 讲清状态机、数据契约、工具边界、终止条件与可观测性。

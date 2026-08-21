@@ -9,7 +9,7 @@ excerpt: 从索引记录出发，讲清 InnoDB 的 Record Lock、Gap Lock、Next
 
 # MySQL 8.4 行锁工程实践：Record、Gap 与 Next-Key Lock
 
-<img src="/images/posts/mysql-innodb-row-locks-engineering-knowledge-map.png" alt="MySQL 8.4 行锁工程实践：Record、Gap 与 Next-Key Lock知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/mysql-innodb-row-locks-engineering-knowledge-map.webp" alt="MySQL 8.4 行锁工程实践：Record、Gap 与 Next-Key Lock知识串联图" style="border-radius: 10px;" />
 
 从索引记录出发，讲清 InnoDB 的 Record Lock、Gap Lock、Next-Key Lock 与插入意向锁，并用库存预占场景串起隔离级别、加锁范围、阻塞诊断和死锁治理。
 

@@ -9,7 +9,7 @@ excerpt: 从 Java SE 21 的类加载规范出发，讲清加载、链接、初�
 
 # Java 类加载工程实践：生命周期、双亲委派与类隔离
 
-<img src="/images/posts/java-class-loading-isolation-engineering-knowledge-map.png" alt="Java 类加载工程实践：生命周期、双亲委派与类隔离知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/java-class-loading-isolation-engineering-knowledge-map.webp" alt="Java 类加载工程实践：生命周期、双亲委派与类隔离知识串联图" style="border-radius: 10px;" />
 
 从 Java SE 21 的类加载规范出发，讲清加载、链接、初始化的完整生命周期，双亲委派与类身份，并用可卸载插件示例串起 SPI、类隔离、故障诊断和资源治理。
 

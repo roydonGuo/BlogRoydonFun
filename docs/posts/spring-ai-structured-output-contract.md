@@ -9,7 +9,7 @@ excerpt: 从 Java DTO 契约出发，拆解提示式与模型原生结构化输�
 
 # Spring AI 结构化输出：从 JSON Schema 到校验重试
 
-<img src="/images/posts/spring-ai-structured-output-contract-knowledge-map.png" alt="Spring AI 结构化输出：从 JSON Schema 到校验重试知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/spring-ai-structured-output-contract-knowledge-map.webp" alt="Spring AI 结构化输出：从 JSON Schema 到校验重试知识串联图" style="border-radius: 10px;" />
 
 在工单分类、订单意图提取、合同字段抽取等场景中，下游需要的不是一段“看起来像 JSON”的文本，而是一份可以被 Java 程序稳定消费的契约。只在 Prompt 里写“请返回 JSON”，模型仍可能输出 Markdown 代码块、遗漏字段、生成额外属性，甚至给出结构正确但业务上不可执行的值。
 

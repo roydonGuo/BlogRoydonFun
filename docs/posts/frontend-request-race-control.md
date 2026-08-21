@@ -9,7 +9,7 @@ excerpt: 从搜索联想的乱序覆盖问题出发，建立取消旧请求、�
 
 # 前端异步请求竞态治理：AbortController、版本令牌与 Vue 清理
 
-<img src="/images/posts/frontend-request-race-control-knowledge-map.png" alt="前端异步请求竞态治理：AbortController、版本令牌与 Vue 清理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/frontend-request-race-control-knowledge-map.webp" alt="前端异步请求竞态治理：AbortController、版本令牌与 Vue 清理知识串联图" style="border-radius: 10px;" />
 
 搜索联想、级联选择、路由切换和弹窗详情都可能连续发出异步请求。用户先输入 `spring`，紧接着改成 `spring ai`，第二个请求先返回、旧请求后返回，页面就会被旧数据覆盖。这不是网络失败，而是多个正确请求以错误顺序提交了共享状态。
 

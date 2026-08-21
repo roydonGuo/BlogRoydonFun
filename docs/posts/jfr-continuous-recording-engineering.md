@@ -9,7 +9,7 @@ excerpt: 以 JDK 21 为基线，把 JFR 从临时性能分析工具改造成生�
 
 # JFR 持续录制工程实践：环形留存、故障转储与 Java 服务诊断
 
-<img src="/images/posts/jfr-continuous-recording-engineering-knowledge-map.png" alt="JFR 持续录制工程实践：环形留存、故障转储与 Java 服务诊断知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/jfr-continuous-recording-engineering-knowledge-map.webp" alt="JFR 持续录制工程实践：环形留存、故障转储与 Java 服务诊断知识串联图" style="border-radius: 10px;" />
 
 以 JDK 21 为基线，把 JFR 从临时性能分析工具改造成生产环境持续录制的“黑匣子”，并建立留存、转储、分析与安全治理闭环。
 

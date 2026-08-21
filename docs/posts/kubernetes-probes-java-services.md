@@ -9,7 +9,7 @@ excerpt: 从 kubelet 的三类探针状态机出发，厘清启动保护、故�
 
 # Kubernetes 探针工程实践：启动、存活、就绪与 Java 服务治理
 
-<img src="/images/posts/kubernetes-probes-java-services-knowledge-map.png" alt="Kubernetes 探针工程实践：启动、存活、就绪与 Java 服务治理知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/kubernetes-probes-java-services-knowledge-map.webp" alt="Kubernetes 探针工程实践：启动、存活、就绪与 Java 服务治理知识串联图" style="border-radius: 10px;" />
 
 从 kubelet 的三类探针状态机出发，厘清启动保护、故障重启与流量摘除边界，并用 Spring Boot Actuator 落地可观测、可演练的健康检查。
 

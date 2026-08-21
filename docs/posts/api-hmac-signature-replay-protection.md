@@ -9,7 +9,7 @@ excerpt: 从签名原文规范化、正文摘要和 HMAC-SHA256 出发，设计�
 
 # API 请求签名与防重放：HMAC、规范化与 Nonce 状态机
 
-<img src="/images/posts/api-hmac-signature-replay-protection-knowledge-map.png" alt="API 请求签名与防重放：HMAC、规范化与 Nonce 状态机知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/api-hmac-signature-replay-protection-knowledge-map.webp" alt="API 请求签名与防重放：HMAC、规范化与 Nonce 状态机知识串联图" style="border-radius: 10px;" />
 
 从签名原文规范化、正文摘要和 HMAC-SHA256 出发，设计带时间窗、Nonce 原子去重与密钥轮换能力的 API 防重放链路。
 
