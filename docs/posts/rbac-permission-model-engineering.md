@@ -2,14 +2,14 @@
 title: RBAC 权限模型工程实践：角色继承、数据权限与高性能鉴权
 date: 2026-08-21
 category: 后端开发
-cover: /images/posts/rbac-permission-model-engineering-knowledge-map.png
+cover: /images/posts/rbac-permission-model-engineering-knowledge-map.webp
 tags: [rbac, authorization, spring-security, data-permission, java, security]
 excerpt: RBAC 的核心不是给用户堆权限字符串，而是通过用户、角色、权限、会话和约束建立可治理的授权关系。本文讲清标准模型、表结构、请求鉴权、数据权限、缓存失效与 Spring Security 落地边界。
 ---
 
 # RBAC 权限模型工程实践：角色继承、数据权限与高性能鉴权
 
-<img src="/images/posts/rbac-permission-model-engineering-knowledge-map.png" alt="RBAC 权限模型工程实践：角色继承、数据权限与高性能鉴权知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/rbac-permission-model-engineering-knowledge-map.webp" alt="RBAC 权限模型工程实践：角色继承、数据权限与高性能鉴权知识串联图" style="border-radius: 10px;" />
 
 RBAC 的核心不是给用户堆权限字符串，而是通过用户、角色、权限、会话和约束建立可治理的授权关系。本文讲清标准模型、表结构、请求鉴权、数据权限、缓存失效与 Spring Security 落地边界。
 
@@ -109,7 +109,7 @@ PA ⊆ P × R：权限分配角色
 
 ## 一次请求应该怎样完成鉴权
 
-<img src="/images/posts/rbac-permission-model-engineering-authorization-chain.png" alt="RBAC 请求鉴权链路图" style="border-radius: 10px;" />
+<img src="/images/posts/rbac-permission-model-engineering-authorization-chain.webp" alt="RBAC 请求鉴权链路图" style="border-radius: 10px;" />
 
 推荐把判定拆成五步，任何一步失败都默认拒绝：
 
@@ -185,7 +185,7 @@ public class OrderAuthorization {
 
 ## 数据权限：有功能权限，不等于能看所有行
 
-<img src="/images/posts/rbac-permission-model-engineering-data-scope.png" alt="RBAC 数据权限边界图" style="border-radius: 10px;" />
+<img src="/images/posts/rbac-permission-model-engineering-data-scope.webp" alt="RBAC 数据权限边界图" style="border-radius: 10px;" />
 
 经典 RBAC 擅长回答“能不能执行某类操作”，不天然表达“能操作哪些对象”。工程系统通常在 RBAC 之上叠加数据范围：
 
