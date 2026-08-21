@@ -2,14 +2,14 @@
 title: TCP 可靠传输工程实践：序列号、重传、滑动窗口与拥塞控制
 date: 2026-08-21
 category: 后端开发
-cover: /images/posts/tcp-reliable-transmission-engineering-knowledge-map.png
+cover: /images/posts/tcp-reliable-transmission-engineering-knowledge-map.webp
 tags: [tcp, networking, retransmission, flow-control, congestion-control, java]
 excerpt: TCP 的可靠性不是“绝不丢包”，而是用序列号、确认、校验和与重传把不可靠 IP 交付修复成有序字节流，再由接收窗口和拥塞窗口共同约束发送速度。本文从协议机制、Java 边界和 Linux 诊断讲清完整链路。
 ---
 
 # TCP 可靠传输工程实践：序列号、重传、滑动窗口与拥塞控制
 
-<img src="/images/posts/tcp-reliable-transmission-engineering-knowledge-map.png" alt="TCP 可靠传输工程实践：序列号、重传、滑动窗口与拥塞控制知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/tcp-reliable-transmission-engineering-knowledge-map.webp" alt="TCP 可靠传输工程实践：序列号、重传、滑动窗口与拥塞控制知识串联图" style="border-radius: 10px;" />
 
 TCP 的可靠性不是“绝不丢包”，而是用序列号、确认、校验和与重传把不可靠 IP 交付修复成有序字节流，再由接收窗口和拥塞窗口共同约束发送速度。本文从协议机制、Java 边界和 Linux 诊断讲清完整链路。
 
