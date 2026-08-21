@@ -8,7 +8,7 @@
 
     <!-- Post cards -->
     <div v-if="filteredPosts.length" class="post-list">
-      <article v-for="post in filteredPosts" :key="post.url" class="post-card">
+      <article v-for="post in visiblePosts" :key="post.url" class="post-card">
         <a :href="post.url" class="card-link">
           <div class="card-body">
 
@@ -30,18 +30,59 @@
           </div>
         </a>
       </article>
+      <!-- 进入视口后继续追加下一批文章，避免一次性渲染全部卡片。 -->
+      <div
+        v-if="hasMore"
+        ref="loadMoreTrigger"
+        class="load-more-trigger"
+        aria-label="继续加载文章"
+      >
+        继续向下滚动，加载更多文章
+      </div>
     </div>
     <p v-else class="empty">没有匹配的文章 🙃</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import {
   filteredPosts,
   activeFilter,
   activeFilterLabel,
   clearFilter,
 } from '../composables/usePostFilter'
+
+const PAGE_SIZE = 10
+const visibleCount = ref(PAGE_SIZE)
+const loadMoreTrigger = ref<HTMLElement | null>(null)
+const visiblePosts = computed(() => filteredPosts.value.slice(0, visibleCount.value))
+const hasMore = computed(() => visibleCount.value < filteredPosts.value.length)
+
+let observer: IntersectionObserver | null = null
+
+// 切换分类或标签后重新从前 10 篇开始展示。
+watch(filteredPosts, () => {
+  visibleCount.value = PAGE_SIZE
+})
+
+// 哨兵节点进入视口时，每次只追加 10 篇文章。
+watch(loadMoreTrigger, (trigger) => {
+  observer?.disconnect()
+  observer = null
+
+  if (!trigger || typeof IntersectionObserver === 'undefined') return
+
+  observer = new IntersectionObserver((entries) => {
+    if (!entries[0]?.isIntersecting || !hasMore.value) return
+    visibleCount.value = Math.min(visibleCount.value + PAGE_SIZE, filteredPosts.value.length)
+  }, {
+    rootMargin: '0px 0px 160px',
+  })
+  observer.observe(trigger)
+}, { flush: 'post' })
+
+onBeforeUnmount(() => observer?.disconnect())
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('zh-CN', {
@@ -220,6 +261,13 @@ function formatDate(date: string) {
 
 .post-card:hover .card-cover img {
   transform: scale(1.05);
+}
+
+.load-more-trigger {
+  padding: 0.75rem 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--vp-c-text-3);
 }
 
 .empty {
