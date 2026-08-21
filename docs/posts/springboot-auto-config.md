@@ -2,12 +2,13 @@
 title: Spring Boot 自动装配原理
 date: 2026-06-10
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/springboot-auto-config-knowledge-map.webp
 tags: [java, spring]
 excerpt: 深入浅出地解析 Spring Boot 自动装配的核心机制，理解 @EnableAutoConfiguration 的工作原理。
 ---
 
 # Spring Boot 自动装配原理
+<img src="/images/posts/springboot-auto-config-knowledge-map.webp" alt="Spring Boot 自动装配原理知识串联图" style="border-radius: 10px;" />
 
 Spring Boot 的自动装配（Auto-Configuration）是其最核心的特性之一，它让我们无需繁琐的 XML 配置就能快速搭建应用。
 

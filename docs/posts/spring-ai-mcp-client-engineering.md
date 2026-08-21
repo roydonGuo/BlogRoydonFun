@@ -2,12 +2,13 @@
 title: Spring AI 接入 MCP：从能力协商到安全工具调用
 date: 2026-08-04
 category: AI
-cover: /covers/backend.svg
+cover: /images/posts/spring-ai-mcp-client-engineering-knowledge-map.webp
 tags: [ai, agent, spring-ai, mcp]
 excerpt: 基于 MCP 2025-11-25 与 Spring AI 2.0.0，讲清协议生命周期、传输方式、工具发现、白名单接入、错误治理与安全边界。
 ---
 
 # Spring AI 接入 MCP：从能力协商到安全工具调用
+<img src="/images/posts/spring-ai-mcp-client-engineering-knowledge-map.webp" alt="Spring AI 接入 MCP：从能力协商到安全工具调用知识串联图" style="border-radius: 10px;" />
 
 Agent 需要查询库存、创建工单或读取企业知识库时，最直接的做法是为每个能力编写一套 Function Calling 适配代码。随着工具数量和模型供应商增加，应用会逐渐承担重复的工具描述、参数 Schema、连接管理和错误转换工作。
 

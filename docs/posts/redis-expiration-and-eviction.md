@@ -2,12 +2,13 @@
 title: Redis 过期删除与内存淘汰：从 TTL 到 LRU、LFU 与 LRM
 date: 2026-08-04
 category: Redis
-cover: /covers/backend.svg
+cover: /images/posts/redis-expiration-and-eviction-knowledge-map.webp
 tags: [redis, lru, lfu, lrm]
 excerpt: 区分 Redis 过期删除与内存淘汰，完整梳理 Redis 7.x 和 8.6+ 的淘汰策略，并给出 Spring Boot 缓存、参数配置与监控实践。
 ---
 
 # Redis 过期删除与内存淘汰：从 TTL 到 LRU、LFU 与 LRM
+<img src="/images/posts/redis-expiration-and-eviction-knowledge-map.webp" alt="Redis 过期删除与内存淘汰：从 TTL 到 LRU、LFU 与 LRM知识串联图" style="border-radius: 10px;" />
 
 线上 Redis 内存不断上涨时，常见的第一反应是“给 Key 加 TTL”或“把淘汰策略改成 LRU”。这两个动作解决的却不是同一个问题：TTL 决定数据何时失效，淘汰策略决定内存达到上限后牺牲哪些数据。
 

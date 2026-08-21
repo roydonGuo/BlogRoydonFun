@@ -2,7 +2,7 @@
 title: API 请求签名与防重放：HMAC、规范化与 Nonce 状态机
 date: 2026-08-05
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/api-hmac-signature-replay-protection-knowledge-map.webp
 tags: [api-security, hmac, replay-protection, java, redis]
 excerpt: 从签名原文规范化、正文摘要和 HMAC-SHA256 出发，设计带时间窗、Nonce 原子去重与密钥轮换能力的 API 防重放链路。
 ---

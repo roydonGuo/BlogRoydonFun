@@ -2,7 +2,7 @@
 title: JFR 持续录制工程实践：环形留存、故障转储与 Java 服务诊断
 date: 2026-08-07
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/jfr-continuous-recording-engineering-knowledge-map.webp
 tags: [java, jvm, jfr, observability, performance]
 excerpt: 以 JDK 21 为基线，把 JFR 从临时性能分析工具改造成生产环境持续录制的“黑匣子”，并建立留存、转储、分析与安全治理闭环。
 ---

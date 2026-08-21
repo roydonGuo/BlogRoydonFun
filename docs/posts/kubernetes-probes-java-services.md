@@ -2,7 +2,7 @@
 title: Kubernetes 探针工程实践：启动、存活、就绪与 Java 服务治理
 date: 2026-08-07
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/kubernetes-probes-java-services-knowledge-map.webp
 tags: [kubernetes, java, spring-boot, observability, devops]
 excerpt: 从 kubelet 的三类探针状态机出发，厘清启动保护、故障重启与流量摘除边界，并用 Spring Boot Actuator 落地可观测、可演练的健康检查。
 ---

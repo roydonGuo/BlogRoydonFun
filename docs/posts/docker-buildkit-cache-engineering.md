@@ -2,7 +2,7 @@
 title: Docker BuildKit 构建缓存：从层复用到 CI 远程缓存
 date: 2026-08-04
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/docker-buildkit-cache-engineering-knowledge-map.webp
 tags: [docker, buildkit, cache, ci-cd, java]
 excerpt: 从缓存键、失效传播和 Cache Mount 出发，为 Java 镜像建立可复用、可迁移且不泄露凭据的 BuildKit 缓存链路。
 ---

@@ -2,12 +2,13 @@
 title: ES6 新语法特性解析
 date: 2026-06-05
 category: 前端开发
-cover: /covers/frontend.svg
+cover: /images/posts/es6-new-syntax-knowledge-map.webp
 tags: [js, es6, javascript]
 excerpt: 全面解析 ES6（ECMAScript 2015）中最实用的新语法特性，包括箭头函数、解构赋值、模板字符串等。
 ---
 
 # ES6 新语法特性解析
+<img src="/images/posts/es6-new-syntax-knowledge-map.webp" alt="ES6 新语法特性解析知识串联图" style="border-radius: 10px;" />
 
 ES6（ECMAScript 2015）是 JavaScript 发展史上最重要的版本之一，引入了大量现代化语法特性。
 

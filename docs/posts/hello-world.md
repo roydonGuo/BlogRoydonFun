@@ -2,12 +2,13 @@
 title: Hello World — 博客开篇
 date: 2026-06-12
 category: 随笔
-cover: /covers/life.svg
+cover: /images/posts/hello-world-knowledge-map.webp
 tags: [life, blog]
 excerpt: 这是我的第一篇博客文章，很高兴在这里与你相遇。
 ---
 
 # Hello World — 博客开篇
+<img src="/images/posts/hello-world-knowledge-map.webp" alt="Hello World — 博客开篇知识串联图" style="border-radius: 10px;" />
 
 这是我的第一篇博客文章。
 

@@ -2,7 +2,7 @@
 title: LLM Prompt 工程实践：指令分层、模板治理与注入防护
 date: 2026-08-14
 category: AI
-cover: /covers/backend.svg
+cover: /images/posts/llm-prompt-engineering-governance-knowledge-map.webp
 tags: [llm, prompt-engineering, spring-ai, prompt-injection, observability]
 excerpt: 从“Prompt 是一份运行时契约”出发，讲清指令层级、上下文分区、模板变量、示例设计、版本回归、注入防护与可观测性，并给出 Spring AI 2.0.0 的工单归类示例。
 ---

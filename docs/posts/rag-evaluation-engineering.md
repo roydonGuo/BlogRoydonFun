@@ -2,7 +2,7 @@
 title: RAG 评测工程实践：检索、生成与端到端回归
 date: 2026-08-12
 category: AI
-cover: /covers/backend.svg
+cover: /images/posts/rag-evaluation-engineering-knowledge-map.webp
 tags: [rag, llm-as-a-judge, spring-ai, retrieval]
 excerpt: 从 Query、Context、Response 三元关系出发，建立检索层、生成层与端到端评测体系，并用版本化数据集、Java 评测流水线和发布门禁把 RAG 调优变成可重复的工程过程。
 ---

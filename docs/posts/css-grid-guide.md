@@ -2,12 +2,13 @@
 title: CSS Grid 布局完全指南
 date: 2026-06-03
 category: 前端开发
-cover: /covers/frontend.svg
+cover: /images/posts/css-grid-guide-knowledge-map.webp
 tags: [css, layout, frontend]
 excerpt: 从入门到精通 CSS Grid 布局，掌握现代 Web 页面中最强大的二维布局系统。
 ---
 
 # CSS Grid 布局完全指南
+<img src="/images/posts/css-grid-guide-knowledge-map.webp" alt="CSS Grid 布局完全指南知识串联图" style="border-radius: 10px;" />
 
 CSS Grid 是 CSS 中最强大的布局系统，它让我们可以轻松实现二维布局。
 

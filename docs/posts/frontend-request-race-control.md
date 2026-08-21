@@ -2,7 +2,7 @@
 title: 前端异步请求竞态治理：AbortController、版本令牌与 Vue 清理
 date: 2026-08-06
 category: 前端开发
-cover: /covers/frontend.svg
+cover: /images/posts/frontend-request-race-control-knowledge-map.webp
 tags: [frontend, typescript, abort-controller, vue, concurrency]
 excerpt: 从搜索联想的乱序覆盖问题出发，建立取消旧请求、丢弃过期结果、明确状态归属与生命周期清理的完整治理链路。
 ---

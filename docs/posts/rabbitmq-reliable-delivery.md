@@ -2,12 +2,13 @@
 title: RabbitMQ 可靠投递：Confirm、Return 与消费幂等
 date: 2026-08-04
 category: MQ
-cover: /covers/backend.svg
+cover: /images/posts/rabbitmq-reliable-delivery-knowledge-map.webp
 tags: [rabbitmq, spring-amqp, message-queue]
 excerpt: 从生产者 Confirm、mandatory Return、消费确认到 Outbox 与幂等表，建立 RabbitMQ 端到端至少一次投递链路。
 ---
 
 # RabbitMQ 可靠投递：Confirm、Return 与消费幂等
+<img src="/images/posts/rabbitmq-reliable-delivery-knowledge-map.webp" alt="RabbitMQ 可靠投递：Confirm、Return 与消费幂等知识串联图" style="border-radius: 10px;" />
 
 在订单创建后发送“扣减库存”消息，看起来只需要一次 `convertAndSend`。但生产环境中的失败窗口远不止一次网络调用：数据库可能已经提交而消息尚未发送，消息可能进入交换机却没有匹配队列，消费者也可能完成业务后在确认前宕机。
 

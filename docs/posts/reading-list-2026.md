@@ -2,12 +2,13 @@
 title: 2026 上半年阅读书单
 date: 2026-06-01
 category: 随笔
-cover: /covers/life.svg
+cover: /images/posts/reading-list-2026-knowledge-map.webp
 tags: [reading, life, books]
 excerpt: 整理上半年读过的几本书，分享一些阅读感悟和值得推荐的好书。
 ---
 
 # 2026 上半年阅读书单
+<img src="/images/posts/reading-list-2026-knowledge-map.webp" alt="2026 上半年阅读书单知识串联图" style="border-radius: 10px;" />
 
 转眼 2026 年已经过半，记录一下这半年读过的书。
 

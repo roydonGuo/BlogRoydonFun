@@ -2,12 +2,13 @@
 title: MySQL 索引优化实战
 date: 2026-06-08
 category: MySQL
-cover: /covers/backend.svg
+cover: /images/posts/mysql-index-optimization-knowledge-map.webp
 tags: [mysql, database, index]
 excerpt: 通过实际案例学习 MySQL 索引的设计原则与优化技巧，提升查询性能。
 ---
 
 # MySQL 索引优化实战
+<img src="/images/posts/mysql-index-optimization-knowledge-map.webp" alt="MySQL 索引优化实战知识串联图" style="border-radius: 10px;" />
 
 索引是数据库性能优化的核心手段之一。本文将结合实际案例，介绍 MySQL 索引的设计原则和优化技巧。
 

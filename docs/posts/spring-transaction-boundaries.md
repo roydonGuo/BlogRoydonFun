@@ -2,7 +2,7 @@
 title: Spring 事务边界：代理、自调用与七种传播行为
 date: 2026-08-06
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/spring-transaction-boundaries-knowledge-map.webp
 tags: [java, spring, transaction, aop, database]
 excerpt: 从 AOP 代理调用链出发，厘清 Spring 声明式事务何时创建、加入、挂起或失效，并用七种传播行为设计可验证的业务边界。
 ---

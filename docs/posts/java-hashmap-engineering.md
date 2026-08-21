@@ -2,7 +2,7 @@
 title: Java HashMap 工程实践：哈希定位、冲突树化与扩容边界
 date: 2026-08-07
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/java-hashmap-engineering-knowledge-map.webp
 tags: [java, collections, hashmap, performance, concurrency]
 excerpt: 以 JDK 21 为基线，从一次 put/get 的真实路径出发，讲清 HashMap 的桶定位、链表与红黑树、扩容拆分、容量估算及并发边界。
 ---

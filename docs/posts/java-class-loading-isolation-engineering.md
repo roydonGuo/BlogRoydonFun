@@ -2,7 +2,7 @@
 title: Java 类加载工程实践：生命周期、双亲委派与类隔离
 date: 2026-08-13
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/java-class-loading-isolation-engineering-knowledge-map.webp
 tags: [java, jvm, classloader, spi, plugin]
 excerpt: 从 Java SE 21 的类加载规范出发，讲清加载、链接、初始化的完整生命周期，双亲委派与类身份，并用可卸载插件示例串起 SPI、类隔离、故障诊断和资源治理。
 ---

@@ -2,12 +2,13 @@
 title: Java 21 虚拟线程在 Spring Boot 中的工程化实践
 date: 2026-08-04
 category: 后端开发
-cover: /covers/backend.svg
+cover: /images/posts/java-virtual-threads-spring-boot-knowledge-map.webp
 tags: [java, jvm, spring-boot, concurrency, performance]
 excerpt: 从调度原理、版本差异到 Spring Boot 聚合接口实战，讲清虚拟线程的适用边界、下游限流、上下文传播与排障方法。
 ---
 
 # Java 21 虚拟线程在 Spring Boot 中的工程化实践
+<img src="/images/posts/java-virtual-threads-spring-boot-knowledge-map.webp" alt="Java 21 虚拟线程在 Spring Boot 中的工程化实践知识串联图" style="border-radius: 10px;" />
 
 在传统 Spring MVC 应用中，一个请求通常占用一个平台线程。线程执行 JDBC、HTTP 或 Redis 调用时，大部分时间其实在等待 I/O，但底层操作系统线程仍被占用。为了避免线程数量失控，我们习惯用固定线程池限制并发；代价则是请求会在线程池队列中继续等待。
 
