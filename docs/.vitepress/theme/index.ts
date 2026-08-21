@@ -12,6 +12,7 @@ import PostPrevNext from '../components/PostPrevNext.vue'
 import PostSidebar from '../components/PostSidebar.vue'
 import KnowledgeGraph from '../components/KnowledgeGraph.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
+import ArticleReader from '../components/ArticleReader.vue'
 import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
@@ -78,6 +79,8 @@ const AnimatedLayout = defineComponent({
       // 文章页左侧栏复用 posts.data.ts，自动按分类展示全部文章。
       'sidebar-nav-before': () => h(PostSidebar),
       'aside-top': () => h(PostFilter),
+      // 在文章正文前提供浏览器原生语音朗读控件。
+      'doc-before': () => h(ArticleReader),
       // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
       'doc-after': () => h(PostPrevNext),
     })
