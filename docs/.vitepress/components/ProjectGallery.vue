@@ -243,7 +243,7 @@ let masonry: Masonry | null = null
 let loadMoreObserver: IntersectionObserver | null = null
 const currentYear = new Date().getFullYear()
 const techCount = computed(() => new Set(projects.flatMap(item => item.languages)).size)
-// 项目始终按数值型 ID 升序展示，确保 10 不会排在 2 前面。
+// 项目按 ID 升序
 const filteredProjects = computed(() => projects.filter(item => activeFilter.value === 'all' || item.category === activeFilter.value).sort((a, b) => Number(a.id) - Number(b.id)))
 const visibleProjects = computed(() => filteredProjects.value.slice(0, visibleCount.value))
 const hasMore = computed(() => visibleCount.value < filteredProjects.value.length)
