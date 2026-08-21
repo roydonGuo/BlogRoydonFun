@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vitepress'
 import { data as posts } from '../../posts/posts.data'
 
 const route = useRoute()
+const showBackToTop = ref(false)
 
 // Normalize trailing slashes so dev and build URLs resolve to the same post.
 function normalizePath(path: string): string {
@@ -30,6 +31,26 @@ const nextPost = computed(() => {
 const showPager = computed(() => {
   return currentIndex.value >= 0 && (prevPost.value || nextPost.value)
 })
+const isPostDetail = computed(() => currentIndex.value >= 0)
+
+// 使用被动监听更新按钮状态，避免影响文章正文的滚动性能。
+function updateBackToTopVisibility() {
+  showBackToTop.value = window.scrollY > 480
+}
+
+function scrollToTop() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'})
+}
+
+onMounted(() => {
+  updateBackToTopVisibility()
+  window.addEventListener('scroll', updateBackToTopVisibility, {passive: true})
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', updateBackToTopVisibility)
+})
 </script>
 
 <template>
@@ -48,6 +69,22 @@ const showPager = computed(() => {
       </a>
     </div>
   </nav>
+
+  <!-- 仅在文章详情路由中提供固定于右下角的返回顶部入口。 -->
+  <button
+    v-if="isPostDetail"
+    type="button"
+    class="detail-back-to-top"
+    :class="{ 'is-visible': showBackToTop }"
+    :tabindex="showBackToTop ? 0 : -1"
+    aria-label="返回文章顶部"
+    title="返回顶部"
+    @click="scrollToTop"
+  >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  </button>
 </template>
 
 <style scoped>
@@ -99,6 +136,54 @@ const showPager = computed(() => {
   .post-prev-next {
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 16px;
+  }
+}
+.detail-back-to-top {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 30;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--vp-c-border-1);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vp-c-bg) 88%, transparent);
+  color: var(--vp-c-text-1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transform: translateY(14px) scale(0.92);
+  backdrop-filter: blur(12px);
+  transition: opacity 0.2s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+
+.detail-back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.detail-back-to-top:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.detail-back-to-top:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .detail-back-to-top {
+    right: 16px;
+    bottom: 18px;
+    width: 42px;
+    height: 42px;
   }
 }
 </style>

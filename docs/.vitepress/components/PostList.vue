@@ -41,11 +41,26 @@
       </div>
     </div>
     <p v-else class="empty">没有匹配的文章 🙃</p>
+
+    <!-- 页面滚动较深时显示，方便从文章列表快速返回顶部。 -->
+    <button
+      type="button"
+      class="back-to-top"
+      :class="{ 'is-visible': showBackToTop }"
+      :tabindex="showBackToTop ? 0 : -1"
+      aria-label="返回文章列表顶部"
+      title="返回顶部"
+      @click="scrollToTop"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
   filteredPosts,
   activeFilter,
@@ -56,6 +71,7 @@ import {
 const PAGE_SIZE = 10
 const visibleCount = ref(PAGE_SIZE)
 const loadMoreTrigger = ref<HTMLElement | null>(null)
+const showBackToTop = ref(false)
 const visiblePosts = computed(() => filteredPosts.value.slice(0, visibleCount.value))
 const hasMore = computed(() => visibleCount.value < filteredPosts.value.length)
 
@@ -82,7 +98,25 @@ watch(loadMoreTrigger, (trigger) => {
   observer.observe(trigger)
 }, { flush: 'post' })
 
-onBeforeUnmount(() => observer?.disconnect())
+// 使用被动滚动监听更新按钮状态，避免阻塞页面滚动。
+function updateBackToTopVisibility() {
+  showBackToTop.value = window.scrollY > 480
+}
+
+function scrollToTop() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
+}
+
+onMounted(() => {
+  updateBackToTopVisibility()
+  window.addEventListener('scroll', updateBackToTopVisibility, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  window.removeEventListener('scroll', updateBackToTopVisibility)
+})
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('zh-CN', {
@@ -270,6 +304,46 @@ function formatDate(date: string) {
   color: var(--vp-c-text-3);
 }
 
+.back-to-top {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 30;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vp-c-bg) 88%, transparent);
+  color: var(--vp-c-text-1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transform: translateY(14px) scale(0.92);
+  backdrop-filter: blur(12px);
+  transition: opacity 0.2s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+
 .empty {
   text-align: center;
   color: var(--vp-c-text-3);
@@ -277,6 +351,13 @@ function formatDate(date: string) {
 }
 
 @media (max-width: 640px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 18px;
+    width: 42px;
+    height: 42px;
+  }
+
   .card-link {
     flex-direction: column-reverse;
   }
