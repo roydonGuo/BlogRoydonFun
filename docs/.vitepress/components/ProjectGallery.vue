@@ -41,7 +41,7 @@
     </aside>
 
     <section
-        class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7"
+        class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 [overflow-anchor:none] max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7"
         aria-label="项目瀑布流">
       <header class="flex items-center justify-between">
         <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
@@ -88,6 +88,13 @@
           </div>
         </button>
       </div>
+      <!-- 触底后继续追加下一批项目，避免一次性创建全部瀑布流卡片。 -->
+      <div
+          v-if="hasMore"
+          ref="loadMoreTrigger"
+          class="py-4 text-center text-[11px] font-bold text-text-3"
+          aria-label="继续加载项目"
+      >继续向下滚动，加载更多项目</div>
     </section>
 
     <!-- 项目详情弹窗卡片 -->
@@ -229,11 +236,17 @@ const selected = ref<Project | null>(null)
 const slideIndex = ref(0)
 const closeButton = ref<HTMLButtonElement | null>(null)
 const masonryGrid = ref<HTMLElement | null>(null)
+const loadMoreTrigger = ref<HTMLElement | null>(null)
+const PAGE_SIZE = 10
+const visibleCount = ref(PAGE_SIZE)
 let masonry: Masonry | null = null
+let loadMoreObserver: IntersectionObserver | null = null
 const currentYear = new Date().getFullYear()
 const techCount = computed(() => new Set(projects.flatMap(item => item.languages)).size)
 // 项目始终按数值型 ID 升序展示，确保 10 不会排在 2 前面。
-const visibleProjects = computed(() => projects.filter(item => activeFilter.value === 'all' || item.category === activeFilter.value).sort((a, b) => Number(a.id) - Number(b.id)))
+const filteredProjects = computed(() => projects.filter(item => activeFilter.value === 'all' || item.category === activeFilter.value).sort((a, b) => Number(a.id) - Number(b.id)))
+const visibleProjects = computed(() => filteredProjects.value.slice(0, visibleCount.value))
+const hasMore = computed(() => visibleCount.value < filteredProjects.value.length)
 const activeSlide = computed(() => selected.value?.slides[slideIndex.value] ?? {src: '', alt: ''})
 const countByFilter = (filter: string) => filter === 'all' ? projects.length : projects.filter(item => item.category === filter).length
 
@@ -283,11 +296,62 @@ async function initializeMasonry() {
   imagesLoaded(masonryGrid.value).on('progress', () => masonry?.layout())
 }
 
-watch(activeFilter, async () => {
+// 新卡片进入 DOM 后通知 Masonry 重收集项目，并在图片加载时校正布局。
+async function refreshMasonry() {
   await nextTick()
-  masonry?.reloadItems()
-  masonry?.layout()
+  if (!masonryGrid.value || !masonry) return
+  masonry.reloadItems()
+  masonry.layout()
+  const {default: imagesLoaded} = await import('imagesloaded')
+  imagesLoaded(masonryGrid.value).on('progress', () => masonry?.layout())
+}
+
+// 仅将新增卡片交给 Masonry，避免全量重排导致已有卡片和滚动位置抖动。
+async function appendProjects(previousCount: number) {
+  await nextTick()
+  if (!masonryGrid.value || !masonry) return
+
+  const newItems = Array.from(masonryGrid.value.querySelectorAll<HTMLElement>('.masonry-item')).slice(previousCount)
+  if (!newItems.length) return
+
+  newItems.forEach((item, index) => {
+    item.classList.add('is-project-entering')
+    item.style.setProperty('--project-enter-delay', `${Math.min(index * 45, 270)}ms`)
+    item.addEventListener('animationend', () => {
+      item.classList.remove('is-project-entering')
+      item.style.removeProperty('--project-enter-delay')
+    }, {once: true})
+  })
+
+  masonry.appended(newItems)
+  const {default: imagesLoaded} = await import('imagesloaded')
+  imagesLoaded(newItems).on('progress', () => masonry?.layout())
+}
+
+// 切换项目分类后重新从首批 10 个项目开始展示。
+watch(activeFilter, () => {
+  visibleCount.value = PAGE_SIZE
+  refreshMasonry()
 })
+
+// 哨兵节点进入可视区域时，每次追加 10 个项目。
+watch(loadMoreTrigger, (trigger) => {
+  loadMoreObserver?.disconnect()
+  loadMoreObserver = null
+
+  if (!trigger || typeof IntersectionObserver === 'undefined') return
+
+  loadMoreObserver = new IntersectionObserver((entries) => {
+    if (!entries[0]?.isIntersecting || !hasMore.value) return
+    const previousCount = visibleProjects.value.length
+    visibleCount.value = Math.min(visibleCount.value + PAGE_SIZE, filteredProjects.value.length)
+    appendProjects(previousCount)
+  }, {
+    rootMargin: '0px 0px 160px',
+  })
+  loadMoreObserver.observe(trigger)
+}, {flush: 'post'})
+
 let pageFooter: HTMLElement | null = null
 
 // 外层布局使用 Tailwind 工具类，离开项目页时恢复 VitePress 默认状态。
@@ -301,6 +365,8 @@ onMounted(() => {
 
 if (typeof window !== 'undefined') window.addEventListener('keydown', onKeydown)
 onBeforeUnmount(() => {
+  loadMoreObserver?.disconnect()
+  loadMoreObserver = null
   masonry?.destroy()
   masonry = null
   if (typeof window !== 'undefined') window.removeEventListener('keydown', onKeydown);
@@ -335,6 +401,23 @@ onBeforeUnmount(() => {
   filter: blur(18px);
   content: '';
   pointer-events: none;
+}
+
+/* 新增项目使用独立 translate 属性入场，不覆盖 Masonry 写入的定位 transform。 */
+.masonry-item.is-project-entering {
+  animation: project-card-enter .52s cubic-bezier(.16, 1, .3, 1) var(--project-enter-delay, 0ms) both;
+  will-change: opacity, translate;
+}
+
+@keyframes project-card-enter {
+  from {
+    opacity: 0;
+    translate: 0 52px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* 项目详情弹窗：仅动画合成友好的 opacity 与 transform，避免首次打开闪白。 */
@@ -405,6 +488,11 @@ onBeforeUnmount(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .masonry-item.is-project-entering {
+    animation-duration: .01ms;
+    animation-delay: 0ms;
+  }
+
   .project-modal-enter-active,
   .project-modal-leave-active,
   .project-modal-enter-active .project-modal-card,

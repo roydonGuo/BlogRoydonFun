@@ -357,5 +357,621 @@
         "alt": "Daily Engineering 内容创作界面"
       }
     ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Daily Engineering",
+    "category": "opensource",
+    "categoryLabel": "CONTENT SYSTEM",
+    "year": 2026,
+    "development": "2025.12 — 至今",
+    "status": "持续更新",
+    "summary": "以工程案例沉淀 Java、数据库与 AI 实践的技术博客。",
+    "description": "基于 VitePress 构建的个人技术内容系统，包含文章分类、全文搜索、归档、知识图谱和 RSS，持续记录真实问题的分析与解决过程。",
+    "tagline": "写下的不只是答案，更是抵达答案的路径。",
+    "languages": [
+      "VitePress",
+      "Vue 3",
+      "TypeScript",
+      "Markdown"
+    ],
+    "github": "https://github.com/roydonGuo",
+    "website": "/",
+    "cover": "/images/projects/6/cover.webp",
+    "coverAlt": "笔记本电脑上的编程界面",
+    "slides": [
+      {
+        "src": "/images/projects/6/slide-01.webp",
+        "alt": "Daily Engineering 内容创作界面"
+      }
+    ]
   }
 ]
