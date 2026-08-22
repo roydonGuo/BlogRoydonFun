@@ -118,7 +118,7 @@ const loadMoreError = ref('')
 const hasMore = ref(true)
 const currentPage = ref(0)
 const loadMoreSentinel = ref<HTMLElement | null>(null)
-const pageSize = 15
+const pageSize = 20
 let requestController: AbortController | undefined
 let loadMoreObserver: IntersectionObserver | undefined
 
