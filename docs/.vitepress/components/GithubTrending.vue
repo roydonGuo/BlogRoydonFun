@@ -22,8 +22,8 @@
           <option v-for="item in languages" :key="item" :value="item">{{ item }}</option>
         </select>
       </label>
-      <button class="refresh-button" type="button" :disabled="loading" aria-label="刷新榜单" @click="loadRepositories">
-        <svg :class="{ spinning: loading }" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"/></svg>
+      <button class="refresh-button" type="button" :disabled="loading || loadingMore" aria-label="刷新榜单" @click="resetAndLoad">
+        <svg :class="{ spinning: loading || loadingMore }" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"/></svg>
         刷新
       </button>
     </div>
@@ -35,37 +35,56 @@
     <div v-else-if="error" class="error-state" role="alert">
       <span>!</span>
       <div><strong>榜单暂时加载失败</strong><p>{{ error }}</p></div>
-      <button type="button" @click="loadRepositories">重新加载</button>
+      <button type="button" @click="resetAndLoad">重新加载</button>
     </div>
 
-    <ol v-else class="repo-list">
-      <li v-for="(repo, index) in repositories" :key="repo.id" class="repo-card">
-        <span class="rank" :class="`rank-${index + 1}`">{{ String(index + 1).padStart(2, '0') }}</span>
-        <div class="repo-main">
-          <div class="repo-title-row">
-            <img :src="repo.owner.avatar_url" :alt="`${repo.owner.login} 头像`" width="28" height="28">
-            <a :href="repo.html_url" target="_blank" rel="noopener noreferrer">{{ repo.full_name }}</a>
-            <span v-if="repo.language" class="language"><i :style="{ background: languageColor(repo.language) }"/>{{ repo.language }}</span>
+    <template v-else>
+      <ol v-if="repositories.length" class="repo-list">
+        <li v-for="(repo, index) in repositories" :key="repo.id" class="repo-card">
+          <span class="rank" :class="`rank-${index + 1}`">{{ String(index + 1).padStart(2, '0') }}</span>
+          <div class="repo-main">
+            <div class="repo-title-row">
+              <img :src="repo.owner.avatar_url" :alt="`${repo.owner.login} 头像`" width="28" height="28">
+              <a :href="repo.html_url" target="_blank" rel="noopener noreferrer">{{ repo.full_name }}</a>
+              <span v-if="repo.language" class="language"><i :style="{ background: languageColor(repo.language) }"/>{{ repo.language }}</span>
+            </div>
+            <p>{{ repo.description || '这个仓库暂时没有简介。' }}</p>
+            <div class="repo-meta">
+              <span title="Stars"><svg viewBox="0 0 24 24"><path d="m12 2.7 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.3l6.2-.9Z"/></svg>{{ compactNumber(repo.stargazers_count) }}</span>
+              <span title="Forks"><svg viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7v2c0 2 1 3 3 3h6c2 0 3-1 3-3V7M12 12v5"/></svg>{{ compactNumber(repo.forks_count) }}</span>
+              <span>创建于 {{ formatDate(repo.created_at) }}</span>
+            </div>
           </div>
-          <p>{{ repo.description || '这个仓库暂时没有简介。' }}</p>
-          <div class="repo-meta">
-            <span title="Stars"><svg viewBox="0 0 24 24"><path d="m12 2.7 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.3l6.2-.9Z"/></svg>{{ compactNumber(repo.stargazers_count) }}</span>
-            <span title="Forks"><svg viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7v2c0 2 1 3 3 3h6c2 0 3-1 3-3V7M12 12v5"/></svg>{{ compactNumber(repo.forks_count) }}</span>
-            <span>创建于 {{ formatDate(repo.created_at) }}</span>
-          </div>
-        </div>
-        <a class="repo-link" :href="repo.html_url" target="_blank" rel="noopener noreferrer" :aria-label="`查看 ${repo.full_name}`">
-          <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-      </li>
-    </ol>
+          <a class="repo-link" :href="repo.html_url" target="_blank" rel="noopener noreferrer" :aria-label="`查看 ${repo.full_name}`">
+            <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </li>
+      </ol>
+
+      <div v-else class="empty-state">
+        <strong>当前筛选条件下暂无项目</strong>
+        <p>换一个时间范围或编程语言试试。</p>
+      </div>
+
+      <div v-if="loadingMore" class="repo-list load-more-skeleton" aria-label="正在加载更多项目" aria-busy="true">
+        <div v-for="index in 3" :key="index" class="repo-card skeleton"><i/><div><b/><span/><span/></div></div>
+      </div>
+
+      <div v-if="loadMoreError" class="load-more-error" role="alert">
+        <span>{{ loadMoreError }}</span>
+        <button type="button" @click="loadMore">重试</button>
+      </div>
+      <p v-else-if="repositories.length && !hasMore" class="end-message">— 已经到底了 —</p>
+
+      <div v-show="hasMore && !loadMoreError" ref="loadMoreSentinel" class="load-more-sentinel" aria-hidden="true" />
+    </template>
 
     <p class="data-note">榜单按所选时间段内新建仓库的 Star 总数排序，数据来自 GitHub REST API，可能受公共接口限流影响。</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 type Period = 'daily' | 'weekly' | 'monthly'
 interface Repository {
@@ -79,7 +98,7 @@ interface Repository {
   created_at: string
   owner: { login: string; avatar_url: string }
 }
-interface SearchResponse { items?: Repository[]; message?: string }
+interface SearchResponse { total_count?: number; items?: Repository[]; message?: string }
 
 const periods: { label: string; value: Period }[] = [
   { label: '今日', value: 'daily' },
@@ -93,8 +112,15 @@ const period = ref<Period>('weekly')
 const language = ref('')
 const repositories = ref<Repository[]>([])
 const loading = ref(false)
+const loadingMore = ref(false)
 const error = ref('')
+const loadMoreError = ref('')
+const hasMore = ref(true)
+const currentPage = ref(0)
+const loadMoreSentinel = ref<HTMLElement | null>(null)
+const pageSize = 15
 let requestController: AbortController | undefined
+let loadMoreObserver: IntersectionObserver | undefined
 
 function sinceDate(value: Period): string {
   const date = new Date()
@@ -103,15 +129,19 @@ function sinceDate(value: Period): string {
   return date.toISOString().slice(0, 10)
 }
 
-async function loadRepositories() {
-  requestController?.abort()
+async function loadRepositories(targetPage: number, append: boolean) {
+  if (append && (loading.value || loadingMore.value || !hasMore.value)) return
+
+  if (!append) requestController?.abort()
   const controller = new AbortController()
   requestController = controller
-  loading.value = true
-  error.value = ''
+  if (append) loadingMore.value = true
+  else loading.value = true
+  if (append) loadMoreError.value = ''
+  else error.value = ''
   const qualifiers = [`created:>=${sinceDate(period.value)}`, 'stars:>0']
   if (language.value) qualifiers.push(`language:${language.value}`)
-  const params = new URLSearchParams({ q: qualifiers.join(' '), sort: 'stars', order: 'desc', per_page: '15' })
+  const params = new URLSearchParams({ q: qualifiers.join(' '), sort: 'stars', order: 'desc', per_page: String(pageSize), page: String(targetPage) })
 
   try {
     const response = await fetch(`https://api.github.com/search/repositories?${params}`, {
@@ -120,14 +150,44 @@ async function loadRepositories() {
     })
     const data = await response.json() as SearchResponse
     if (!response.ok) throw new Error(response.status === 403 || response.status === 429 ? 'GitHub 公共接口请求次数已达上限，请稍后再试。' : data.message || `GitHub API 返回 ${response.status}`)
-    repositories.value = data.items ?? []
+    const incoming = data.items ?? []
+    if (append) {
+      const existingIds = new Set(repositories.value.map(repo => repo.id))
+      repositories.value.push(...incoming.filter(repo => !existingIds.has(repo.id)))
+    } else {
+      repositories.value = incoming
+    }
+    currentPage.value = targetPage
+    const searchableTotal = Math.min(data.total_count ?? 0, 1000)
+    hasMore.value = incoming.length === pageSize && targetPage * pageSize < searchableTotal
   } catch (caught) {
     if (caught instanceof DOMException && caught.name === 'AbortError') return
-    repositories.value = []
-    error.value = caught instanceof Error ? caught.message : '网络连接异常，请稍后再试。'
+    const message = caught instanceof Error ? caught.message : '网络连接异常，请稍后再试。'
+    if (append) loadMoreError.value = message
+    else {
+      repositories.value = []
+      error.value = message
+    }
   } finally {
-    if (requestController === controller) loading.value = false
+    if (requestController === controller) {
+      loading.value = false
+      loadingMore.value = false
+    }
   }
+}
+
+function resetAndLoad() {
+  requestController?.abort()
+  repositories.value = []
+  currentPage.value = 0
+  hasMore.value = true
+  error.value = ''
+  loadMoreError.value = ''
+  void loadRepositories(1, false)
+}
+
+function loadMore() {
+  void loadRepositories(currentPage.value + 1, true)
 }
 
 function compactNumber(value: number): string {
@@ -138,8 +198,21 @@ function formatDate(value: string): string {
 }
 function languageColor(value: string): string { return colorMap[value] || '#8b949e' }
 
-watch([period, language], loadRepositories)
-onMounted(loadRepositories)
+watch([period, language], resetAndLoad)
+watch(loadMoreSentinel, (sentinel, previousSentinel) => {
+  if (previousSentinel) loadMoreObserver?.unobserve(previousSentinel)
+  if (sentinel) loadMoreObserver?.observe(sentinel)
+})
+onMounted(() => {
+  loadMoreObserver = new IntersectionObserver((entries) => {
+    if (entries[0]?.isIntersecting) loadMore()
+  }, { rootMargin: '320px 0px' })
+  resetAndLoad()
+})
+onBeforeUnmount(() => {
+  requestController?.abort()
+  loadMoreObserver?.disconnect()
+})
 </script>
 
 <style scoped>
@@ -182,6 +255,13 @@ onMounted(loadRepositories)
 .skeleton { min-height: 112px; pointer-events: none; }
 .skeleton i { width: 34px; height: 18px; }.skeleton div { display: grid; flex: 1; gap: 10px; }.skeleton b { width: 36%; height: 16px; }.skeleton span { width: 82%; height: 11px; }.skeleton span:last-child { width: 48%; }
 .skeleton i,.skeleton b,.skeleton span { display: block; border-radius: 5px; background: linear-gradient(90deg,var(--vp-c-bg-soft),var(--vp-c-divider),var(--vp-c-bg-soft)); background-size: 200% 100%; animation: shine 1.3s infinite; }
+.load-more-skeleton { margin-top: 10px; }
+.load-more-sentinel { height: 1px; }
+.load-more-error { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; color: var(--vp-c-text-2); font-size: 12px; }
+.load-more-error button { padding: 5px 10px; border: 1px solid var(--vp-c-divider); border-radius: 7px; color: var(--vp-c-brand-1); background: var(--vp-c-bg); cursor: pointer; }
+.end-message { margin: 18px 0 0; color: var(--vp-c-text-3); font-size: 11px; text-align: center; }
+.empty-state { padding: 64px 20px; border: 1px dashed var(--vp-c-divider); border-radius: 15px; color: var(--vp-c-text-2); text-align: center; }
+.empty-state p { margin: 6px 0 0; color: var(--vp-c-text-3); font-size: 13px; }
 .error-state { display: flex; align-items: center; gap: 14px; min-height: 130px; padding: 22px; border: 1px solid color-mix(in srgb, var(--vp-c-danger-1) 30%, transparent); border-radius: 15px; background: var(--vp-c-danger-soft); }
 .error-state > span { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; color: white; background: var(--vp-c-danger-1); font-weight: 800; }.error-state div { flex: 1; }.error-state p { margin: 4px 0 0; color: var(--vp-c-text-2); font-size: 13px; }.error-state button { padding: 8px 12px; border: 0; border-radius: 8px; color: white; background: var(--vp-c-danger-1); cursor: pointer; }
 .data-note { margin: 14px 2px 0; color: var(--vp-c-text-3); font-size: 11px; line-height: 1.6; text-align: center; }
