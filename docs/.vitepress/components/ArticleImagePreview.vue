@@ -82,6 +82,7 @@ function handleKeydown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
+  document.documentElement.classList.add('article-image-preview-enabled')
   document.addEventListener('click', handleArticleClick)
   document.addEventListener('keydown', handleKeydown)
 })
@@ -89,7 +90,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleArticleClick)
   document.removeEventListener('keydown', handleKeydown)
-  document.documentElement.classList.remove('image-preview-open')
+  document.documentElement.classList.remove('article-image-preview-enabled', 'image-preview-open')
 })
 </script>
 
@@ -121,7 +122,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-.VPDoc .vp-doc img:not(a img) { cursor: zoom-in; }
+html.article-image-preview-enabled .VPDoc .vp-doc img:not(a img) { cursor: zoom-in; }
 html.image-preview-open { overflow: hidden; }
 .image-preview-overlay { position: fixed; z-index: 1000; inset: 0; display: grid; overflow: hidden; padding: 56px 24px 72px; place-items: center; background: rgba(8, 12, 24, .88); backdrop-filter: blur(8px); }
 .image-preview-content { max-width: min(94vw, 1600px); max-height: calc(100vh - 128px); object-fit: contain; border-radius: 8px; box-shadow: 0 24px 80px rgba(0, 0, 0, .45); cursor: zoom-in; transform-origin: center; transition: transform .18s ease; }

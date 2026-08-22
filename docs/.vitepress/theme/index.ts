@@ -1,5 +1,5 @@
 // https://vitepress.dev/guide/custom-theme
-import { defineComponent, Fragment, h, nextTick, provide } from 'vue'
+import { computed, defineComponent, Fragment, h, nextTick, provide } from 'vue'
 import { useData } from 'vitepress'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -11,6 +11,8 @@ import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
 import PostSidebar from '../components/PostSidebar.vue'
 import KnowledgeGraph from '../components/KnowledgeGraph.vue'
+import ProgrammingResources from '../components/ProgrammingResources.vue'
+import GithubTrending from '../components/GithubTrending.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import ArticleReader from '../components/ArticleReader.vue'
 import ArticleImagePreview from '../components/ArticleImagePreview.vue'
@@ -49,7 +51,11 @@ function canAnimateThemeChange(): boolean {
 
 const AnimatedLayout = defineComponent({
   setup() {
-    const { isDark } = useData()
+    const { isDark, page } = useData()
+    const isPostDetail = computed(() => {
+      const path = page.value.relativePath.replace(/\\/g, '/')
+      return path.startsWith('posts/') && path !== 'posts/index.md'
+    })
 
     // 覆盖默认主题切换行为，让新主题从用户点击的位置向外扩散。
     provide('toggle-appearance', async (event: MouseEvent) => {
@@ -85,8 +91,8 @@ const AnimatedLayout = defineComponent({
       // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
       'doc-after': () => h(Fragment, null, [
         h(PostPrevNext),
-        // 大图组件通过 Teleport 展示，不改变文章正文和上一篇/下一篇布局。
-        h(ArticleImagePreview),
+        // 只在文章详情页挂载大图组件；Teleport 不改变正文和导航布局。
+        isPostDetail.value ? h(ArticleImagePreview) : null,
       ]),
     })
   },
@@ -102,6 +108,8 @@ export default {
     // 项目页使用独立组件承载瀑布流、筛选与详情弹窗交互。
     app.component('ProjectGallery', ProjectGallery)
     app.component('KnowledgeGraph', KnowledgeGraph)
+    app.component('ProgrammingResources', ProgrammingResources)
+    app.component('GithubTrending', GithubTrending)
     app.component('MermaidDiagram', MermaidDiagram)
 
     // VitePress 客户端路由复用页面，需要在每次文章切换后处理新链接。
