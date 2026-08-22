@@ -143,7 +143,7 @@ onMounted(loadRepositories)
 </script>
 
 <style scoped>
-.trending-page { margin: -8px auto 24px; }
+.trending-page { margin: 1rem auto; }
 .page-hero { position: relative; overflow: hidden; padding: 36px 28px 38px; text-align: center; border: 1px solid var(--vp-c-divider); border-radius: 24px; background: radial-gradient(circle at 50% -20%, rgba(36,69,235,.23), transparent 48%), var(--vp-c-bg-soft); }
 .hero-mark { display: grid; width: 54px; height: 54px; margin: 0 auto 14px; place-items: center; border-radius: 17px; color: white; background: #111827; box-shadow: 0 12px 28px rgba(17,24,39,.2); }
 .hero-mark svg { width: 32px; fill: currentColor; }

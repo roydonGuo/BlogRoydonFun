@@ -111,7 +111,7 @@ function resetFilters() {
 </script>
 
 <style scoped>
-.resource-page { margin: -8px auto 24px; }
+.resource-page { margin: 1rem auto; }
 .page-hero { position: relative; overflow: hidden; padding: 44px 28px 40px; text-align: center; border: 1px solid var(--vp-c-divider); border-radius: 24px; background: radial-gradient(circle at 15% 20%, rgba(36,69,235,.17), transparent 28%), radial-gradient(circle at 85% 70%, rgba(108,140,255,.16), transparent 30%), var(--vp-c-bg-soft); }
 .page-hero::after { content: '</>'; position: absolute; right: 4%; bottom: -36px; color: var(--vp-c-brand-1); font: 900 112px/1 monospace; opacity: .055; transform: rotate(-8deg); }
 .eyebrow { color: var(--vp-c-brand-1); font-size: 12px; font-weight: 800; letter-spacing: .2em; }
