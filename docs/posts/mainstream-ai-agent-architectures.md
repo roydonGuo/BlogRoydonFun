@@ -4,14 +4,14 @@ date: 2026-08-23
 category: AI
 cover: /images/posts/mainstream-ai-agent-architectures-knowledge-map.webp
 tags: [ai, agent, react, planning, reflection, deep-research, hitl, multi-agent]
-excerpt: Agent 架构的本质是如何组织状态、决策、工具、反馈与停止条件。本文横向拆解六类主流架构解决的问题、运行机制、场景和取舍，并给出逐步完整但足够精简的伪代码。
+excerpt: Agent 架构的本质是如何组织状态、决策、工具、反馈与停止条件。本文横向拆解六类主流架构解决的问题、运行机制、场景和取舍，并给出带数据结构、接口和异常分支的 Java 示例。
 ---
 
 # 主流 AI Agent 架构全景：ReAct、Plan-and-Execute、Reflection、Deep Research、HITL 与 Multi-Agent
 
 <img src="/images/posts/mainstream-ai-agent-architectures-knowledge-map.webp" alt="主流 AI Agent 架构全景：ReAct、Plan-and-Execute、Reflection、Deep Research、HITL 与 Multi-Agent知识串联图" style="border-radius: 10px;" />
 
-Agent 架构的本质是如何组织状态、决策、工具、反馈与停止条件。本文横向拆解六类主流架构解决的问题、运行机制、场景和取舍，并给出逐步完整但足够精简的伪代码。
+Agent 架构的本质是如何组织状态、决策、工具、反馈与停止条件。本文横向拆解六类主流架构解决的问题、运行机制、场景和取舍，并给出带数据结构、接口和异常分支的 Java 示例。
 
 ## 先说结论：不要按流行度选架构，要按不确定性选
 
@@ -34,25 +34,80 @@ Agent 架构的本质是如何组织状态、决策、工具、反馈与停止�
 
 普通工作流由代码预先决定每一步；Agent 至少把一部分“下一步做什么”的选择交给模型，同时由运行时守住边界：
 
-```text
-输入 → 读取状态 → 模型决策 → 校验动作 → 执行工具 → 写入观察 → 判断停止
-```
+基本执行链是：输入 → 读取状态 → 模型决策 → 校验动作 → 执行工具 → 写入观察 → 判断停止。下面先用 Java 定义这条链路中反复出现的公共对象。
 
-无论使用哪种架构，生产实现都不能缺少以下公共状态：
+无论使用哪种架构，生产实现都不能缺少公共运行状态。这里的 `state` 不是框架魔法，也不是模型里的隐藏变量，而是我们自己定义并持久化的 Java 对象：
 
-```text
-RunState {
-  goal                 # 用户目标与验收条件
-  status               # RUNNING / WAITING / SUCCEEDED / FAILED / CANCELLED
-  messages             # 必要对话，不等于无限历史
-  artifacts            # 文件、证据、计划、工具结果的引用
-  budget               # 最大轮次、Token、费用、时间和工具次数
-  permissions          # 本次运行允许的工具与数据范围
-  idempotencyKey       # 防止重试造成重复副作用
-  checkpointVersion    # 恢复时检测并发覆盖
-  traceId              # 串联模型、工具、人工审批与子 Agent
+```java
+public enum RunStatus {
+    RUNNING, WAITING, SUCCEEDED, FAILED, CANCELLED
 }
+
+// 限制 Agent 最多消耗多少资源；每执行一步都要扣减。
+public record Budget(
+        int remainingSteps,
+        int remainingToolCalls,
+        long deadlineEpochMillis) {
+
+    public boolean available() {
+        return remainingSteps > 0
+                && remainingToolCalls >= 0
+                && System.currentTimeMillis() < deadlineEpochMillis;
+    }
+
+    public Budget consumeStep(int toolCalls) {
+        return new Budget(
+                remainingSteps - 1,
+                remainingToolCalls - toolCalls,
+                deadlineEpochMillis);
+    }
+}
+
+// state 就是 AgentState 的实例：保存目标、进度、工具观察和恢复信息。
+public final class AgentState {
+    private final String runId;
+    private final String traceId;
+    private final String goal;
+    private RunStatus status = RunStatus.RUNNING;
+    private Budget budget;
+    private final List<String> messages = new ArrayList<>();
+    private final List<String> observations = new ArrayList<>();
+    private final List<ArtifactRef> artifacts = new ArrayList<>();
+    private final Set<String> allowedTools;
+    private final String idempotencyKey;
+    private long checkpointVersion;
+
+    public AgentState(String goal, Budget budget, Set<String> allowedTools) {
+        this.runId = UUID.randomUUID().toString();
+        this.traceId = UUID.randomUUID().toString();
+        this.goal = goal;
+        this.budget = budget;
+        this.allowedTools = Set.copyOf(allowedTools);
+        this.idempotencyKey = UUID.randomUUID().toString();
+    }
+
+    public void addObservation(String observation) {
+        observations.add(observation);
+    }
+
+    public void consumeBudget(int toolCalls) {
+        budget = budget.consumeStep(toolCalls);
+    }
+
+    public String getRunId() { return runId; }
+    public String getGoal() { return goal; }
+    public RunStatus getStatus() { return status; }
+    public void setStatus(RunStatus status) { this.status = status; }
+    public Budget getBudget() { return budget; }
+    public List<String> getObservations() { return observations; }
+    public Set<String> getAllowedTools() { return allowedTools; }
+    public String getIdempotencyKey() { return idempotencyKey; }
+}
+
+public record ArtifactRef(String id, String sha256, String mediaType) {}
 ```
+
+后文中的 `state`、`plan`、`ledger`、`board` 都遵循同一原则：它们是业务代码定义的数据对象，不是 LLM 自动提供的能力。
 
 ## 一、ReAct：用观察结果决定下一步
 
@@ -62,31 +117,114 @@ ReAct 将 Reasoning 与 Acting 交错执行：模型先根据当前状态选择�
 
 ### 运行机制
 
-```text
-function runReAct(goal, tools, budget):
-  state = newState(goal, budget)                 # 初始化目标、权限、预算与轨迹
+先把模型可能返回的两种动作定义清楚。`ToolCall` 不是一段任意文本，而是经过 JSON 反序列化后得到的 Java 对象：
 
-  while state.budget.hasTimeAndSteps():
-    decision = model.decide(state.visibleView()) # 只提供完成当前决策所需上下文
+```java
+public record ToolCall(String toolName, Map<String, Object> arguments) {}
 
-    if decision.type == "FINAL":
-      return verifyAndFinish(decision.answer)    # 最终答案仍要过格式和业务校验
+public sealed interface AgentDecision {
+    // 模型认为已经可以回答用户。
+    record FinalAnswer(String content) implements AgentDecision {}
 
-    if decision.type != "TOOL_CALL":
-      state.observe(error("INVALID_DECISION"))  # 非法结构作为观察反馈，不直接执行
-      continue
+    // 模型需要先调用工具，再根据工具结果继续决定。
+    record CallTool(ToolCall call) implements AgentDecision {}
+}
 
-    call = validateSchema(decision.call, tools)  # 校验工具名、参数 Schema 与权限
-    if call.denied:
-      state.observe(error("TOOL_DENIED"))       # 把边界反馈给模型，禁止绕过运行时
-      continue
+public record ToolResult(
+        boolean success,
+        String summary,
+        ArtifactRef fullResultRef,
+        String errorCode) {}
 
-    result = executeWithTimeout(call)            # 工具层负责超时、幂等、审计和脱敏
-    state.observe(compact(result))               # 大结果存外部，只注入摘要与引用
-    state.budget.consume(decision, result)        # 每轮扣减 Token、时间与工具次数
+public interface LanguageModel {
+    AgentDecision decide(String goal, List<String> observations);
+}
 
-  return fail("BUDGET_EXHAUSTED", state.trace)  # 必须有确定停止条件，防止无限循环
+public interface ToolExecutor {
+    ToolResult execute(ToolCall call, String idempotencyKey, Duration timeout);
+}
+
+public final class ReActAgent {
+    private final LanguageModel model;
+    private final ToolExecutor toolExecutor;
+    private final CheckpointStore checkpoints;
+
+    public ReActAgent(
+            LanguageModel model,
+            ToolExecutor toolExecutor,
+            CheckpointStore checkpoints) {
+        this.model = model;
+        this.toolExecutor = toolExecutor;
+        this.checkpoints = checkpoints;
+    }
+
+    public String run(String goal) {
+        // state 是普通 Java 对象，保存这一轮任务的全部可恢复状态。
+        AgentState state = new AgentState(
+                goal,
+                new Budget(10, 6, System.currentTimeMillis() + 60_000),
+                Set.of("searchOrder", "queryInventory"));
+
+        while (state.getBudget().available()) {
+            // 只把目标和已压缩的工具观察交给模型，不传数据库连接等内部对象。
+            AgentDecision decision = model.decide(
+                    state.getGoal(),
+                    List.copyOf(state.getObservations()));
+
+            if (decision instanceof AgentDecision.FinalAnswer answer) {
+                if (!answer.content().isBlank()) {
+                    state.setStatus(RunStatus.SUCCEEDED);
+                    checkpoints.save(state);
+                    return answer.content();
+                }
+                // 空答案不结束，让模型在下一轮看到明确错误。
+                state.addObservation("ERROR: FINAL_ANSWER_IS_BLANK");
+                state.consumeBudget(0);
+                continue;
+            }
+
+            AgentDecision.CallTool action = (AgentDecision.CallTool) decision;
+            ToolCall call = action.call();
+
+            // 权限检查由 Java 运行时完成，不能让模型自行判断是否有权调用。
+            if (!state.getAllowedTools().contains(call.toolName())) {
+                state.addObservation("ERROR: TOOL_DENIED: " + call.toolName());
+                state.consumeBudget(0);
+                checkpoints.save(state);
+                continue;
+            }
+
+            validateArguments(call); // 按该工具的 JSON Schema 校验必填项和类型。
+
+            ToolResult result = toolExecutor.execute(
+                    call,
+                    state.getIdempotencyKey() + ":" + state.getBudget().remainingSteps(),
+                    Duration.ofSeconds(10));
+
+            // 完整结果放对象存储；这里只把短摘要交回模型，避免撑爆上下文。
+            String observation = result.success()
+                    ? "TOOL_OK: " + result.summary()
+                    : "TOOL_ERROR[" + result.errorCode() + "]: " + result.summary();
+            state.addObservation(observation);
+            state.consumeBudget(1);
+            checkpoints.save(state); // 每次工具调用后持久化，进程重启也能恢复。
+        }
+
+        state.setStatus(RunStatus.FAILED);
+        checkpoints.save(state);
+        throw new AgentRunException("BUDGET_EXHAUSTED");
+    }
+
+    private void validateArguments(ToolCall call) {
+        // 示例：真实项目应由每个 ToolDefinition 持有并执行自己的参数 Schema。
+        if (call.arguments() == null) {
+            throw new IllegalArgumentException("工具参数不能为空");
+        }
+    }
+}
 ```
+
+以“查询订单是否可以退款”为例，`state.observations` 的变化是：空列表 → `searchOrder` 返回订单状态 → `queryRefundRule` 返回退款规则 → 模型生成最终答复。模型每次只选择下一步，Java 循环负责权限、执行、记账和停止。
 
 ### 适用场景
 
@@ -116,33 +254,113 @@ Plan-and-Execute 把“制定全局步骤”和“完成当前步骤”分开。
 
 ### 运行机制
 
-```text
-function runPlanExecute(goal, budget):
-  plan = planner.create(goal, constraints, doneCriteria) # 生成带 ID、依赖和验收条件的步骤
-  plan = validateDag(plan)                               # 拒绝循环依赖、空步骤和越权动作
-  state = checkpoint(goal, plan, budget)                 # 先持久化，支持长任务恢复
+计划不是字符串列表，而是一组带依赖和验收条件的 `PlanStep`。只有依赖全部完成的步骤才能进入执行队列：
 
-  while not plan.allDone() and budget.available():
-    step = plan.nextReadyStep()                          # 只取依赖已完成的最小可执行步骤
-    if step == NONE:
-      return fail("PLAN_BLOCKED", plan.blockers())      # 没有可运行步骤时明确失败
+```java
+public enum StepStatus { PENDING, RUNNING, DONE, FAILED }
 
-    result = executor.run(step, state.relevantContext()) # Worker 可用 ReAct，但受步骤预算限制
-    verdict = verify(result, step.acceptance)            # 用确定规则或独立评审检查产物
+public final class PlanStep {
+    private final String id;
+    private final String instruction;
+    private final Set<String> dependencyIds;
+    private final String acceptanceRule;
+    private StepStatus status = StepStatus.PENDING;
+    private List<ArtifactRef> outputs = new ArrayList<>();
+    private String failureReason;
 
-    if verdict.pass:
-      plan.markDone(step.id, result.artifactRefs)         # 保存引用，不把大产物全塞入上下文
-    else:
-      plan.markFailed(step.id, verdict.reason)
+    public boolean isReady(Map<String, PlanStep> allSteps) {
+        return status == StepStatus.PENDING
+                && dependencyIds.stream()
+                        .map(allSteps::get)
+                        .allMatch(step -> step.status == StepStatus.DONE);
+    }
+}
 
-    if environmentChanged() or verdict.needReplan:
-      plan = planner.revise(plan, state.facts())          # 保留已完成步骤，只修改未完成部分
-      plan = validateDag(plan)
+public record StepResult(List<ArtifactRef> outputs, String summary) {}
+public record Verdict(boolean passed, boolean needReplan, String reason) {}
 
-    state = checkpoint(goal, plan, budget.consume(result))# 每步后保存版本与预算
+public interface Planner {
+    List<PlanStep> create(String goal);
+    List<PlanStep> revise(String goal, List<PlanStep> oldPlan, String newFact);
+}
 
-  return plan.allDone() ? assemble(plan)                  # 汇总前再次执行全局验收
-                        : fail("BUDGET_EXHAUSTED", plan)
+public interface StepExecutor {
+    StepResult execute(PlanStep step, List<ArtifactRef> dependencyOutputs);
+}
+
+public interface StepVerifier {
+    Verdict verify(PlanStep step, StepResult result);
+}
+
+public final class PlanAndExecuteAgent {
+    private final Planner planner;
+    private final StepExecutor executor;
+    private final StepVerifier verifier;
+    private final CheckpointStore checkpoints;
+
+    public List<ArtifactRef> run(String goal) {
+        Map<String, PlanStep> plan = indexById(planner.create(goal));
+        validateAcyclic(plan); // 检查 ID 唯一、依赖存在，并拒绝环形依赖。
+
+        Budget budget = new Budget(20, 20, System.currentTimeMillis() + 300_000);
+        checkpoints.savePlan(goal, plan, budget); // 执行前先存档，支持断点恢复。
+
+        while (!allDone(plan) && budget.available()) {
+            Optional<PlanStep> next = plan.values().stream()
+                    .filter(step -> step.isReady(plan))
+                    .findFirst();
+
+            if (next.isEmpty()) {
+                // 仍有未完成步骤却找不到 ready step，说明计划已阻塞。
+                throw new AgentRunException("PLAN_BLOCKED: " + findBlockers(plan));
+            }
+
+            PlanStep step = next.get();
+            step.setStatus(StepStatus.RUNNING);
+            checkpoints.savePlan(goal, plan, budget);
+
+            List<ArtifactRef> inputs = step.getDependencyIds().stream()
+                    .map(plan::get)
+                    .flatMap(dependency -> dependency.getOutputs().stream())
+                    .toList();
+
+            try {
+                StepResult result = executor.execute(step, inputs);
+                Verdict verdict = verifier.verify(step, result);
+
+                if (verdict.passed()) {
+                    step.setOutputs(result.outputs());
+                    step.setStatus(StepStatus.DONE);
+                } else {
+                    step.setFailureReason(verdict.reason());
+                    step.setStatus(StepStatus.FAILED);
+                }
+
+                if (verdict.needReplan()) {
+                    // 已完成步骤和产物不可丢；只允许 Planner 改写未完成部分。
+                    List<PlanStep> revised = planner.revise(goal, List.copyOf(plan.values()), verdict.reason());
+                    plan = mergeKeepingCompletedSteps(plan, revised);
+                    validateAcyclic(plan);
+                }
+            } catch (RuntimeException executionError) {
+                step.setStatus(StepStatus.FAILED);
+                step.setFailureReason(executionError.getMessage());
+                // 失败也必须保存，否则恢复后会误以为步骤从未执行。
+            }
+
+            budget = budget.consumeStep(1);
+            checkpoints.savePlan(goal, plan, budget);
+        }
+
+        if (!allDone(plan)) {
+            throw new AgentRunException("BUDGET_EXHAUSTED");
+        }
+
+        List<ArtifactRef> outputs = collectFinalOutputs(plan);
+        verifyWholeGoal(goal, outputs); // 单步都成功，不代表全局目标一定成功。
+        return outputs;
+    }
+}
 ```
 
 ### 适用场景
@@ -174,28 +392,92 @@ Reflection 在一次执行后增加评审与反思，将失败原因和改进策
 
 ### 运行机制
 
-```text
-function runWithReflection(task, evaluator, maxAttempts):
-  memory = []                                       # 只保存可复用经验，不保存冗长自言自语
+```java
+public record Candidate(String content, List<String> actions, ArtifactRef artifact) {}
 
-  for attempt in 1..maxAttempts:
-    candidate = actor.run(task, memory, attempt)    # 执行器读取历史反思后重新尝试
-    feedback = evaluator.check(candidate, criteria) # 优先使用测试、规则或外部反馈
+public record Evaluation(
+        boolean passed,
+        String failedRule,
+        String rootCause,
+        String actionableFix,
+        List<String> evidence) {}
 
-    if feedback.pass:
-      return success(candidate, feedback.evidence)  # 成功必须带可验证证据
+// ReflectionMemory 是下一次尝试会读取的结构化经验，不是完整思维过程。
+public record ReflectionMemory(
+        String failedRule,
+        String rootCause,
+        String nextChange,
+        Set<String> forbiddenActions) {}
 
-    reflection = critic.summarize({
-      "failedRule": feedback.failedRule,           # 具体违反哪条验收规则
-      "rootCause": feedback.rootCause,             # 为什么失败，不只复述现象
-      "nextChange": feedback.actionableFix,        # 下一轮必须改变什么
-      "doNotRepeat": candidate.badActions          # 明确禁止重复的路径
-    })
+public interface Actor {
+    Candidate generate(String task, int attempt, List<ReflectionMemory> memories);
+}
 
-    memory = keepTopNonDuplicate(memory + reflection)# 去重并限制长度，避免错误经验污染
+public interface Evaluator {
+    Evaluation evaluate(String task, Candidate candidate);
+}
 
-  return fail("ATTEMPTS_EXHAUSTED", memory)         # 超限后交给人或降级，不无限自省
+public interface Critic {
+    ReflectionMemory reflect(Candidate candidate, Evaluation evaluation);
+}
+
+public final class ReflectionAgent {
+    private static final int MAX_MEMORIES = 5;
+    private final Actor actor;
+    private final Evaluator evaluator;
+    private final Critic critic;
+
+    public Candidate run(String task, int maxAttempts) {
+        List<ReflectionMemory> memories = new ArrayList<>();
+
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            // 第一次 memories 为空；后续尝试会携带前几轮的失败经验。
+            Candidate candidate = actor.generate(task, attempt, List.copyOf(memories));
+            Evaluation evaluation = evaluator.evaluate(task, candidate);
+
+            if (evaluation.passed()) {
+                if (evaluation.evidence().isEmpty()) {
+                    throw new AgentRunException("EVALUATION_WITHOUT_EVIDENCE");
+                }
+                return candidate;
+            }
+
+            ReflectionMemory reflection = critic.reflect(candidate, evaluation);
+            validateReflection(reflection); // 必须包含失败规则、根因和下一步改动。
+
+            boolean duplicate = memories.stream().anyMatch(old ->
+                    old.failedRule().equals(reflection.failedRule())
+                            && old.nextChange().equals(reflection.nextChange()));
+
+            if (!duplicate) {
+                memories.add(reflection);
+            }
+
+            // 只保留最近且不重复的经验，防止上下文无限增长。
+            if (memories.size() > MAX_MEMORIES) {
+                memories.remove(0);
+            }
+
+            // 连续两轮命中同一失败规则，说明“反思”没有改变行为，应提前停止。
+            if (sameFailureRepeated(memories, 2)) {
+                throw new AgentRunException("REFLECTION_NOT_IMPROVING");
+            }
+        }
+
+        throw new AgentRunException("ATTEMPTS_EXHAUSTED");
+    }
+
+    private void validateReflection(ReflectionMemory memory) {
+        if (memory.failedRule().isBlank()
+                || memory.rootCause().isBlank()
+                || memory.nextChange().isBlank()) {
+            throw new IllegalArgumentException("反思结果缺少可执行信息");
+        }
+    }
+}
 ```
+
+例如生成 SQL 时，`Evaluator` 可以真实执行 `EXPLAIN` 和只读测试查询；失败经验应写成“缺少租户条件，下一轮必须给所有表别名增加 `tenant_id = ?`”，而不是空泛的“需要更加谨慎”。
 
 ### 适用场景
 
@@ -224,30 +506,118 @@ Deep Research 不是“搜索一次再写长文”，而是持续维护研究问
 
 ### 运行机制
 
-```text
-function deepResearch(question, sourcePolicy, budget):
-  scope = clarify(question)                           # 固定范围、时间点、受众和交付格式
-  plan = makeResearchQuestions(scope)                 # 拆成可检索、可判定完成的子问题
-  ledger = EvidenceLedger()                           # 每条主张关联来源、摘录位置和时间
-  queue = prioritize(plan.openQuestions())            # 优先高价值、高不确定性的证据缺口
+```java
+public record ResearchQuestion(String id, String text, int priority) {}
+public record SearchHit(URI url, String title, Instant publishedAt) {}
 
-  while queue.notEmpty() and budget.available():
-    gap = queue.pop()
-    queries = diversifyQueries(gap)                    # 同义词、反例、官方来源与时间限定
-    hits = search(queries, sourcePolicy).deduplicate() # 先过滤域名、日期、重复页和低质来源
+// 每条证据必须能从“结论”追溯到“网页中的具体位置”。
+public record Evidence(
+        String questionId,
+        String claim,
+        URI sourceUrl,
+        String locator,
+        Instant publishedAt,
+        Instant accessedAt,
+        boolean supportsClaim) {}
 
-    for hit in hits.takeWithinBudget():
-      page = fetchWithTimeout(hit)
-      claims = extractClaims(page, gap)                # 提取主张，不把整页直接塞进报告
-      ledger.add(validateProvenance(claims, hit))       # 保存 URL、定位、发布日期与访问时间
+public final class EvidenceLedger {
+    private final List<Evidence> entries = new ArrayList<>();
 
-    conflicts = ledger.findConflicts(gap)              # 冲突证据必须继续核验或显式披露
-    queue.add(deriveFollowUps(gap, conflicts, ledger))  # 根据新证据动态生成后续问题
-    budget.consume(hits)
+    public void add(Evidence evidence) {
+        entries.add(evidence);
+    }
 
-  draft = synthesize(scope, ledger.supportedClaims())   # 只用有证据支持的主张写作
-  audit = verifyEveryCitation(draft, ledger)            # 检查引用是否真的支持相邻结论
-  return audit.pass ? draft : reviseOrFail(draft, audit)# 缺证据时删结论，不允许编造引用
+    public List<Evidence> forQuestion(String questionId) {
+        return entries.stream()
+                .filter(item -> item.questionId().equals(questionId))
+                .toList();
+    }
+
+    public boolean hasConflict(String questionId) {
+        List<Evidence> items = forQuestion(questionId);
+        return items.stream().anyMatch(Evidence::supportsClaim)
+                && items.stream().anyMatch(item -> !item.supportsClaim());
+    }
+
+    public List<Evidence> all() {
+        return List.copyOf(entries);
+    }
+}
+
+public interface SearchService {
+    List<SearchHit> search(List<String> queries, Set<String> allowedDomains);
+    String fetch(SearchHit hit, Duration timeout);
+}
+
+public interface ResearchModel {
+    List<ResearchQuestion> split(String question);
+    List<String> buildQueries(ResearchQuestion gap);
+    List<Evidence> extract(String page, SearchHit source, ResearchQuestion gap);
+    List<ResearchQuestion> deriveFollowUps(ResearchQuestion gap, List<Evidence> evidence);
+    String write(String question, List<Evidence> evidence);
+}
+
+public final class DeepResearchAgent {
+    private final SearchService searchService;
+    private final ResearchModel model;
+    private final CitationAuditor citationAuditor;
+
+    public String run(String question) {
+        PriorityQueue<ResearchQuestion> queue = new PriorityQueue<>(
+                Comparator.comparingInt(ResearchQuestion::priority).reversed());
+        queue.addAll(model.split(question));
+
+        EvidenceLedger ledger = new EvidenceLedger();
+        Set<URI> visited = new HashSet<>();
+        Budget budget = new Budget(12, 30, System.currentTimeMillis() + 600_000);
+        Set<String> allowedDomains = Set.of("docs.oracle.com", "spring.io", "arxiv.org");
+
+        while (!queue.isEmpty() && budget.available()) {
+            ResearchQuestion gap = queue.remove();
+            List<String> queries = model.buildQueries(gap);
+            List<SearchHit> hits = searchService.search(queries, allowedDomains).stream()
+                    .filter(hit -> visited.add(hit.url())) // URL 去重，避免重复抓取。
+                    .limit(Math.min(5, budget.remainingToolCalls()))
+                    .toList();
+
+            for (SearchHit hit : hits) {
+                try {
+                    String page = searchService.fetch(hit, Duration.ofSeconds(15));
+                    List<Evidence> extracted = model.extract(page, hit, gap);
+
+                    for (Evidence evidence : extracted) {
+                        validateProvenance(evidence); // URL、定位、访问时间缺一不可。
+                        ledger.add(evidence);
+                    }
+                } catch (RuntimeException fetchError) {
+                    // 单个来源失败不终止研究，但要留下可观测记录。
+                    recordFetchFailure(hit.url(), fetchError.getMessage());
+                }
+                budget = budget.consumeStep(1);
+            }
+
+            List<Evidence> currentEvidence = ledger.forQuestion(gap.id());
+            if (currentEvidence.isEmpty() || ledger.hasConflict(gap.id())) {
+                // 缺证据或证据冲突时继续拆出更具体的问题。
+                queue.addAll(model.deriveFollowUps(gap, currentEvidence));
+            }
+        }
+
+        List<Evidence> allEvidence = ledger.all();
+        String draft = model.write(question, allEvidence);
+        CitationAudit audit = citationAuditor.verify(draft, allEvidence);
+
+        if (!audit.passed()) {
+            // 引用不支持结论时删除对应结论；绝不能让模型补造一个 URL。
+            draft = removeUnsupportedClaims(draft, audit.unsupportedClaimIds());
+            CitationAudit secondAudit = citationAuditor.verify(draft, allEvidence);
+            if (!secondAudit.passed()) {
+                throw new AgentRunException("CITATION_AUDIT_FAILED");
+            }
+        }
+        return draft;
+    }
+}
 ```
 
 ### 适用场景
@@ -277,34 +647,108 @@ Human-in-the-Loop 把人工决定建模为可持久化的中断状态。它解�
 
 ### 运行机制
 
-```text
-function executeWithApproval(run, proposedCall, policy):
-  call = validateAndNormalize(proposedCall)          # 先校验工具、参数、权限与敏感数据
-  risk = policy.evaluate(call, run.identity)         # 策略引擎决定自动、审批或拒绝
+```java
+public enum RiskDecision { AUTO_EXECUTE, REQUIRE_APPROVAL, DENY }
+public enum ApprovalType { APPROVE, REJECT, EDIT }
 
-  if risk == "DENY":
-    return rejected("POLICY_DENIED")                # 模型无权覆盖确定性策略
+public record ApprovalRequest(
+        String requestId,
+        String checkpointId,
+        long checkpointVersion,
+        String redactedAction,
+        String estimatedImpact,
+        Instant expiresAt) {}
 
-  if risk == "AUTO":
-    return executeIdempotently(call, run.key)        # 低风险动作仍需幂等、超时和审计
+public record ApprovalDecision(
+        ApprovalType type,
+        String approverId,
+        ToolCall editedCall,
+        String reason,
+        String oneTimeToken) {}
 
-  checkpoint = persistBeforeSideEffect(run, call)    # 必须在产生副作用之前保存可恢复状态
-  request = createApproval({
-    "checkpoint": checkpoint.id,                    # 恢复位置
-    "action": redact(call),                         # 给审批人足够信息但隐藏秘密
-    "impact": estimateImpact(call),                 # 影响范围、成本与可逆性
-    "expiresAt": policy.deadline                    # 审批超时后默认拒绝
-  })
-  decision = waitForSignedDecision(request)          # 审批结果绑定人员、版本和一次性令牌
+public interface RiskPolicy {
+    RiskDecision evaluate(String operatorId, ToolCall call);
+}
 
-  if decision.type == "REJECT": return cancelled(decision.reason)
-  if decision.type == "EDIT":   call = revalidate(decision.editedCall)
-  if decision.type != "APPROVE" and decision.type != "EDIT":
-    return fail("INVALID_APPROVAL")
+public interface ApprovalGateway {
+    void submit(ApprovalRequest request);
+    ApprovalDecision waitForDecision(String requestId, Instant deadline);
+}
 
-  ensureCheckpointUnchanged(checkpoint.version)      # 防止等待期间状态被其他流程修改
-  audit(decision, call)
-  return executeIdempotently(call, run.key)          # 恢复后只执行一次副作用
+public final class HumanInTheLoopExecutor {
+    private final RiskPolicy policy;
+    private final ApprovalGateway approvalGateway;
+    private final ToolExecutor toolExecutor;
+    private final CheckpointStore checkpoints;
+    private final AuditLog auditLog;
+
+    public ToolResult execute(
+            AgentState state,
+            String operatorId,
+            ToolCall proposedCall) {
+
+        ToolCall call = validateAndNormalize(proposedCall);
+        RiskDecision risk = policy.evaluate(operatorId, call);
+
+        if (risk == RiskDecision.DENY) {
+            auditLog.append(state.getRunId(), "POLICY_DENIED", call.toolName());
+            return new ToolResult(false, "策略禁止该操作", null, "POLICY_DENIED");
+        }
+
+        if (risk == RiskDecision.AUTO_EXECUTE) {
+            // 自动操作仍使用幂等键，网络重试不会重复扣款或重复发信。
+            return toolExecutor.execute(call, state.getIdempotencyKey(), Duration.ofSeconds(10));
+        }
+
+        // 关键顺序：先保存状态，再通知审批人，此时尚未执行工具。
+        Checkpoint checkpoint = checkpoints.save(state);
+        state.setStatus(RunStatus.WAITING);
+
+        ApprovalRequest request = new ApprovalRequest(
+                UUID.randomUUID().toString(),
+                checkpoint.id(),
+                checkpoint.version(),
+                redactSecrets(call),
+                estimateImpact(call),
+                Instant.now().plus(Duration.ofHours(2)));
+        approvalGateway.submit(request);
+
+        ApprovalDecision decision = approvalGateway.waitForDecision(
+                request.requestId(), request.expiresAt());
+
+        if (decision == null || Instant.now().isAfter(request.expiresAt())) {
+            state.setStatus(RunStatus.CANCELLED);
+            return new ToolResult(false, "审批超时，默认拒绝", null, "APPROVAL_TIMEOUT");
+        }
+
+        verifySignatureAndConsumeToken(decision); // 令牌只能使用一次，且绑定审批人。
+
+        if (decision.type() == ApprovalType.REJECT) {
+            state.setStatus(RunStatus.CANCELLED);
+            auditLog.append(state.getRunId(), "REJECTED", decision.reason());
+            return new ToolResult(false, decision.reason(), null, "HUMAN_REJECTED");
+        }
+
+        if (decision.type() == ApprovalType.EDIT) {
+            call = validateAndNormalize(decision.editedCall());
+            // 人修改参数后必须重新过策略，防止把低风险动作改成高风险动作。
+            if (policy.evaluate(operatorId, call) == RiskDecision.DENY) {
+                throw new AgentRunException("EDITED_CALL_DENIED");
+            }
+        }
+
+        checkpoints.assertVersion(
+                request.checkpointId(), request.checkpointVersion());
+        state.setStatus(RunStatus.RUNNING);
+        auditLog.append(state.getRunId(), "APPROVED_BY", decision.approverId());
+
+        // 审批通过后才发生副作用；checkpointId 参与幂等键，恢复也只执行一次。
+        return toolExecutor.execute(
+                call,
+                state.getIdempotencyKey() + ":" + request.checkpointId(),
+                Duration.ofSeconds(10));
+    }
+}
 ```
 
 ### 适用场景
@@ -334,37 +778,130 @@ Multi-Agent 把一个任务交给多个拥有不同角色、上下文、工具�
 
 ### 运行机制
 
-```text
-function runMultiAgent(goal, registry, budget):
-  contract = supervisor.decompose(goal)               # 子任务包含输入、输出、依赖和验收条件
-  contract = validateDag(contract)                    # 检查循环依赖、重叠写入和缺失责任人
-  board = SharedBoard(goal, version=1)                # 共享结构化事实与产物引用，不共享全部私聊
+```java
+public record AgentTask(
+        String id,
+        String instruction,
+        String requiredSkill,
+        Set<String> requiredPermissions,
+        Set<String> dependencyIds,
+        Set<String> readableBoardKeys,
+        Set<String> writableBoardKeys,
+        String acceptanceRule) {}
 
-  while contract.hasOpenTasks() and budget.available():
-    ready = contract.readyTasks()
+public record WorkerResult(
+        String taskId,
+        Map<String, Object> boardWrites,
+        List<ArtifactRef> artifacts,
+        String summary,
+        long basedOnBoardVersion) {}
 
-    jobs = ready.map(task -> {
-      agent = registry.select(task.skill, task.permission)# 按能力与最小权限选择 Worker
-      context = board.view(task.requiredKeys)             # 每个 Agent 只拿完成任务所需上下文
-      return launch(agent, task, context, task.budget)     # 可并行，但每个子任务有独立预算和取消令牌
-    })
+public interface WorkerAgent {
+    WorkerResult execute(AgentTask task, Map<String, Object> context, CancellationToken token);
+}
 
-    results = awaitAllOrTimeout(jobs)
-    for result in results:
-      result = validateSchemaAndProvenance(result)         # 验证结构、来源、写入范围和版本
-      if conflictsWithBoard(result):
-        result = supervisor.resolve(result, board)         # 冲突由明确策略处理，不让 Agent 自由覆盖
-      verdict = verifier.check(result, contract.acceptance)
-      contract.update(result.taskId, verdict)
-      if verdict.pass: board.commit(result, expectedVersion)# 乐观锁提交共享状态
+public interface AgentRegistry {
+    WorkerAgent select(String skill, Set<String> permissions);
+}
 
-    if contract.repeatedFailure():
-      supervisor.reassignOrEscalate(contract, board)       # 换 Agent、缩小任务或交给人工
-    checkpoint(contract, board, budget.consume(results))
+// SharedBoard 是线程安全的共享事实表；通过版本号阻止两个 Agent 静默覆盖彼此。
+public final class SharedBoard {
+    private final Map<String, Object> values = new HashMap<>();
+    private long version = 1;
 
-  cancelAllChildren()                                     # 父任务结束必须传播取消
-  return contract.allDone() ? supervisor.synthesize(board)
-                            : fail("TEAM_INCOMPLETE", contract)
+    public synchronized Map<String, Object> read(Set<String> allowedKeys) {
+        return values.entrySet().stream()
+                .filter(entry -> allowedKeys.contains(entry.getKey()))
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public synchronized void commit(WorkerResult result, Set<String> writableKeys) {
+        if (result.basedOnBoardVersion() != version) {
+            throw new ConcurrentModificationException("共享状态版本已变化");
+        }
+        if (!writableKeys.containsAll(result.boardWrites().keySet())) {
+            throw new SecurityException("Worker 写入了未授权字段");
+        }
+        values.putAll(result.boardWrites());
+        version++;
+    }
+}
+
+public final class MultiAgentSupervisor {
+    private final AgentRegistry registry;
+    private final ResultVerifier verifier;
+    private final ExecutorService pool;
+
+    public String run(String goal) {
+        Map<String, AgentTask> tasks = decompose(goal); // Supervisor 生成带依赖的任务 DAG。
+        validateTaskGraph(tasks);
+
+        SharedBoard board = new SharedBoard();
+        Set<String> completed = new HashSet<>();
+        Map<String, Integer> failures = new HashMap<>();
+        Map<String, CancellationToken> tokens = new ConcurrentHashMap<>();
+        Budget budget = new Budget(15, 30, System.currentTimeMillis() + 300_000);
+
+        try {
+            while (completed.size() < tasks.size() && budget.available()) {
+                List<AgentTask> readyTasks = tasks.values().stream()
+                        .filter(task -> !completed.contains(task.id()))
+                        .filter(task -> task.dependencyIds().stream().allMatch(completed::contains))
+                        .filter(task -> failures.getOrDefault(task.id(), 0) < 3)
+                        .toList();
+
+                if (readyTasks.isEmpty()) {
+                    throw new AgentRunException("NO_READY_TASK");
+                }
+
+                List<CompletableFuture<WorkerResult>> jobs = new ArrayList<>();
+                for (AgentTask task : readyTasks) {
+                    WorkerAgent worker = registry.select(
+                            task.requiredSkill(), task.requiredPermissions());
+                    Map<String, Object> context = board.read(task.readableBoardKeys());
+                    CancellationToken token = new CancellationToken();
+                    tokens.put(task.id(), token);
+
+                    jobs.add(CompletableFuture.supplyAsync(
+                            () -> worker.execute(task, context, token), pool));
+                }
+
+                for (int i = 0; i < jobs.size(); i++) {
+                    AgentTask task = readyTasks.get(i);
+                    try {
+                        WorkerResult result = jobs.get(i).orTimeout(30, TimeUnit.SECONDS).join();
+                        validateResultSchema(result, task);
+                        Verdict verdict = verifier.verify(task.acceptanceRule(), result);
+
+                        if (verdict.passed()) {
+                            board.commit(result, task.writableBoardKeys());
+                            completed.add(task.id());
+                        } else {
+                            failures.merge(task.id(), 1, Integer::sum);
+                        }
+                    } catch (CompletionException | ConcurrentModificationException error) {
+                        // 超时、Worker 异常或版本冲突都回到 Supervisor，由它重试或重新分工。
+                        failures.merge(task.id(), 1, Integer::sum);
+                    } finally {
+                        tokens.remove(task.id());
+                    }
+                }
+
+                escalateTasksFailedThreeTimes(tasks, failures, board);
+                budget = budget.consumeStep(readyTasks.size());
+                saveTeamCheckpoint(tasks, completed, failures, board, budget);
+            }
+        } finally {
+            // 父任务退出时通知全部子 Agent 停止，避免后台继续消耗资源或写数据。
+            tokens.values().forEach(CancellationToken::cancel);
+        }
+
+        if (completed.size() != tasks.size()) {
+            throw new AgentRunException("TEAM_INCOMPLETE");
+        }
+        return synthesizeFinalAnswer(goal, board);
+    }
+}
 ```
 
 ### 适用场景
@@ -400,16 +937,69 @@ function runMultiAgent(goal, registry, budget):
 | 大仓库功能开发 | Supervisor Multi-Agent + Plan-and-Execute | 按模块分工；统一计划、写入范围和验收 |
 | 自动化运维 | ReAct + Policy + HITL | 诊断可自动；高风险变更必须审批并可恢复 |
 
-组合后的统一主循环可以保持简单：
+组合后的统一主循环仍然是一个 Java 状态机。区别只是 `nextNode` 可能指向 Planner、ReAct Worker、Critic 或 Approval：
 
-```text
-load checkpoint
-while not terminal and budget available:
-  choose next node by persisted state      # 节点可以是 Planner、Worker、Critic 或 Approval
-  validate node input and permission       # 模型永远不绕过运行时策略
-  execute node with timeout and idempotency
-  validate output, record trace, checkpoint
-finish only after acceptance criteria pass # “模型说完成”不等于任务完成
+```java
+public final class AgentWorkflowEngine {
+    private final NodeRegistry nodeRegistry;
+    private final CheckpointStore checkpoints;
+    private final PermissionChecker permissionChecker;
+    private final AcceptanceVerifier acceptanceVerifier;
+
+    public WorkflowOutput resume(String runId) {
+        // 读取持久化对象；首次运行则由 start() 创建同样结构的 WorkflowState。
+        WorkflowState state = checkpoints.loadWorkflow(runId);
+
+        while (!state.isTerminal() && state.getBudget().available()) {
+            String nodeId = state.getNextNodeId();
+            AgentNode<Object, Object> node = nodeRegistry.get(nodeId);
+            Object input = state.buildInputFor(nodeId);
+
+            permissionChecker.check(
+                    state.getIdentity(), nodeId, input, state.getPermissions());
+
+            NodeResult<Object> result;
+            try {
+                result = node.execute(state.toNodeContext(), input);
+            } catch (RetryableException error) {
+                state.recordRetry(nodeId, error.getCode());
+                state.consumeBudget(0);
+                checkpoints.saveWorkflow(state);
+                continue;
+            }
+
+            if (result instanceof NodeResult.Completed<Object> completed) {
+                validateNodeOutput(nodeId, completed.value());
+                state.addArtifacts(completed.artifacts());
+                state.moveTo(selectNextNode(state, completed.value()));
+            } else if (result instanceof NodeResult.Waiting<Object> waiting) {
+                state.setPendingApproval(waiting.request());
+                state.setStatus(RunStatus.WAITING);
+            } else if (result instanceof NodeResult.Retryable<Object> retryable) {
+                state.recordRetry(nodeId, retryable.code());
+            } else if (result instanceof NodeResult.Failed<Object> failed) {
+                state.fail(failed.code(), failed.safeMessage());
+            }
+
+            state.consumeBudget(result.toolCallCount());
+            state.recordTrace(nodeId, result); // 记录动作摘要，不保存模型隐藏推理。
+            checkpoints.saveWorkflow(state);  // 每个节点结束后都可恢复。
+
+            if (state.getStatus() == RunStatus.WAITING) {
+                return WorkflowOutput.waiting(state.getPendingApproval());
+            }
+        }
+
+        if (!state.isTerminal()) {
+            state.fail("BUDGET_EXHAUSTED", "运行预算已耗尽");
+            checkpoints.saveWorkflow(state);
+        }
+
+        // 节点全部结束后还要验证业务目标，不能相信“模型说已经完成”。
+        acceptanceVerifier.verify(state.getGoal(), state.getArtifacts());
+        return WorkflowOutput.finished(state.getStatus(), state.getArtifacts());
+    }
+}
 ```
 
 ## Java 后端落地时先定义运行时契约
@@ -430,6 +1020,9 @@ public record NodeContext(
         CheckpointStore checkpoints) {}
 
 public sealed interface NodeResult<T> {
+    // 节点若调用了工具，应覆盖此方法，以便统一预算记账。
+    default int toolCallCount() { return 0; }
+
     record Completed<T>(T value, List<ArtifactRef> artifacts) implements NodeResult<T> {}
     record Waiting<T>(ApprovalRequest request) implements NodeResult<T> {}
     record Retryable<T>(String code, Duration backoff) implements NodeResult<T> {}
