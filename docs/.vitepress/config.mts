@@ -111,10 +111,10 @@ export default defineConfig({
       { text: '🦾项目', link: '/projects/' },
       { text: '🧩Skills', link: '/skills/' },
       {
-        text: '编程',
+        text: '💻编程',
         items: [
-          { text: '资源', link: '/programming/resources/' },
-          { text: 'Github热榜', link: '/programming/github-trending/' },
+          { text: '🐳资源', link: '/programming/resources/' },
+          { text: '👾Github热榜', link: '/programming/github-trending/' },
         ],
       },
       { text: '🔗链接', link: '/links/' },
