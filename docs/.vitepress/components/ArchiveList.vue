@@ -317,7 +317,6 @@ function formatDate(date: string) {
   align-items: baseline;
   gap: 0.75rem;
   padding: 0.5rem 0;
-  transition: padding-left 0.2s;
 }
 
 .archive-date {
