@@ -1,10 +1,10 @@
 <template>
   <div class="resource-page">
-    <header class="page-hero">
-      <span class="eyebrow">DEVELOPER TOOLBOX</span>
-      <h1>把好工具，放在触手可及的地方</h1>
-      <p>精选开发文档、效率工具与学习站点，减少寻找，把时间留给创造。</p>
-    </header>
+    <PageHero
+      eyebrow="DEVELOPER TOOLBOX"
+      title="把好工具，放在触手可及的地方"
+      description="精选开发文档、效率工具与学习站点，减少寻找，把时间留给创造。"
+    />
 
     <div class="resource-toolbar" role="search">
       <label class="search-box">
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import PageHero from './PageHero.vue'
 
 interface Resource {
   name: string
@@ -111,12 +112,6 @@ function resetFilters() {
 </script>
 
 <style scoped>
-.resource-page { margin: 1rem auto; }
-.page-hero { position: relative; overflow: hidden; padding: 44px 28px 40px; text-align: center; border: 1px solid var(--vp-c-divider); border-radius: 24px; background: radial-gradient(circle at 15% 20%, rgba(36,69,235,.17), transparent 28%), radial-gradient(circle at 85% 70%, rgba(108,140,255,.16), transparent 30%), var(--vp-c-bg-soft); }
-.page-hero::after { content: '</>'; position: absolute; right: 4%; bottom: -36px; color: var(--vp-c-brand-1); font: 900 112px/1 monospace; opacity: .055; transform: rotate(-8deg); }
-.eyebrow { color: var(--vp-c-brand-1); font-size: 12px; font-weight: 800; letter-spacing: .2em; }
-.page-hero h1 { margin: 12px 0 10px; border: 0; font-size: clamp(28px, 5vw, 44px); line-height: 1.2; background: linear-gradient(120deg, #2445eb 25%, #7794ff); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.page-hero p { margin: 0 auto; max-width: 620px; color: var(--vp-c-text-2); line-height: 1.8; }
 .resource-toolbar { position: sticky; z-index: 5; top: calc(var(--vp-nav-height) + 12px); margin: 24px 0; padding: 12px; border: 1px solid var(--vp-c-divider); border-radius: 16px; background: color-mix(in srgb, var(--vp-c-bg) 88%, transparent); box-shadow: 0 10px 32px rgba(15,23,42,.06); backdrop-filter: blur(14px); }
 .search-box { display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid var(--vp-c-divider); border-radius: 11px; background: var(--vp-c-bg-soft); }
 .search-box svg { width: 18px; fill: none; stroke: var(--vp-c-text-3); stroke-width: 2; }
@@ -142,5 +137,5 @@ function resetFilters() {
 .empty-state { display: grid; min-height: 260px; place-items: center; align-content: center; gap: 10px; color: var(--vp-c-text-2); }
 .empty-state span { font-size: 46px; color: var(--vp-c-text-3); }
 .empty-state button { border: 0; color: var(--vp-c-brand-1); background: transparent; cursor: pointer; }
-@media (max-width: 700px) { .page-hero { padding: 34px 18px; } .resource-grid { grid-template-columns: 1fr; } .resource-toolbar { top: calc(var(--vp-nav-height) + 6px); } }
+@media (max-width: 700px) { .resource-grid { grid-template-columns: 1fr; } .resource-toolbar { top: calc(var(--vp-nav-height) + 6px); } }
 </style>

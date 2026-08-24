@@ -5,6 +5,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PostList from '../components/PostList.vue'
 import ArchiveList from '../components/ArchiveList.vue'
+import PageHero from '../components/PageHero.vue'
 import LinksList from '../components/LinksList.vue'
 import ProjectGallery from '../components/ProjectGallery.vue'
 import PostFilter from '../components/PostFilter.vue'
@@ -104,6 +105,8 @@ export default {
   enhanceApp({ app, router }) {
     app.component('PostList', PostList)
     app.component('ArchiveList', ArchiveList)
+    // Markdown 页面复用统一的顶部 Header 卡片。
+    app.component('PageHero', PageHero)
     app.component('LinksList', LinksList)
     // 项目页使用独立组件承载瀑布流、筛选与详情弹窗交互。
     app.component('ProjectGallery', ProjectGallery)

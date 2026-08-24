@@ -1,11 +1,10 @@
 ---
 title: 归档
 aside: false
+lastUpdated: false
 ---
 
-# 归档
-
-按时间线排列的所有文章。
+<PageHero eyebrow="ARTICLE ARCHIVE" title="归档" description="按时间线排列的所有文章。" decoration="📦"/>
 
 <ClientOnly>
   <ArchiveList />
