@@ -148,6 +148,89 @@ const { session } = await createAgentSession({
 await session.prompt("分析当前项目的依赖方向，并给出最小重构建议");
 ```
 
+### 上下文装配与压缩
+
+`pi-coding-agent` 每次调用模型前，并不是把整份 JSONL 原样塞给模型，而是按层装配上下文：
+
+```text
+基础 system prompt、日期、工作目录与平台信息
+  → AGENTS.md、CLAUDE.md 等项目上下文文件
+  → 当前工具、Skills 与扩展注入的规则
+  → 当前会话分支、压缩摘要与近期消息
+```
+
+资源加载器负责发现扩展、Skills、提示词模板、主题和项目上下文文件；项目级资源只在目录被信任后加载。SDK 可替换默认 `ResourceLoader`，让宿主决定哪些资源进入运行时。构造模型输入时，`SessionManager` 从当前叶子沿 `parentId` 回溯出活动路径，再应用压缩记录。扩展还可通过 `context` 事件临时追加、删除或改写消息；这种修改只影响本次模型调用，不会自动改写磁盘历史。
+
+自动压缩在上下文使用量超过阈值时触发，也可通过 `/compact` 手动执行。它不是简单保留最后 N 条消息，而是寻找安全切点：通常按完整用户轮次切分；单轮工具调用过长时可以在轮次内部切分，但不会把 `toolResult` 与对应工具调用拆开。一次压缩会：
+
+1. 按模型窗口、保留预算和 token 使用量判断是否触发；
+2. 选择 `firstKeptEntryId`，总结更早的有效上下文；
+3. 在摘要中保留目标、关键决策、未完成事项及读写过的文件；
+4. 追加 `compaction` entry，记录摘要、保留边界、压缩前 token、用量和扩展数据；
+5. 重建“system prompt + 摘要 + 保留的近期消息”。
+
+重复压缩会把上次保留下来的边界纳入下一轮摘要，降低连续压缩造成的信息断层。扩展可在 `session_before_compact` 中修改准备结果或提供自定义摘要，`session_compact` 用于完成后的记录与同步。压缩是有损投影而不是删除：原始消息和工具轨迹仍留在 JSONL 中，但模型能否准确使用旧事实取决于摘要质量。
+
+### 会话管理：追加式 JSONL 与树形恢复
+
+持久化会话首行是 session header，后续 entry 追加写入，并通过 `id`、`parentId` 形成树。entry 除消息外，还可记录模型与 thinking level 切换、压缩、分支摘要、标签、会话名及扩展状态。`custom` entry 只用于恢复扩展状态，不进入模型上下文；`custom_message` 才会成为模型可见消息。
+
+`SessionManager` 同时负责三件事：
+
+- 持久化消息、配置变化和派生记录；
+- 从指定叶子重建活动路径及真正发送给模型的消息；
+- 在原文件中 `branch`/`/tree` 切换叶子，或把路径 fork 成新会话。
+
+分支摘要与压缩不同：压缩减少当前路径的 token；分支摘要在离开旧分支时提炼成果，让新分支继承必要信息。SDK 在切换、fork 或新建会话前应等待异步收尾；低层 Agent 停止流式输出，不代表重试、自动压缩和扩展 Hook 已全部结束。
+
+### Hook：可拦截的生命周期中间件
+
+Pi 没有单独的声明式 Hooks 文件；Hook 由 TypeScript 扩展的 `pi.on(event, handler)` 提供，覆盖资源发现、会话、Agent、模型、上下文、工具和用户输入：
+
+```text
+session_start → before_agent_start → context → agent_start / turn_start
+  → tool_call → tool_execution_start / update
+  → tool_result → tool_execution_end
+  → turn_end / agent_end → 重试或压缩检查 → session_shutdown
+```
+
+`tool_call` 可以修改参数、阻止调用或终止本轮，`tool_result` 可以改写 `content`、`details`、`isError` 和 `usage`。多个处理器按扩展加载顺序组成中间件链，后一个会看到前一个的修改：
+
+```ts
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+
+export default function (pi: ExtensionAPI) {
+  // 在 bash 真正执行前检查模型生成的命令。
+  pi.on("tool_call", async (event, ctx) => {
+    if (event.toolName !== "bash") return;
+
+    const command = String(event.input.command ?? "");
+    if (!/\b(rm\s+-rf|sudo|git\s+push\s+--force)\b/.test(command)) return;
+
+    // 无交互界面时默认拒绝，避免 RPC/print 模式静默放行。
+    if (!ctx.hasUI) return { block: true, reason: "危险命令需要人工审批" };
+
+    const allowed = await ctx.ui.confirm("危险操作", command);
+    if (!allowed) return { block: true, reason: "用户拒绝执行" };
+  });
+}
+```
+
+真实门禁还要规范化路径、解析命令参数，并覆盖自定义工具和用户直接输入的 `!` 命令。Hook 与 Pi 运行在同一 Node.js 进程中，扩展仍可绕过内置工具直接访问文件和网络，因此“安装审批扩展”不等于“已经隔离”。
+
+### 安全沙箱：工具后端与整进程隔离
+
+内置 `read`、`bash` 等工具支持替换 operations 后端，可把文件读取和命令执行转发到 SSH、容器或微型 VM；`bash` 的 `spawnHook` 还能统一调整命令、工作目录和环境变量。Gondolin 采用“Pi 与模型凭据留在宿主，内置工具进入 Linux micro-VM”的方式。
+
+更强的边界是把整个 Pi 进程放入 Docker、VM 或 OpenShell，使内置工具、扩展代码、`!` 命令和 Node.js 依赖都处于隔离范围：
+
+| 方案 | 隔离对象 | 主要风险 |
+|---|---|---|
+| 替换工具 operations | 内置文件和 shell 工具 | 扩展仍在宿主进程，可能绕过工具后端 |
+| Gondolin 类工具沙箱 | 内置工具与用户 shell 命令 | 宿主扩展和凭据仍需治理 |
+| 整进程容器 / VM / OpenShell | Pi、工具、扩展及依赖 | 宿主挂载和长期密钥会重新扩大边界 |
+
+工程上应同时使用两层控制：Hook 表达“谁在什么条件下可以做什么”，外部沙箱则保证即使模型、工具或扩展越权，文件系统、网络、进程和凭据仍有硬边界。
 Java 后端接入时，更稳妥的边界通常是 RPC 子进程：Java 服务负责租户、鉴权、任务状态、超时和审计；Pi 进程负责模型循环与项目工具。不要让 Web 请求线程无限等待 Agent，可将一次运行建模为异步任务，并持久化 `runId`、会话路径、进程状态和最终产物。
 
 ## 五、会话不是平铺聊天记录，而是一棵树

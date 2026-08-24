@@ -14,8 +14,6 @@ interface Props {
   decoration?: string
 }
 
-// 页面只传入内容，视觉规范统一由组件维护。
-// 装饰文字传给 data 属性，供 ::after 通过 attr() 安全读取。
 withDefaults(defineProps<Props>(), {
   decoration: '</>',
 })
@@ -28,7 +26,6 @@ withDefaults(defineProps<Props>(), {
   margin: 1rem 0;
   padding: 1.25rem 28px;
   text-align: center;
-  //border: 1px solid var(--vp-c-divider);
   border-radius: 24px;
   background:
     radial-gradient(circle at 15% 20%, rgba(36, 69, 235, 0.06), transparent 26%),

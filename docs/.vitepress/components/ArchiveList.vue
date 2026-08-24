@@ -170,40 +170,8 @@ function formatDate(date: string) {
   padding: 1.25rem;
   border: 1px solid var(--vp-c-divider);
   border-radius: 1rem;
-  //background: var(--vp-c-bg-soft);
   display: flex;
   justify-content: center;
-}
-
-.heatmap-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.heatmap-title {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.heatmap-summary {
-  margin: 0.2rem 0 0;
-  color: var(--vp-c-text-2);
-  font-size: 0.8rem;
-}
-
-.heatmap-legend {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 4px;
-  color: var(--vp-c-text-3);
-  font-size: 0.7rem;
 }
 
 .heatmap-legend i, .heatmap-cell {
@@ -304,7 +272,7 @@ function formatDate(date: string) {
 }
 
 .year-title {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: var(--vp-c-brand-1);
   margin-bottom: 1rem;
@@ -373,10 +341,6 @@ function formatDate(date: string) {
     margin-right: -0.5rem;
     margin-left: -0.5rem;
     padding: 1rem;
-  }
-
-  .heatmap-header {
-    flex-direction: column;
   }
 }
 </style>
