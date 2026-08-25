@@ -18,7 +18,10 @@
       <h4 class="filter-title">🏷️ 标签</h4>
       <div class="filter-tags">
         <button v-for="tag in tags" :key="tag" :class="['filter-tag', { active: selectedTag === tag }]"
-          @click="filterByTag(tag)">{{ tag }}</button>
+          @click="filterByTag(tag)">
+          <span>{{ tag }}</span>
+          <span class="filter-tag-count">{{ tagArticleCounts[tag] }}</span>
+        </button>
       </div>
     </div>
   </div>
@@ -30,6 +33,7 @@ import { useRoute } from 'vitepress'
 import {
   categories,
   tags,
+  tagArticleCounts,
   selectedCategory,
   selectedTag,
   filterByCategory,
@@ -103,6 +107,9 @@ const isPostsPage = computed(() => {
 }
 
 .filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   padding: 0.15rem 0.75rem;
   border: 1px solid var(--vp-c-border-1);
   border-radius: 1rem;
@@ -114,8 +121,35 @@ const isPostsPage = computed(() => {
   transition: all 0.2s;
 }
 
+.filter-tag-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 1.3rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-3);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.2s, color 0.2s;
+}
+
 .filter-tag:hover {
   border-color: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.filter-tag:hover .filter-tag-count {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.filter-tag.active .filter-tag-count {
+  background: var(--vp-c-bg);
   color: var(--vp-c-brand-1);
 }
 

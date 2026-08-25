@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200" preserveAspectRatio="xMidYMid slice">
+  <title>Roydon Blog nighttime background</title>
+  <defs>
+    <linearGradient id="night-base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080d20"/>
+      <stop offset="0.5" stop-color="#0d1532"/>
+      <stop offset="1" stop-color="#111b3f"/>
+    </linearGradient>
+    <radialGradient id="night-glow-blue" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3c86ff" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#3c86ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="night-glow-violet" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7058e8" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#7058e8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="night-aurora-a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6557db" stop-opacity="0"/>
+      <stop offset="0.42" stop-color="#5d68ef" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#34b7e8" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="night-aurora-b" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7666f0" stop-opacity="0.05"/>
+      <stop offset="0.55" stop-color="#456fe9" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#39b9dc" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="night-wave-front" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3e347e" stop-opacity="0.82"/>
+      <stop offset="0.52" stop-color="#273e82" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#185275" stop-opacity="0.76"/>
+    </linearGradient>
+    <linearGradient id="night-wave-back" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4d3f91" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#245486" stop-opacity="0.60"/>
+    </linearGradient>
+    <pattern id="night-stars" width="110" height="90" patternUnits="userSpaceOnUse">
+      <circle cx="16" cy="22" r="1" fill="#dce8ff" fill-opacity="0.42"/>
+      <circle cx="72" cy="58" r="1.2" fill="#b9c9ff" fill-opacity="0.28"/>
+      <circle cx="101" cy="14" r="0.8" fill="#ffffff" fill-opacity="0.30"/>
+    </pattern>
+    <filter id="night-blur" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="76"/>
+    </filter>
+    <filter id="night-star-glow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="night-ribbon-fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset="0.20" stop-color="#ffffff"/>
+      <stop offset="0.50" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="night-bottom-fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset="0.42" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <mask id="night-ribbon-mask" maskUnits="userSpaceOnUse" x="-200" y="70" width="2320" height="520">
+      <rect x="-200" y="70" width="2320" height="520" fill="url(#night-ribbon-fade)"/>
+    </mask>
+    <mask id="night-bottom-mask" maskUnits="userSpaceOnUse" x="-100" y="900" width="2120" height="300">
+      <rect x="-100" y="900" width="2120" height="300" fill="url(#night-bottom-fade)"/>
+    </mask>
+    <filter id="night-ribbon-soft" x="-15%" y="-35%" width="130%" height="170%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <filter id="night-wave-soft" x="-10%" y="-30%" width="120%" height="150%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1200" fill="url(#night-base)"/>
+  <rect width="1920" height="1200" fill="url(#night-stars)" opacity="0.78"/>
+
+  <g filter="url(#night-blur)">
+    <ellipse cx="1460" cy="170" rx="510" ry="230" fill="url(#night-glow-blue)"/>
+    <ellipse cx="430" cy="245" rx="430" ry="230" fill="url(#night-glow-violet)"/>
+    <ellipse cx="930" cy="1010" rx="680" ry="220" fill="url(#night-glow-blue)" opacity="0.62"/>
+  </g>
+
+  <g mask="url(#night-ribbon-mask)" filter="url(#night-ribbon-soft)">
+    <path d="M-160 315C120 350 330 255 540 205c180-43 280-60 420-15 150 48 210 80 360 40 170-46 310-104 490-60 140 34 220 90 270 130v220H-160Z" fill="url(#night-aurora-a)"/>
+    <path d="M-160 385c280 45 490-85 730-145 190-47 330 52 510 92 170 38 310-66 470-102 210-49 380 30 530 125v215H-160Z" fill="url(#night-aurora-b)"/>
+  </g>
+  <path d="M578 285c136-54 226-56 319-21 104 39 176 38 274-7 91-41 204-32 315 25" fill="none" stroke="#7387ff" stroke-opacity="0.18" stroke-width="3" stroke-linecap="round"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M154 171c53-40 128-51 187-27 46 19 81 16 113-7" stroke="#83a5ff" stroke-opacity="0.22" stroke-width="2" stroke-dasharray="5 12"/>
+    <path d="m470 135 30 11-20 7-8 20-2-38Z" stroke="#8da8ff" stroke-opacity="0.42" stroke-width="2"/>
+    <path d="M1480 310c45-18 77-13 105 12 18 16 40 18 64 6" stroke="#84a3ff" stroke-opacity="0.24" stroke-width="2"/>
+    <path d="m1662 283 31 12-21 7-8 21-2-40Z" stroke="#8da8ff" stroke-opacity="0.46" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#night-star-glow)">
+    <g fill="#8da8ff">
+      <path d="m122 236 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" opacity="0.72"/>
+      <path d="m1768 183 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z" opacity="0.66"/>
+    </g>
+    <g fill="#ffd76a">
+      <path d="m432 202 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z" opacity="0.82"/>
+      <path d="m1718 352 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" opacity="0.76"/>
+    </g>
+    <circle cx="1810" cy="344" r="3" fill="#74d9e8" opacity="0.76"/>
+    <circle cx="92" cy="394" r="3" fill="#b9caff" opacity="0.68"/>
+  </g>
+
+  <g mask="url(#night-bottom-mask)" filter="url(#night-wave-soft)">
+    <path d="M-40 1022c213 15 286 96 462 86 186-10 267-92 451-70 160 18 233 94 402 83 197-13 315-107 685-112v211H-40Z" fill="url(#night-wave-back)"/>
+    <path d="M-40 1081c228-18 355 78 542 67 197-12 279-79 477-56 164 19 252 74 432 47 165-25 314-92 549-72v153H-40Z" fill="url(#night-wave-front)"/>
+    <path d="M-40 1128c254-32 392 52 601 39 190-12 289-53 484-25 191 28 333 37 512-13 139-34 275-40 403-22v113H-40Z" fill="#132c52" fill-opacity="0.92"/>
+  </g>
+
+  <g transform="translate(82 1070)" fill="none" stroke="#8ca7ff" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="42" cy="42" rx="31" ry="14" stroke-opacity="0.58" stroke-width="3" transform="rotate(-24 42 42)"/>
+    <circle cx="42" cy="41" r="17" fill="#263e72" stroke-opacity="0.62" stroke-width="2"/>
+    <path d="M35 26c5 7 8 13 6 29M51 28c-2 8-2 15 2 22M17 38c15 6 32 7 51-2" stroke-opacity="0.38" stroke-width="2"/>
+    <circle cx="75" cy="10" r="3" fill="#55d6df" stroke="none"/>
+    <path d="m88 20 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#f4c85e" stroke="none"/>
+  </g>
+  <g transform="translate(1750 1080)" fill="none" stroke="#91aaff" stroke-linecap="round" stroke-linejoin="round" opacity="0.78">
+    <path d="M18 66c5-23 19-41 43-54 8 28 3 52-17 70l-26-16Z" fill="#243c70" stroke-width="2"/>
+    <circle cx="48" cy="39" r="8" fill="#5275bc" stroke-width="2"/>
+    <path d="m22 64-13 13 22-3M45 80l-4 21 17-15" stroke-width="2"/>
+    <path d="M16 84c-8 4-12 10-13 20 10-1 17-5 21-13" stroke="#f0a64a" stroke-width="4"/>
+  </g>
+</svg>

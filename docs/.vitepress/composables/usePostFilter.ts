@@ -28,6 +28,15 @@ export const tags = computed(() => {
   return Array.from(set).sort()
 })
 
+export const tagArticleCounts = computed<Record<string, number>>(() => {
+  return posts.reduce<Record<string, number>>((counts, post) => {
+    new Set(post.tags).forEach(tag => {
+      counts[tag] = (counts[tag] || 0) + 1
+    })
+    return counts
+  }, {})
+})
+
 export const filteredPosts = computed(() => {
   return posts.filter(p => {
     if (selectedCategory.value && p.category !== selectedCategory.value) return false

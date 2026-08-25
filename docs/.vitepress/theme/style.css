@@ -142,6 +142,10 @@
     --vp-sidebar-bg-color: rgba(255, 255, 255, 0.25);
 
     --vp-layout-max-width: 1640px;
+    /**
+     *
+     */
+    --vp-c-bg-alt: rgba(246, 246, 247, 0.7);
 }
 
 .dark {
@@ -150,6 +154,8 @@
     --vp-c-divider: rgba(0, 0, 0, 0.25);
     --vp-c-gutter: rgba(0, 0, 0, 0.25);
     --vp-sidebar-bg-color: rgba(27, 27, 31, 0.25);
+
+    --vp-c-bg-alt: rgba(22, 22, 24, 0.7);
 }
 
 @media (min-width: 640px) {
@@ -334,3 +340,10 @@ body {
         padding: 0 !important;
     }
 }
+
+.VPNavBarSearchButton {
+    border-radius: 9rem !important;
+    gap: 1rem !important;
+}
+
+

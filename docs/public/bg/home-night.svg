@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <title>Roydon Blog home nighttime background</title>
+  <defs>
+    <radialGradient id="home-night-center" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#182b58" stop-opacity="0.54"/>
+      <stop offset="1" stop-color="#182b58" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="home-night-violet" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7557ec" stop-opacity="0.48"/>
+      <stop offset="0.55" stop-color="#5344bd" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#423593" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="home-night-blue" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#2f8be5" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="#235ca9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="home-night-planet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6145a8" stop-opacity="0.46"/>
+      <stop offset="0.62" stop-color="#493a92" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#234d7e" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="home-night-wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6688df" stop-opacity="0.06"/>
+      <stop offset="0.48" stop-color="#886ae9" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#48a9d8" stop-opacity="0.07"/>
+    </linearGradient>
+    <pattern id="home-night-dots" width="17" height="17" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.25" fill="#8fa8ff" fill-opacity="0.30"/>
+    </pattern>
+    <pattern id="home-night-stars" width="130" height="105" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="26" r="1" fill="#dce7ff" fill-opacity="0.34"/>
+      <circle cx="87" cy="74" r="1.2" fill="#a9c5ff" fill-opacity="0.22"/>
+      <circle cx="119" cy="17" r="0.8" fill="#ffffff" fill-opacity="0.28"/>
+    </pattern>
+    <filter id="home-night-blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="62"/>
+    </filter>
+    <filter id="home-night-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="home-night-glow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#home-night-stars)"/>
+  <ellipse cx="970" cy="250" rx="800" ry="420" fill="url(#home-night-center)"/>
+
+  <g filter="url(#home-night-blur)">
+    <ellipse cx="210" cy="220" rx="160" ry="190" fill="url(#home-night-violet)"/>
+    <ellipse cx="1660" cy="710" rx="350" ry="310" fill="url(#home-night-blue)" opacity="0.84"/>
+    <ellipse cx="50" cy="980" rx="170" ry="250" fill="url(#home-night-violet)" opacity="0.78"/>
+    <ellipse cx="1030" cy="138" rx="360" ry="150" fill="url(#home-night-blue)" opacity="0.48"/>
+  </g>
+
+  <circle cx="1902" cy="245" r="250" fill="url(#home-night-planet)"/>
+  <circle cx="1902" cy="245" r="216" fill="none" stroke="#9b86ed" stroke-opacity="0.14" stroke-width="2"/>
+  <path d="M1638 352c78-50 172-77 272-76" fill="none" stroke="#9a8bef" stroke-opacity="0.19" stroke-width="2" stroke-dasharray="2 11"/>
+
+  <path d="M0 365c260 102 437 43 633 61 214 20 302 94 532 58 232-37 389-176 755-119" fill="none" stroke="url(#home-night-wave)" stroke-width="2"/>
+  <path d="M0 398c278 78 449 30 639 55 215 28 322 75 532 38 241-42 405-157 749-102" fill="none" stroke="#8299f0" stroke-opacity="0.13" stroke-width="1.5"/>
+  <path d="M0 426c267 60 459 21 649 53 192 32 324 52 523 10 230-48 411-130 748-76" fill="none" stroke="#57acd7" stroke-opacity="0.11" stroke-width="1.5"/>
+
+  <path d="M126 264C52 315 19 393 20 490c103 7 191-22 259-86" fill="url(#home-night-dots)" opacity="0.68"/>
+  <path d="M1698 72c95-24 170-11 222 18v224c-68-55-138-94-226-108Z" fill="url(#home-night-dots)" opacity="0.58"/>
+
+  <g filter="url(#home-night-soft)">
+    <circle cx="174" cy="190" r="48" fill="#775ce5" fill-opacity="0.36"/>
+    <circle cx="1602" cy="187" r="28" fill="#4d96e4" fill-opacity="0.34"/>
+    <circle cx="962" cy="182" r="14" fill="#4f78d1" fill-opacity="0.28"/>
+  </g>
+
+  <g fill="#8ea8ff">
+    <circle cx="246" cy="382" r="8" opacity="0.32"/>
+    <circle cx="944" cy="86" r="3" opacity="0.42"/>
+    <circle cx="1478" cy="306" r="6" opacity="0.30"/>
+    <circle cx="1513" cy="363" r="3" opacity="0.34"/>
+  </g>
+  <g transform="translate(-35 0)">
+    <g fill="#9a7bff">
+      <circle cx="980" cy="282" r="9" opacity="0.68"/>
+      <circle cx="982" cy="279" r="2.2" fill="#ffffff" opacity="0.56"/>
+      <circle cx="1509" cy="246" r="12" opacity="0.58"/>
+      <circle cx="1505" cy="242" r="2.8" fill="#ffffff" opacity="0.50"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="1240" cy="299" rx="280" ry="112" stroke="#896bea" stroke-opacity="0.28" stroke-width="2.5" transform="rotate(-6 1240 299)"/>
+      <ellipse cx="1240" cy="299" rx="230" ry="78" stroke="#5e8fe6" stroke-opacity="0.20" stroke-width="2" transform="rotate(8 1240 299)"/>
+      <path d="m1502 321 11-2-6 10" stroke="#8064e8" stroke-opacity="0.34" stroke-width="3"/>
+    </g>
+  </g>
+
+  <g transform="translate(1028 167)" opacity="0.54">
+    <circle r="28" fill="#172342" stroke="#526dba" stroke-width="1.5"/>
+    <path d="m-9-5-8 8 8 8M9-5l8 8-8 8M4-13-7 17" fill="none" stroke="#8ba3ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g filter="url(#home-night-glow)">
+    <g fill="#ffd05f">
+      <path d="m516 131 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z" opacity="0.82"/>
+      <path d="m1658 474 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" opacity="0.72"/>
+    </g>
+    <g fill="#9b7cff">
+      <path d="m535 112 5 13 13 5-13 5-5 13-5-13-13-5 13-5Z" opacity="0.80"/>
+      <path d="m566 93 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" opacity="0.72"/>
+    </g>
+  </g>
+
+<!--  <path d="M0 1015c226-56 350 47 568 20 206-26 313-88 528-45 237 48 383 8 824-98v188H0Z" fill="#142951" fill-opacity="0.72"/>-->
+<!--  <path d="M0 1040c232-45 378 36 598 15 222-21 336-66 559-25 244 45 423-9 763-97v147H0Z" fill="#193763" fill-opacity="0.54"/>-->
+</svg>
