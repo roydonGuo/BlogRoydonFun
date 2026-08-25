@@ -1,6 +1,6 @@
 ---
 title: Spring 循环依赖工程实践：三级缓存、代理暴露与设计治理
-date: 2026-08-24
+date: 2026-08-22
 category: 后端开发
 cover: /images/posts/spring-circular-dependency-three-level-cache-knowledge-map.webp
 tags: [spring, circular-dependency, bean, ioc, aop, java]

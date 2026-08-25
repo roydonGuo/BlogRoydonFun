@@ -56,7 +56,7 @@
             v-for="(project, index) in visibleProjects"
             :key="`${project.name}-${index}`"
             type="button"
-            class="masonry-item group mb-4 w-[calc((100%-48px)/4)] cursor-pointer max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full overflow-hidden rounded-[20px] border border-black/10 bg-bg p-0 text-left text-text-1 shadow-sm dark:border-white/15 transition duration-300 hover:shadow-[0_18px_46px_rgba(15,23,42,.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="masonry-item project-card group mb-4 w-[calc((100%-48px)/4)] cursor-pointer max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full overflow-hidden rounded-[20px] border border-black/10 bg-bg p-0 text-left text-text-1 dark:border-white/10 transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             :aria-label="`查看 ${project.name} 项目详情`"
             @click="openProject(project)"
         >
@@ -94,7 +94,8 @@
           ref="loadMoreTrigger"
           class="py-4 text-center text-[11px] font-bold text-text-3"
           aria-label="继续加载项目"
-      >继续向下滚动，加载更多项目</div>
+      >继续向下滚动，加载更多项目
+      </div>
     </section>
 
     <!-- 项目详情弹窗卡片 -->
@@ -380,7 +381,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-/* 标题沿用原型的块级布局，同时覆盖 VitePress 默认标题间距。 */
 .projects-title-glow {
   position: relative;
   isolation: isolate;
@@ -388,19 +388,26 @@ onBeforeUnmount(() => {
   border: 0;
 }
 
-/* 标题底部的独立柔光层，复现原型中的蓝色渐变氛围。 */
 .projects-title-glow::after {
   position: absolute;
   z-index: -1;
   right: -12%;
-  bottom: -120%;
+  bottom: -200%;
   left: -10%;
-  height: 250%;
+  height: 300%;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(47, 99, 255, .28), rgba(118, 196, 255, .2) 58%, transparent);
+  background: linear-gradient(90deg, rgba(47, 99, 255, .18), rgba(16, 151, 253, 0.1) 52%, transparent);
   filter: blur(18px);
   content: '';
   pointer-events: none;
+}
+
+.project-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, .12);
 }
 
 /* 新增项目使用独立 translate 属性入场，不覆盖 Masonry 写入的定位 transform。 */
@@ -443,11 +450,25 @@ onBeforeUnmount(() => {
   transition: opacity .28s ease, transform .4s cubic-bezier(.16, 1, .3, 1);
 }
 
-.project-modal-enter-active .project-modal-info > :nth-child(2) { transition-delay: .04s; }
-.project-modal-enter-active .project-modal-info > :nth-child(3) { transition-delay: .07s; }
-.project-modal-enter-active .project-modal-info > :nth-child(4) { transition-delay: .1s; }
-.project-modal-enter-active .project-modal-info > :nth-child(5) { transition-delay: .13s; }
-.project-modal-enter-active .project-modal-info > :nth-child(6) { transition-delay: .16s; }
+.project-modal-enter-active .project-modal-info > :nth-child(2) {
+  transition-delay: .04s;
+}
+
+.project-modal-enter-active .project-modal-info > :nth-child(3) {
+  transition-delay: .07s;
+}
+
+.project-modal-enter-active .project-modal-info > :nth-child(4) {
+  transition-delay: .1s;
+}
+
+.project-modal-enter-active .project-modal-info > :nth-child(5) {
+  transition-delay: .13s;
+}
+
+.project-modal-enter-active .project-modal-info > :nth-child(6) {
+  transition-delay: .16s;
+}
 
 .project-modal-enter-from,
 .project-modal-leave-to {

@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "icon": "code",
+    "name": "Codebase Memory",
+    "description": "通过代码知识图谱理解仓库结构、定位符号、追踪调用链与评估改动影响。",
+    "category": "engineering",
+    "categoryLabel": "工程开发",
+    "updatedAt": "2026-08-25",
+    "status": "常用",
+    "tags": [
+      "代码图谱",
+      "调用链",
+      "架构分析"
+    ],
+    "link": "https://github.com/DeusData/codebase-memory-mcp"
+  },
+  {
+    "id": 2,
+    "icon": "browser",
+    "name": "Playwright",
+    "description": "驱动真实浏览器完成页面操作、截图、视觉检查与交互流程验证。",
+    "category": "engineering",
+    "categoryLabel": "工程开发",
+    "updatedAt": "2026-08-22",
+    "status": "已启用",
+    "tags": [
+      "浏览器",
+      "自动化",
+      "视觉验证"
+    ],
+    "link": "https://github.com/openai/skills/blob/main/skills/.curated/playwright-interactive/SKILL.md"
+  },
+  {
+    "id": 3,
+    "icon": "app",
+    "name": "App UI Prototype",
+    "description": "从产品需求到信息架构，生成 375×812 的移动端高保真交互原型。",
+    "category": "design",
+    "categoryLabel": "产品设计",
+    "updatedAt": "2026-08-20",
+    "status": "常用",
+    "tags": [
+      "移动端",
+      "UI/UX",
+      "原型"
+    ],
+    "link": "https://github.com/roydonGuo"
+  },
+  {
+    "id": 4,
+    "icon": "layout",
+    "name": "Web UI Prototype",
+    "description": "拆解 Web 产品范围、状态与桌面端流程，并交付可预览的高保真页面。",
+    "category": "design",
+    "categoryLabel": "产品设计",
+    "updatedAt": "2026-08-18",
+    "status": "已启用",
+    "tags": [
+      "Web",
+      "SaaS",
+      "高保真"
+    ],
+    "link": "https://github.com/roydonGuo"
+  },
+  {
+    "id": 5,
+    "icon": "image",
+    "name": "Image Generation",
+    "description": "根据描述生成或编辑插画、封面、纹理与产品视觉素材。",
+    "category": "media",
+    "categoryLabel": "内容创作",
+    "updatedAt": "2026-08-16",
+    "status": "已启用",
+    "tags": [
+      "图像生成",
+      "封面",
+      "插画"
+    ],
+    "link": "https://platform.openai.com/docs/guides/image-generation"
+  },
+  {
+    "id": 6,
+    "icon": "video",
+    "name": "HyperFrames",
+    "description": "创建可编排、可预览、可渲染的视频、动画与动态视觉作品。",
+    "category": "media",
+    "categoryLabel": "内容创作",
+    "updatedAt": "2026-08-14",
+    "status": "实验中",
+    "tags": [
+      "视频",
+      "动画",
+      "动效"
+    ],
+    "link": "https://github.com/heygen-com/hyperframes/blob/main/docs/guides/skills.mdx"
+  },
+  {
+    "id": 7,
+    "icon": "document",
+    "name": "Documents",
+    "description": "创建、编辑、批注并校验 Word 文档，关注内容与版式的一致性。",
+    "category": "productivity",
+    "categoryLabel": "效率工具",
+    "updatedAt": "2026-08-12",
+    "status": "已启用",
+    "tags": [
+      "Word",
+      "排版",
+      "文档"
+    ],
+    "link": "https://github.com/openai/skills"
+  },
+  {
+    "id": 8,
+    "icon": "sheet",
+    "name": "Spreadsheets",
+    "description": "创建、分析和校验 Excel、CSV 等表格，处理公式、格式与数据洞察。",
+    "category": "productivity",
+    "categoryLabel": "效率工具",
+    "updatedAt": "2026-08-10",
+    "status": "已启用",
+    "tags": [
+      "Excel",
+      "数据分析",
+      "报表"
+    ],
+    "link": "https://github.com/openai/skills"
+  },
+  {
+    "id": 9,
+    "icon": "slides",
+    "name": "Presentations",
+    "description": "制作与编辑演示文稿，将内容组织为清晰、有节奏的视觉叙事。",
+    "category": "productivity",
+    "categoryLabel": "效率工具",
+    "updatedAt": "2026-08-08",
+    "status": "已启用",
+    "tags": [
+      "PPT",
+      "演示",
+      "叙事"
+    ],
+    "link": "https://github.com/openai/skills"
+  },
+  {
+    "id": 10,
+    "icon": "research",
+    "name": "Deep Research",
+    "description": "围绕复杂问题检索权威来源、交叉核验信息并输出带引用的研究结论。",
+    "category": "research",
+    "categoryLabel": "研究分析",
+    "updatedAt": "2026-08-06",
+    "status": "常用",
+    "tags": [
+      "检索",
+      "事实核验",
+      "引用"
+    ],
+    "link": "https://github.com/openai/skills"
+  },
+  {
+    "id": 11,
+    "icon": "pdf",
+    "name": "PDF",
+    "description": "读取、创建和审阅 PDF，通过页面渲染检查真实版式与视觉结果。",
+    "category": "productivity",
+    "categoryLabel": "效率工具",
+    "updatedAt": "2026-08-04",
+    "status": "已启用",
+    "tags": [
+      "PDF",
+      "渲染",
+      "版式检查"
+    ],
+    "link": "https://github.com/openai/skills"
+  },
+  {
+    "id": 12,
+    "icon": "audio",
+    "name": "Speech & Transcribe",
+    "description": "生成语音旁白，或将音视频中的语音转写为带结构的文本内容。",
+    "category": "media",
+    "categoryLabel": "内容创作",
+    "updatedAt": "2026-08-02",
+    "status": "已启用",
+    "tags": [
+      "语音",
+      "转写",
+      "旁白"
+    ],
+    "link": "https://platform.openai.com/docs/guides/speech-to-text"
+  }
+]

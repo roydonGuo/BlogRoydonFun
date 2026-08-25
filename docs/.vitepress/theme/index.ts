@@ -8,6 +8,7 @@ import ArchiveList from '../components/ArchiveList.vue'
 import PageHero from '../components/PageHero.vue'
 import LinksList from '../components/LinksList.vue'
 import ProjectGallery from '../components/ProjectGallery.vue'
+import SkillsGallery from '../components/SkillsGallery.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
 import PostSidebar from '../components/PostSidebar.vue'
@@ -110,6 +111,8 @@ export default {
     app.component('LinksList', LinksList)
     // 项目页使用独立组件承载瀑布流、筛选与详情弹窗交互。
     app.component('ProjectGallery', ProjectGallery)
+    // Skills 页复用项目页视觉骨架，技能内容从独立 JSON 数据文件读取。
+    app.component('SkillsGallery', SkillsGallery)
     app.component('KnowledgeGraph', KnowledgeGraph)
     app.component('ProgrammingResources', ProgrammingResources)
     app.component('GithubTrending', GithubTrending)
@@ -127,3 +130,4 @@ export default {
     initLinkIcons()
   },
 } satisfies Theme
+

@@ -108,6 +108,7 @@ export default defineConfig({
       { text: '🙌文章', link: '/posts/' },
       { text: '📦归档', link: '/archive/' },
       { text: '🌐知识图谱', link: '/knowledge-graph/' },
+      { text: '🌀思维导图', link: '/mind-map' },
       { text: '🦾项目', link: '/projects/' },
       { text: '🧩Skills', link: '/skills/' },
       {
