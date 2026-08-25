@@ -322,6 +322,10 @@ body {
     max-width: 888px !important;
 }
 
+.container {
+    max-width: 1440px !important;
+}
+
 .aside {
     max-width: 340px !important;
 }
@@ -346,4 +350,15 @@ body {
     gap: 1rem !important;
 }
 
+/* 首页根据当前主题使用对应的装饰背景，其他页面不受影响。 */
+.VPHome {
+    min-height: calc(100vh);
+    background-image: url('/bg/home-day.svg');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+.dark .VPHome {
+    background-image: url('/bg/home-night.svg');
+}

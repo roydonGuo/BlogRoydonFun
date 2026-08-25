@@ -18,6 +18,7 @@ import GithubTrending from '../components/GithubTrending.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import ArticleReader from '../components/ArticleReader.vue'
 import ArticleImagePreview from '../components/ArticleImagePreview.vue'
+import HomeDashboard from '../components/HomeDashboard.vue'
 import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
@@ -117,6 +118,7 @@ export default {
     app.component('ProgrammingResources', ProgrammingResources)
     app.component('GithubTrending', GithubTrending)
     app.component('MermaidDiagram', MermaidDiagram)
+    app.component('HomeDashboard', HomeDashboard)
 
     // VitePress 客户端路由复用页面，需要在每次文章切换后处理新链接。
     if (typeof window !== 'undefined') {

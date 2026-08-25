@@ -1,50 +1,66 @@
-# Project Gallery Design QA
+# Home Dashboard Design QA
 
-- source visual truth path: `UI.html`
-- source screenshot: `output/design-qa/source-ui.png`
-- implementation URL: `http://127.0.0.1:4174/projects/`
-- implementation screenshots: `output/design-qa/implementation-projects.png`, `output/design-qa/implementation-modal-final.png`, `output/design-qa/implementation-mobile.png`
-- desktop viewport: 1280 × 720 CSS px
-- mobile viewport: 390 × 844 CSS px
-- source pixels: 1280 × 720 at deviceScaleFactor 1
-- implementation pixels: 1280 × 720 at deviceScaleFactor 1
-- density normalization: none required
-- states: default project grid, category filtered, project modal, second carousel slide, Escape close, mobile layout
+## Evidence
 
-## Findings
+- Source visual truth: `C:\Users\31330\AppData\Local\Temp\codex-clipboard-4294678f-0701-4475-8a4a-1dbcfb08b715.png`
+- Final light implementation: `D:\develop\Projects\WebProjects\BlogRoydonFun\output\design-qa\home-light-2470x1397-v4.png`
+- Final dark implementation: `D:\develop\Projects\WebProjects\BlogRoydonFun\output\design-qa\home-dark-1600x904.png`
+- Mobile implementation: `D:\develop\Projects\WebProjects\BlogRoydonFun\output\design-qa\home-mobile-light-390x844.png`
+- Same-size comparison: `D:\develop\Projects\WebProjects\BlogRoydonFun\output\design-qa\home-comparison-v4.jpg`
+- Comparison viewport: 2470 x 1397 CSS px, desktop light mode.
+- Source pixels: 2470 x 1397. Implementation pixels: 2470 x 1397. Browser device scale factor: 1. No density normalization was required.
+- Additional states: 1600 x 904 dark mode and 390 x 844 light mobile mode.
 
-No actionable P0, P1, or P2 differences remain.
+## Full-view comparison
 
-- Fonts and typography: the implementation uses the site's bundled PingFang family while preserving the reference hierarchy, optical weight, compact labels, and display-title wrapping. This is an intentional integration improvement over the prototype's system-font fallback.
-- Spacing and layout rhythm: the split introduction/archive composition, three-column masonry density, card radii, gaps, and elevation match the reference. The VitePress navigation remains above the composition by design.
-- Colors and visual tokens: black, white, soft blue, brand blue, border opacity, backdrop blur, and dark-mode-compatible surfaces map to the existing VitePress theme tokens.
-- Image quality and asset fidelity: the implementation reuses the reference Unsplash subjects with responsive `object-fit: cover` cropping and descriptive alt text. No placeholder or code-drawn image substitutes are present.
-- Copy and content: reference headlines, labels, project summaries, metadata, links, and carousel captions are preserved; counts now derive from the actual six-item data set.
+The final two-up comparison uses the source and implementation at the same pixel dimensions. The desktop composition now follows the reference hierarchy: left-aligned hero copy, a large right-side blueberry visual, a three-card content strip, statistics, featured articles, and a stacked right rail. The content frame starts at the same horizontal position and uses a comparable main/sidebar split. The existing site header remains intentionally unchanged because this task scoped the homepage content.
 
-## Focused comparison evidence
+## Focused-region comparison
 
-- Full view: source and implementation were compared side by side at 1280 × 720. The implementation intentionally includes the production VitePress navigation, while the project composition preserves the reference split layout and visual hierarchy.
-- Modal: source and implementation modal states were compared at 1280 × 720. The initial implementation was taller than the reference; the modal was corrected to a 1060 × 548 desktop target and recaptured in `implementation-modal-final.png`.
-- Mobile: `implementation-mobile.png` confirms the split layout collapses to a single column at 390px without horizontal overflow, clipped controls, or unreadable text.
+- Hero: display typography, CTA placement, orbit treatment, blueberry scale, and note-card placement were checked at full source resolution.
+- Overview: card heights, gaps, panel radius, icon alignment, statistics rhythm, and tag-chip density were checked against the reference.
+- Featured content: real post covers, title hierarchy, excerpts, tags, metadata, and bookmark affordances were checked at desktop and mobile widths.
+- Dark mode: text contrast, translucent panels, icon colors, borders, and the night background were checked at 1600 x 904.
+
+## Required fidelity surfaces
+
+- Fonts and typography: system sans-serif styling, heavier display weight, compact small-label hierarchy, line wrapping, and truncation are coherent with the reference. No broken wrapping or clipped labels remain.
+- Spacing and layout rhythm: desktop frame, main/sidebar proportions, section gaps, card radii, and mobile stacking are stable with no horizontal overflow.
+- Colors and tokens: the blue-violet brand gradient, mint and rose accents, translucent surfaces, and light/dark VitePress tokens preserve readable contrast in both themes.
+- Image quality and asset fidelity: the project blueberry SVG is sharp at all tested sizes; article cards use real repository cover art with consistent cropping. The hero intentionally uses the established Ethan brand asset rather than introducing a new photorealistic berry asset.
+- Copy and content: homepage copy is coherent and all article, category, tag, and statistic values come from the real content loader.
+- Icons and accessibility: Remix icons are consistent; semantic buttons/links, alt text, focus-visible outlines, reduced-motion handling, and practical mobile controls are present.
 
 ## Comparison history
 
-1. P2 — modal height and visual weight differed from the reference (`1100 × 650` implementation target versus `1060 × 548` reference target).
-2. Fix — changed the desktop modal dimensions to `min(1060px, 94vw)` by `min(548px, 86vh)`.
-3. Post-fix evidence — `output/design-qa/implementation-modal-final.png`; no remaining actionable P0/P1/P2 mismatch.
+1. P1 layout width: the first implementation remained constrained by VitePress's default 1280/1440 px prose container, making the dashboard much narrower than the reference. Fixed by explicitly releasing the home-only container width.
+2. P2 horizontal composition: the first wide version used a 1760 px centered frame, which pushed the right rail too far right. Fixed with a 1470 px content frame anchored to the reference's 345 px desktop start position and a 335 px sidebar.
+3. P2 duplicate decoration: a component-level code badge overlapped the code badge already present in the homepage background. Fixed by removing the duplicate element.
+4. P2 article density: featured cover images were too tall compared with the reference. Fixed by changing the desktop crop to a wider 16:6 ratio.
+5. Post-fix evidence: `home-comparison-v4.jpg` shows the corrected horizontal frame, region proportions, and above-the-fold hierarchy at the same 2470 x 1397 state.
 
-## Interaction and console verification
+## Interaction and runtime checks
 
-- Category filtering: passed for Full Stack and AI Experiment.
-- Time-order toggle: rendered and keyboard-accessible.
-- Project modal: opened from card and focused the close control.
-- Carousel: next slide changed image and counter from 01/03 to 02/03.
-- Keyboard: Escape closed the modal; Left/Right handlers are registered for carousel navigation.
-- External links: GitHub and project-site actions render as semantic anchors.
-- Console: no implementation runtime errors observed during the verified flows.
+- Featured tabs: Latest to AI updates all three cards with real matching posts.
+- Bookmark: clicking updates the icon and accessible label from collect to cancel collect.
+- Theme switch: light and dark modes both render without a Vite error overlay.
+- Responsive layout: 390 px viewport stacks the hero, category cards, stats, article cards, and side panels without horizontal overflow.
+- Runtime diagnostics: no Vite error overlay appeared, the development server reported no runtime errors, and the final production build completed successfully. The in-app browser does not expose a separate console-log channel in this session.
+
+## Findings
+
+No actionable P0, P1, or P2 findings remain.
 
 ## Follow-up polish
 
-- P3: replace the six sample project records and generic image URLs with final repository metadata and owned screenshots when those assets are available.
+- P3: a future custom photorealistic blueberry illustration could move the hero closer to the reference art direction, but the current established Ethan SVG is intentionally retained for brand consistency.
+
+## Implementation checklist
+
+- [x] Desktop light comparison at the source viewport
+- [x] Dark-mode visual check
+- [x] Mobile responsive check
+- [x] Core tab and bookmark interactions
+- [x] Production build
 
 final result: passed
