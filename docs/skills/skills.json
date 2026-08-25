@@ -7,7 +7,6 @@
     "category": "engineering",
     "categoryLabel": "工程开发",
     "updatedAt": "2026-08-25",
-    "status": "常用",
     "tags": [
       "代码图谱",
       "调用链",
@@ -23,7 +22,6 @@
     "category": "engineering",
     "categoryLabel": "工程开发",
     "updatedAt": "2026-08-22",
-    "status": "已启用",
     "tags": [
       "浏览器",
       "自动化",
@@ -39,7 +37,6 @@
     "category": "design",
     "categoryLabel": "产品设计",
     "updatedAt": "2026-08-20",
-    "status": "常用",
     "tags": [
       "移动端",
       "UI/UX",
@@ -55,7 +52,6 @@
     "category": "design",
     "categoryLabel": "产品设计",
     "updatedAt": "2026-08-18",
-    "status": "已启用",
     "tags": [
       "Web",
       "SaaS",
@@ -71,7 +67,6 @@
     "category": "media",
     "categoryLabel": "内容创作",
     "updatedAt": "2026-08-16",
-    "status": "已启用",
     "tags": [
       "图像生成",
       "封面",
@@ -87,7 +82,6 @@
     "category": "media",
     "categoryLabel": "内容创作",
     "updatedAt": "2026-08-14",
-    "status": "实验中",
     "tags": [
       "视频",
       "动画",
@@ -103,7 +97,6 @@
     "category": "productivity",
     "categoryLabel": "效率工具",
     "updatedAt": "2026-08-12",
-    "status": "已启用",
     "tags": [
       "Word",
       "排版",
@@ -119,7 +112,6 @@
     "category": "productivity",
     "categoryLabel": "效率工具",
     "updatedAt": "2026-08-10",
-    "status": "已启用",
     "tags": [
       "Excel",
       "数据分析",
@@ -135,7 +127,6 @@
     "category": "productivity",
     "categoryLabel": "效率工具",
     "updatedAt": "2026-08-08",
-    "status": "已启用",
     "tags": [
       "PPT",
       "演示",
@@ -151,7 +142,6 @@
     "category": "research",
     "categoryLabel": "研究分析",
     "updatedAt": "2026-08-06",
-    "status": "常用",
     "tags": [
       "检索",
       "事实核验",
@@ -167,7 +157,6 @@
     "category": "productivity",
     "categoryLabel": "效率工具",
     "updatedAt": "2026-08-04",
-    "status": "已启用",
     "tags": [
       "PDF",
       "渲染",
@@ -183,7 +172,6 @@
     "category": "media",
     "categoryLabel": "内容创作",
     "updatedAt": "2026-08-02",
-    "status": "已启用",
     "tags": [
       "语音",
       "转写",

@@ -62,10 +62,10 @@
             <span class="flex items-center gap-1.5"><RiTimeLine size="14" aria-hidden="true"/>更新于 {{
                 formatDate(skill.updatedAt)
               }}</span><span class="flex items-center gap-1.5 text-text-2"> <span
-              class="rounded-full border border-divider px-3 py-1 text-[10px] !font-black tracking-[.08em] text-text-2">{{
+              class="rounded-full border border-divider px-3 py-0.5 text-[10px] !font-black tracking-[.08em] text-text-2">{{
               skill.categoryLabel
-            }}</span><RiArrowRightUpLine size="14"
-                                         class="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            }}</span><RiArrowRightUpLine size="16"
+                                         class="transition-transform group-hover:translate-x-0.5 opacity-0 group-hover:opacity-100 group-hover:-translate-y-0.5"
                                          aria-hidden="true"/></span></footer>
         </div>
       </div>
@@ -111,7 +111,6 @@ interface Skill {
   categoryLabel: string;
   updatedAt: string;
   link: string;
-  status: string;
   tags: string[]
 }
 
