@@ -178,5 +178,34 @@
       "旁白"
     ],
     "link": "https://platform.openai.com/docs/guides/speech-to-text"
+  },
+  {
+    "id": 13,
+    "icon": "research",
+    "name": "eli5",
+    "description": "Explain Like I'm 5, generate human-readable explanations for complex topics.",
+    "category": "research",
+    "categoryLabel": "研究分析",
+    "updatedAt": "2026-08-02",
+    "tags": [
+      "Explain Like I'm 5",
+      "generate human-readable explanations",
+      "for complex topics"
+    ],
+    "link": "https://github.com/anthropics/claude-plugins-community/tree/main/eli5"
+  },
+  {
+    "id": 14,
+    "icon": "research",
+    "name": "Grill Me",
+    "description": "Grill Me, ask me anything.",
+    "category": "research",
+    "categoryLabel": "研究分析",
+    "updatedAt": "2026-08-25",
+    "tags": [
+      "Grill Me",
+      "ask me anything"
+    ],
+    "link": "https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me"
   }
 ]
