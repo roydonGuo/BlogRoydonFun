@@ -851,7 +851,7 @@ function formatDate(date: string): string {
   padding: 3px 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 9%, var(--vp-c-divider));
   border-radius: 999px;
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 84%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
   color: var(--vp-c-text-2);
   font-size: 13px;
   cursor: pointer;
@@ -886,7 +886,7 @@ function formatDate(date: string): string {
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
   border-radius: 10px;
-  background: color-mix(in srgb, var(--vp-c-bg) 84%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
 }
 
 .monthly-card time {
