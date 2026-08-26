@@ -21,6 +21,14 @@ export interface CategoryFeature {
   icon: string
 }
 
+export interface MonthlyArticleStat {
+  key: string
+  year: number
+  month: number
+  monthLabel: string
+  count: number
+}
+
 type CategoryFeatureConfig = Pick<CategoryFeature, 'description' | 'primaryColor' | 'iconGradient' | 'icon'>
 
 // 分类展示配置统一放在文章领域层，新增分类时只需在这里补充专属视觉信息。
@@ -50,6 +58,20 @@ export const selectedTag = ref<string | null>(null)
 /* ---- Derived data ---- */
 export const categories = computed(() => {
   return Array.from(new Set(posts.map(p => p.category)))
+})
+
+// 按文章发布日期聚合有内容的月份，供首页月度归档统计复用。
+export const monthlyArticleStats = computed<MonthlyArticleStat[]>(() => {
+  const counts = new Map<string, number>()
+  posts.forEach(post => {
+    const key = post.date.slice(0, 7)
+    if (/^\d{4}-\d{2}$/.test(key)) counts.set(key, (counts.get(key) || 0) + 1)
+  })
+
+  return Array.from(counts, ([key, count]) => {
+    const [year, month] = key.split('-').map(Number)
+    return {key, year, month, monthLabel: `${month}月`, count}
+  }).sort((a, b) => b.key.localeCompare(a.key))
 })
 
 // 从文章数据动态生成首页分类特性，确保分类集合和文章数量不会写死。

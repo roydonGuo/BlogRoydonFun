@@ -6,6 +6,7 @@ import {
   RiArticleLine,
   RiBookmarkFill,
   RiBookmarkLine,
+  RiCalendar2Line,
   RiCodeBoxLine,
   RiFigmaLine,
   RiGithubFill,
@@ -15,7 +16,7 @@ import {
   RiVuejsLine,
 } from '@remixicon/vue'
 import type {CategoryFeature} from '../composables/usePostFilter'
-import {features, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
+import {features, monthlyArticleStats, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
 
 type FeaturedMode = 'latest' | 'ai' | 'backend'
 
@@ -238,6 +239,18 @@ function formatDate(date: string): string {
           </div>
         </section>
 
+        <section class="monthly-panel home-panel" aria-labelledby="monthly-title">
+          <header class="side-heading">
+            <div id="monthly-title" class="flex gap-2"><RiCalendar2Line/>文章月历</div>
+            <span>{{ monthlyArticleStats.length }} 个月</span>
+          </header>
+          <div class="monthly-grid">
+            <article v-for="month in monthlyArticleStats" :key="month.key" class="monthly-card">
+              <time :datetime="month.key"><span>{{ month.monthLabel }}</span><small>{{ month.year }}</small></time>
+              <strong>{{ month.count }}<small>篇</small></strong>
+            </article>
+          </div>
+        </section>
         <section class="tools-panel home-panel" aria-labelledby="tools-title">
           <header class="side-heading">
             <div id="tools-title" class="flex gap-2">
@@ -358,7 +371,7 @@ function formatDate(date: string): string {
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .hero-primary {
@@ -462,7 +475,7 @@ function formatDate(date: string): string {
   color: var(--feature-color, #64748b);
   text-align: left;
   cursor: pointer;
-  transition: all 0.22s ease;
+  transition: all 0.3s ease;
 }
 
 .feature-card::after {
@@ -592,6 +605,7 @@ function formatDate(date: string): string {
 
 .featured-section,
 .tags-panel,
+.monthly-panel,
 .tools-panel {
   border-radius: 20px;
 }
@@ -673,7 +687,7 @@ function formatDate(date: string): string {
   border: 1px solid var(--vp-c-border-1);
   border-radius: 1.25rem;
   background: var(--home-panel-strong);
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .featured-card:hover {
@@ -792,6 +806,7 @@ function formatDate(date: string): string {
 }
 
 .tags-panel,
+.monthly-panel,
 .tools-panel {
   padding: 18px;
 }
@@ -853,6 +868,38 @@ function formatDate(date: string): string {
   color: var(--vp-c-text-3);
   font-variant-numeric: tabular-nums;
 }
+
+.monthly-grid {
+  display: grid;
+  max-height: 274px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+
+.monthly-card {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--vp-c-bg) 84%, transparent);
+}
+
+.monthly-card time {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--vp-c-text-3);
+  font-size: 13px;
+}
+
+.monthly-card time small { font-size: 11px; }
+.monthly-card strong { color: var(--vp-c-text-1); font-size: 18px; line-height: 1; }
+.monthly-card strong small { margin-left: 3px; font-size: 12px; font-weight: 600; }
 
 .learning-card {
   padding: 14px;
