@@ -160,7 +160,7 @@ const isPostsPage = computed(() => {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 86%, transparent);
   color: var(--vp-c-text-2);
   transition: all 0.3s;
 }
@@ -185,7 +185,7 @@ const isPostsPage = computed(() => {
 .filter-tag:hover {
   border-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
-  background: color-mix(in srgb, var(--vp-c-brand-soft) 50%, transparent);
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 86%, transparent);
 }
 
 .filter-tag:hover .filter-tag-count {

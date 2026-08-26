@@ -19,6 +19,7 @@ import MermaidDiagram from '../components/MermaidDiagram.vue'
 import ArticleReader from '../components/ArticleReader.vue'
 import ArticleImagePreview from '../components/ArticleImagePreview.vue'
 import HomeDashboard from '../components/HomeDashboard.vue'
+import HomeSignalField from '../components/HomeSignalField.vue'
 import { initLinkIcons } from './link-icons'
 // 插件生成的语言/文件类型图标样式。
 import 'virtual:group-icons.css'
@@ -85,19 +86,23 @@ const AnimatedLayout = defineComponent({
       await transition.ready
     })
 
-    return () => h(DefaultTheme.Layout, null, {
-      // 文章页左侧栏复用 posts.data.ts，自动按分类展示全部文章。
-      'sidebar-nav-before': () => h(PostSidebar),
-      'aside-top': () => h(PostFilter),
-      // 在文章正文前提供浏览器原生语音朗读控件。
-      'doc-before': () => h(ArticleReader),
-      // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
-      'doc-after': () => h(Fragment, null, [
-        h(PostPrevNext),
-        // 只在文章详情页挂载大图组件；Teleport 不改变正文和导航布局。
-        isPostDetail.value ? h(ArticleImagePreview) : null,
-      ]),
-    })
+    return () => h(Fragment, null, [
+      // 全站共用一个交互式信号场，路由切换时无需重复创建 Canvas。
+      h(HomeSignalField),
+      h(DefaultTheme.Layout, null, {
+        // 文章页左侧栏复用 posts.data.ts，自动按分类展示全部文章。
+        'sidebar-nav-before': () => h(PostSidebar),
+        'aside-top': () => h(PostFilter),
+        // 在文章正文前提供浏览器原生语音朗读控件。
+        'doc-before': () => h(ArticleReader),
+        // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
+        'doc-after': () => h(Fragment, null, [
+          h(PostPrevNext),
+          // 只在文章详情页挂载大图组件；Teleport 不改变正文和导航布局。
+          isPostDetail.value ? h(ArticleImagePreview) : null,
+        ]),
+      }),
+    ])
   },
 })
 

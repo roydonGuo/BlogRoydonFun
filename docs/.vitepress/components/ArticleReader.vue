@@ -454,7 +454,7 @@ watch(() => page.value.relativePath, stop)
   z-index: 20;
   top: calc(100% + 8px);
   right: 0;
-  width: 440px;
+  width: 500px;
   max-height: 360px;
   overflow: auto;
   padding: 8px;
@@ -542,7 +542,7 @@ watch(() => page.value.relativePath, stop)
   display: flex;
   gap: 9px;
   align-items: center;
-  padding: 0 11px;
+  padding: 0 6px;
   height: 42px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 9rem;

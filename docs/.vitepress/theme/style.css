@@ -145,7 +145,8 @@
     /**
      *
      */
-    --vp-c-bg-alt: rgba(246, 246, 247, 0.7);
+    --vp-c-bg-alt: rgba(246, 246, 247, 0.9);
+    --vp-c-bg: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
@@ -155,7 +156,8 @@
     --vp-c-gutter: rgba(0, 0, 0, 0.25);
     --vp-sidebar-bg-color: rgba(27, 27, 31, 0.25);
 
-    --vp-c-bg-alt: rgba(22, 22, 24, 0.7);
+    --vp-c-bg-alt: rgba(22, 22, 24, 0.9);
+    --vp-c-bg: rgba(0, 0, 0, 0.9);
 }
 
 @media (min-width: 640px) {
@@ -181,6 +183,7 @@ html {
 
 body {
     font-weight: 500;
+    font-size: 16px;
 }
 
 .outline-link {
@@ -350,17 +353,27 @@ body {
     gap: 1rem !important;
 }
 
-/* 首页根据当前主题使用对应的装饰背景，其他页面不受影响。 */
-.VPHome {
-    min-height: calc(100vh);
-    background-image: url('/bg/home-day.svg');
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-size: cover;
+/* 全站背景由 Layout 外层唯一的 HomeSignalField Canvas 绘制。 */
+:root {
+    --site-signal-surface: #efeee9;
 }
 
-.dark .VPHome {
-    background-image: url('/bg/home-night.svg');
+.dark {
+    --site-signal-surface: #050608;
+}
+
+html,
+body {
+    min-height: 100%;
+    background: var(--site-signal-surface);
+    transition: background-color 0.45s ease;
+}
+
+.Layout {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    background: transparent;
 }
 
 /* 本地搜索窗 */

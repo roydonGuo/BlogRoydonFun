@@ -430,7 +430,7 @@ function formatDate(date: string): string {
 .home-panel {
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 10%, var(--vp-c-divider));
   background: var(--home-panel);
-  box-shadow: var(--home-shadow);
+  backdrop-filter: blur(16px);
 }
 
 .feature-viewport {
@@ -826,7 +826,7 @@ function formatDate(date: string): string {
   align-items: center;
   gap: 2px;
   color: var(--vp-c-text-3);
-  font-size: 10px;
+  font-size: 12px;
   text-decoration: none;
 }
 
@@ -851,7 +851,7 @@ function formatDate(date: string): string {
   padding: 3px 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 9%, var(--vp-c-divider));
   border-radius: 999px;
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 86%, transparent);
   color: var(--vp-c-text-2);
   font-size: 13px;
   cursor: pointer;
@@ -886,7 +886,7 @@ function formatDate(date: string): string {
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
   border-radius: 10px;
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 86%, transparent);
 }
 
 .monthly-card time {
