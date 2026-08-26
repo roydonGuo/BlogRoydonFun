@@ -290,11 +290,11 @@ function formatDate(date: string) {
   height: 100%;
   object-fit: cover;
   margin: 0;
-  transition: transform 0.3s ease;
 }
 
 .post-card:hover .card-cover img {
   transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 
 .load-more-trigger {

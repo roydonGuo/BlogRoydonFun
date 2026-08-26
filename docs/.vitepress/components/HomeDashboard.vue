@@ -706,11 +706,11 @@ function formatDate(date: string): string {
   height: 100%;
   margin: 0;
   object-fit: cover;
-  transition: transform 0.35s ease;
 }
 
 .featured-card:hover .featured-cover img {
-  transform: scale(1.045);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
 }
 
 .featured-body {

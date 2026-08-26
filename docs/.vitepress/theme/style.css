@@ -53,6 +53,20 @@
     font-display: swap;
 }
 
+/* 方块字体 */
+@font-face {
+    font-family: "BubbledotICG-FinePos";
+    src: url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.eot");
+    src: url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.eot?#iefix") format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.woff") format("woff"),
+    url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.woff2") format("woff2"),
+    url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.ttf") format("truetype"),
+    url("https://db.onlinewebfonts.com/t/8cb707a9b8a73f8a7403336b861c3074.svg#BubbledotICG-FinePos") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     /* Override VitePress's default interface and content font stack. */
     --vp-font-family-base: 'PingFang', sans-serif;
