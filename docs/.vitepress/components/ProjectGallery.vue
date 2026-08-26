@@ -353,15 +353,11 @@ watch(loadMoreTrigger, (trigger) => {
   loadMoreObserver.observe(trigger)
 }, {flush: 'post'})
 
-let pageFooter: HTMLElement | null = null
-
-// 外层布局使用 Tailwind 工具类，离开项目页时恢复 VitePress 默认状态。
+// 外层布局使用 Tailwind 工具类，并通过页面状态类控制页脚显隐。
 onMounted(() => {
   initializeMasonry()
   document.documentElement.classList.add('h-full', 'overflow-hidden')
-  document.body.classList.add('h-full', 'overflow-hidden')
-  pageFooter = document.querySelector<HTMLElement>('.VPFooter')
-  pageFooter?.classList.add('hidden')
+  document.body.classList.add('h-full', 'overflow-hidden', 'projects-page-active')
 })
 
 if (typeof window !== 'undefined') window.addEventListener('keydown', onKeydown)
@@ -374,13 +370,16 @@ onBeforeUnmount(() => {
   if (typeof document !== 'undefined') {
     document.documentElement.style.overflow = ''
     document.documentElement.classList.remove('h-full', 'overflow-hidden')
-    document.body.classList.remove('h-full', 'overflow-hidden')
-    pageFooter?.classList.remove('hidden')
+    document.body.classList.remove('h-full', 'overflow-hidden', 'projects-page-active')
   }
 })
 </script>
 
 <style>
+body.projects-page-active .VPFooter {
+  display: none;
+}
+
 .projects-title-glow {
   position: relative;
   isolation: isolate;

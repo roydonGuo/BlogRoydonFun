@@ -151,22 +151,22 @@ const openSkill = (skill: Skill) => {
   const skillWindow = window.open(skill.link, '_blank', 'noopener,noreferrer')
   if (skillWindow) skillWindow.opener = null
 }
-let pageFooter: HTMLElement | null = null
-// 与 Projects 页面保持一致：全屏展示时隐藏页脚，离开页面后恢复默认布局。
+// 与 Projects 页面保持一致：通过页面状态类控制全屏布局及页脚显隐。
 onMounted(() => {
   document.documentElement.classList.add('h-full', 'overflow-hidden');
-  document.body.classList.add('h-full', 'overflow-hidden');
-  pageFooter = document.querySelector<HTMLElement>('.VPFooter');
-  pageFooter?.classList.add('hidden')
+  document.body.classList.add('h-full', 'overflow-hidden', 'skills-page-active');
 })
 onBeforeUnmount(() => {
   document.documentElement.classList.remove('h-full', 'overflow-hidden');
-  document.body.classList.remove('h-full', 'overflow-hidden');
-  pageFooter?.classList.remove('hidden')
+  document.body.classList.remove('h-full', 'overflow-hidden', 'skills-page-active');
 })
 </script>
 
 <style>
+body.skills-page-active .VPFooter {
+  display: none;
+}
+
 .skills-title-glow {
   position: relative;
   isolation: isolate;

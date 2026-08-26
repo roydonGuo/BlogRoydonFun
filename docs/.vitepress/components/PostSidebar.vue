@@ -525,7 +525,6 @@ function toggleCategory(category: string): void {
 
 .recommended-item:hover {
   background: var(--vp-c-brand-soft);
-  transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(36, 69, 235, 0.12);
 }
 

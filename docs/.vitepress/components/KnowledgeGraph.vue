@@ -1,56 +1,63 @@
 <template>
-  <section class="knowledge-graph">
-    <div class="toolbar">
-      <label class="search"><span>⌕</span><input v-model.trim="query" type="search" placeholder="搜索文章或标签"
-                                                 aria-label="搜索文章或标签"></label>
-      <div class="category-picker" @focusout="closeCategoryOnBlur" @keydown.down.prevent="moveCategory(1)"
-           @keydown.up.prevent="moveCategory(-1)" @keydown.esc.prevent="categoryOpen = false"
-           @keydown.enter.prevent="confirmCategory">
-        <button class="category-select" type="button" aria-haspopup="listbox" :aria-expanded="categoryOpen"
-                @click="toggleCategory">
-          <span class="category-select-icon" aria-hidden="true"><i/></span>
-          <span class="category-select-copy"><small>文章分类</small><b>{{ category || '全部分类' }}</b></span>
-          <svg aria-hidden="true" viewBox="0 0 20 20" :class="{ open: categoryOpen }">
-            <path d="m6 8 4 4 4-4"/>
-          </svg>
-        </button>
-        <Transition name="category-menu">
-          <div v-if="categoryOpen" class="category-menu" role="listbox" aria-label="文章分类">
-            <button v-for="(item, index) in categoryOptions" :key="item || 'all'" type="button" role="option"
-                    class="category-option"
-                    :class="{ selected: category === item, active: activeCategoryIndex === index }"
-                    :aria-selected="category === item" @mouseenter="activeCategoryIndex = index"
-                    @click="selectCategory(item)">
-              <span class="category-option-dot" aria-hidden="true"/>
-              <span class="category-option-copy"><b>{{
-                  item || '全部分类'
-                }}</b><small>{{ item ? categoryCount(item) : posts.length }} 篇文章</small></span>
-              <svg v-if="category === item" aria-hidden="true" viewBox="0 0 20 20">
-                <path d="m5 10 3 3 7-7"/>
-              </svg>
+  <section class="knowledge-graph knowledge-graph-shell">
+    <aside class="graph-sidebar" aria-label="知识图谱筛选">
+      <div class="graph-sidebar-orb" aria-hidden="true"/>
+      <div class="graph-sidebar-content">
+        <p class="graph-eyebrow"><span aria-hidden="true"/>KNOWLEDGE CONSTELLATION · {{ currentYear }}</p>
+        <h1 class="graph-title">在文章之间<br>发现连接<span>。</span></h1>
+        <p class="graph-description">每篇文章都是一个节点，分类与标签把散落的思考连接成一张持续生长的知识网络。</p>
+
+        <dl class="graph-stats" aria-label="知识图谱统计">
+          <div><dt>{{ articleCount }}</dt><dd>篇文章</dd></div>
+          <div><dt>{{ tagCount }}</dt><dd>个标签</dd></div>
+          <div><dt>{{ activeLinks.length }}</dt><dd>条关联</dd></div>
+        </dl>
+
+        <label class="graph-search">
+          <span aria-hidden="true">⌕</span>
+          <input v-model.trim="query" type="search" placeholder="搜索文章或标签" aria-label="搜索文章或标签">
+        </label>
+
+        <div class="graph-filter-section">
+          <p>EXPLORE BY CATEGORY</p>
+          <div class="graph-category-list" role="group" aria-label="文章分类筛选">
+            <button
+                v-for="item in categoryOptions"
+                :key="item || 'all'"
+                type="button"
+                :class="{ selected: category === item }"
+                :aria-pressed="category === item"
+                @click="selectCategory(item)"
+            >{{ item || '全部' }} {{ item ? categoryCount(item) : posts.length }}
             </button>
           </div>
-        </Transition>
+        </div>
+
+        <div class="legend graph-sidebar-legend"><span><i class="article"/>文章</span><span><i
+            class="category"/>分类</span><span><i class="tag"/>标签</span><span><i
+            class="relation-line category-link"/>文章—分类</span><span><i
+            class="relation-line tag-link"/>文章—标签</span></div>
       </div>
-      <button type="button" @click="resetView">重置视图</button>
-    </div>
-    <div class="stats"><span><b>{{ articleCount }}</b> 篇文章</span><span><b>{{
-        tagCount
-      }}</b> 个标签</span><span><b>{{ activeLinks.length }}</b> 条关联</span></div>
-    <div ref="stage" class="stage">
-      <canvas ref="canvas" aria-label="文章知识图谱。拖拽探索，滚轮缩放，点击文章节点阅读。" @pointerdown="pointerDown"
-              @pointermove="pointerMove" @pointerup="pointerUp" @pointerleave="pointerLeave" @wheel.prevent="wheel"/>
-      <div v-if="hovered" class="tip" :style="{ left: `${pointer.x + 14}px`, top: `${pointer.y + 14}px` }"><b>{{
-          hovered.label
-        }}</b><small>{{
-          hovered.type === 'article' ? `${hovered.category} · 点击阅读` : hovered.type === 'category' ? '文章分类' : '文章标签'
-        }}</small></div>
-      <div v-if="!articleCount" class="empty">没有匹配的文章</div>
-      <div class="help">悬停查看关联 · 拖拽探索 · 滚轮缩放 · 点击文章阅读</div>
-    </div>
-    <div class="legend"><span><i class="article"/>文章</span><span><i class="category"/>分类</span><span><i
-        class="tag"/>标签</span><span><i class="relation-line category-link"/>文章—分类</span><span><i
-        class="relation-line tag-link"/>文章—标签</span></div>
+    </aside>
+
+    <section class="graph-workspace" aria-label="文章知识图谱">
+      <header class="graph-workspace-header">
+        <p>KNOWLEDGE SIGNALS</p>
+        <button type="button" @click="resetView">重置视图</button>
+      </header>
+
+      <div ref="stage" class="stage graph-stage">
+        <canvas ref="canvas" aria-label="文章知识图谱。拖拽探索，滚轮缩放，点击文章节点阅读。" @pointerdown="pointerDown"
+                @pointermove="pointerMove" @pointerup="pointerUp" @pointerleave="pointerLeave" @wheel.prevent="wheel"/>
+        <div v-if="hovered" class="tip" :style="{ left: `${pointer.x + 14}px`, top: `${pointer.y + 14}px` }"><b>{{
+            hovered.label
+          }}</b><small>{{
+            hovered.type === 'article' ? `${hovered.category} · 点击阅读` : hovered.type === 'category' ? '文章分类' : '文章标签'
+          }}</small></div>
+        <div v-if="!articleCount" class="empty">没有匹配的文章</div>
+        <div class="help">悬停查看关联 · 拖拽探索 · 滚轮缩放 · 点击文章阅读</div>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -82,11 +89,10 @@ const canvas = ref<HTMLCanvasElement>()
 const stage = ref<HTMLElement>()
 const query = ref('')
 const category = ref('')
-const categoryOpen = ref(false)
-const activeCategoryIndex = ref(0)
 const hovered = ref<Node | null>(null)
 const pointer = ref({x: 0, y: 0})
 const router = useRouter()
+const currentYear = new Date().getFullYear()
 const categories = [...new Set(posts.map(post => post.category))].sort((a, b) => a.localeCompare(b, 'zh-CN'))
 const categoryOptions = ['', ...categories]
 const colors = {article: '#2445eb', category: '#f59e0b', tag: '#14b8a6'}
@@ -315,30 +321,8 @@ function wheel(event: WheelEvent) {
   offsetY = p.y - height / 2 - before.y * scale
 }
 
-function toggleCategory() {
-  categoryOpen.value = !categoryOpen.value
-  activeCategoryIndex.value = Math.max(0, categoryOptions.indexOf(category.value))
-}
-
 function selectCategory(value: string) {
-  category.value = value;
-  categoryOpen.value = false
-}
-
-function moveCategory(step: number) {
-  if (!categoryOpen.value) {
-    categoryOpen.value = true;
-    return
-  }
-  activeCategoryIndex.value = (activeCategoryIndex.value + step + categoryOptions.length) % categoryOptions.length
-}
-
-function confirmCategory() {
-  categoryOpen.value ? selectCategory(categoryOptions[activeCategoryIndex.value]) : toggleCategory()
-}
-
-function closeCategoryOnBlur(event: FocusEvent) {
-  if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as globalThis.Node | null)) categoryOpen.value = false
+  category.value = value
 }
 
 function categoryCount(value: string) {
@@ -373,6 +357,7 @@ watch([query, category], () => {
   resetView()
 })
 onMounted(() => {
+  document.body.classList.add('knowledge-graph-page-active')
   buildGraph();
   observer = new ResizeObserver(resize);
   observer.observe(stage.value!);
@@ -380,76 +365,15 @@ onMounted(() => {
   animate()
 })
 onBeforeUnmount(() => {
+  document.body.classList.remove('knowledge-graph-page-active')
   cancelAnimationFrame(frame);
   observer?.disconnect()
 })
 </script>
 
 <style scoped>
-.knowledge-graph {
-  margin: 0 auto;
-  max-width: 1180px
-}
-
-.toolbar {
-  display: grid;
-  grid-template-columns:minmax(220px, 1fr) 180px auto;
-  gap: 10px;
-  margin-bottom: 12px
-}
-
-.search {
-  position: relative
-}
-
-.search span {
-  position: absolute;
-  top: 7px;
-  left: 13px;
-  color: var(--vp-c-text-3);
-  font-size: 24px
-}
-
-.toolbar input, .toolbar select, .toolbar button {
-  height: 42px;
-  border: 1px solid var(--vp-c-border-1);
-  border-radius: 10px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  font: inherit
-}
-
-.toolbar input {
-  width: 100%;
-  padding: 0 14px 0 40px
-}
-
-.toolbar select {
-  padding: 0 12px
-}
-
-.toolbar button {
-  padding: 0 16px;
-  color: var(--vp-c-brand-1);
-  cursor: pointer
-}
-
-.toolbar input:focus, .toolbar select:focus, .toolbar button:focus-visible {
-  border-color: var(--vp-c-brand-1);
-  outline: 3px solid var(--vp-c-brand-soft)
-}
-
-.stats {
-  display: flex;
-  gap: 20px;
-  margin: 0 2px 12px;
-  color: var(--vp-c-text-3);
-  font-size: 13px
-}
-
-.stats b {
-  color: var(--vp-c-text-1);
-  font-size: 15px
+:global(body.knowledge-graph-page-active .VPFooter) {
+  display: none;
 }
 
 .stage {
@@ -570,223 +494,349 @@ canvas:active {
   box-shadow: 0 0 7px rgba(15, 159, 145, .22)
 }
 
-.category-select {
-  position: relative;
-  display: grid;
-  height: 42px;
-  grid-template-columns:34px 1fr 18px;
-  align-items: center;
-  gap: 7px;
-  padding: 0 10px;
-  border: 1px solid var(--vp-c-border-1);
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--vp-c-bg), var(--vp-c-bg-soft));
-  box-shadow: 0 1px 2px rgba(36, 69, 235, .04);
-  cursor: pointer;
-  transition: border-color .2s, box-shadow .2s, transform .2s
-}
-
-.category-select:hover {
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 40%, var(--vp-c-border-1));
-  box-shadow: 0 6px 18px rgba(36, 69, 235, .09);
-  transform: translateY(-1px)
-}
-
-.category-select:focus-within {
-  border-color: var(--vp-c-brand-1);
-  box-shadow: 0 0 0 3px var(--vp-c-brand-soft)
-}
-
-.category-select-icon {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border-radius: 9px;
-  background: linear-gradient(135deg, rgba(245, 158, 11, .18), rgba(245, 158, 11, .07))
-}
-
-.category-select-icon i {
-  width: 9px;
-  height: 9px;
-  border: 2px solid #f59e0b;
-  border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, .12)
-}
-
-.category-select-copy {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  line-height: 1.05
-}
-
-.category-select-copy small {
-  color: var(--vp-c-text-3);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: .08em
-}
-
-.category-select-copy b {
-  overflow: hidden;
-  margin-top: 4px;
-  color: var(--vp-c-text-1);
-  font-size: 13px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap
-}
-
-.category-select svg {
-  width: 18px;
-  fill: none;
-  stroke: var(--vp-c-text-3);
-  stroke-width: 1.8;
-  transition: transform .2s
-}
-
-.category-select:hover svg {
-  stroke: var(--vp-c-brand-1);
-  transform: translateY(1px)
-}
-
-.category-select select {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer
-}
-
-.category-select select:focus {
-  outline: 0
-}
-
-.category-picker {
-  position: relative;
-  z-index: 4
-}
-
-.category-picker > .category-select {
-  width: 100%;
-  padding: 0 10px;
-  text-align: left
-}
-
-.category-select svg.open {
-  transform: rotate(180deg)
-}
-
-.category-menu {
-  position: absolute;
+/* 复用项目页的全屏工作台结构：左侧负责信息与筛选，右侧专注图谱探索。 */
+.knowledge-graph-shell {
+  position: fixed;
   z-index: 20;
-  top: calc(100% + 9px);
-  left: 0;
-  width: max(100%, 220px);
-  padding: 7px;
-  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, var(--vp-c-border-1));
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--vp-c-bg) 96%, transparent);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, .16), 0 3px 12px rgba(36, 69, 235, .08);
-  backdrop-filter: blur(18px)
-}
-
-.toolbar .category-option {
+  inset: var(--vp-nav-height) 0 0;
   display: grid;
-  width: 100%;
-  height: auto;
-  min-height: 48px;
-  grid-template-columns:12px 1fr 18px;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
+  width: auto;
+  max-width: none;
+  grid-template-columns: 340px minmax(0, 1fr);
+  margin: 0;
+  overflow: hidden;
+  border-top: 1px solid var(--vp-c-divider);
   color: var(--vp-c-text-1);
-  text-align: left;
-  cursor: pointer;
-  transition: background .15s, color .15s, transform .15s
 }
 
-.toolbar .category-option:hover, .toolbar .category-option.active {
-  background: var(--vp-c-bg-soft);
-  transform: translateX(2px)
+.graph-sidebar {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-right: 1px solid color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
+  background: transparent;
 }
 
-.toolbar .category-option.selected {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1)
+.graph-sidebar-orb {
+  position: absolute;
+  top: 30px;
+  left: -86px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vp-c-brand-1) 24%, transparent);
+  filter: blur(58px);
+  pointer-events: none;
 }
 
-.category-option-dot {
+.graph-sidebar-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 32px 38px 26px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.graph-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 18px;
+  color: var(--vp-c-text-1);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.graph-eyebrow span {
   width: 8px;
   height: 8px;
-  border: 2px solid #f59e0b;
+  flex: 0 0 8px;
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, .1)
+  background: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 5px var(--vp-c-brand-soft);
 }
 
-.category-option-copy {
-  display: flex;
+.graph-title {
+  margin: 0;
+  border: 0;
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: 1.02;
+}
+
+.graph-title span {
+  color: var(--vp-c-brand-1);
+}
+
+.graph-description {
+  max-width: 240px;
+  margin: 18px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.75;
+  opacity: .68;
+}
+
+.graph-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 26px 0 0;
+}
+
+.graph-stats div {
   min-width: 0;
-  flex-direction: column;
 }
 
-.category-option-copy b {
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap
+.graph-stats dt {
+  color: var(--vp-c-text-1);
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
 }
 
-.category-option-copy small {
+.graph-stats dd {
+  margin: 7px 0 0;
   color: var(--vp-c-text-3);
   font-size: 10px;
-  line-height: 1.25;
+  font-weight: 700;
 }
 
-.category-option svg {
-  width: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2
+.graph-search {
+  position: relative;
+  display: block;
+  margin-top: 26px;
 }
 
-.category-menu-enter-active, .category-menu-leave-active {
-  transition: opacity .16s ease, transform .16s ease
+.graph-search > span {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  color: var(--vp-c-text-3);
+  font-size: 22px;
+  transform: translateY(-54%);
+  pointer-events: none;
 }
 
-.category-menu-enter-from, .category-menu-leave-to {
-  opacity: 0;
-  transform: translateY(-6px) scale(.98)
+.graph-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 13px 0 39px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  outline: 0;
+  background: color-mix(in srgb, var(--vp-c-bg) 82%, transparent);
+  color: var(--vp-c-text-1);
+  font: inherit;
+  font-size: 12px;
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
-@media (max-width: 640px) {
-  .toolbar {
-    grid-template-columns:1fr 1fr
+.graph-search input:focus {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
+}
+
+.graph-filter-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
+}
+
+.graph-filter-section > p {
+  margin: 0 0 11px;
+  color: var(--vp-c-text-3);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.graph-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.graph-category-list button {
+  display: inline-flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 5px 14px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+.graph-category-list button:hover {
+  border-color: var(--vp-c-text-1);
+  transform: translateY(-2px);
+}
+
+.graph-category-list button:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+.graph-category-list button.selected {
+  border-color: var(--vp-c-text-1);
+  background: var(--vp-c-text-1);
+  color: var(--vp-c-bg);
+}
+
+.graph-sidebar-legend {
+  justify-content: flex-start;
+  gap: 10px 16px;
+  padding-top: 22px;
+  font-size: 11px;
+}
+
+.graph-workspace {
+  display: grid;
+  min-width: 0;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 16px;
+  padding: 22px clamp(22px, 3vw, 48px) 28px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 54%, transparent);
+}
+
+.graph-workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.graph-workspace-header p {
+  margin: 0;
+  color: var(--vp-c-text-3);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .2em;
+}
+
+.graph-workspace-header button {
+  min-width: 104px;
+  height: 38px;
+  padding: 0 17px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-bg) 76%, transparent);
+  color: var(--vp-c-brand-1);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: border-color .2s ease, transform .2s ease, background-color .2s ease;
+}
+
+.graph-workspace-header button:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg);
+  transform: translateY(-2px);
+}
+
+.graph-workspace-header button:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+
+.graph-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 24px;
+  background-color: color-mix(in srgb, var(--vp-c-bg) 10%, transparent);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
+}
+
+@media (max-width: 980px) {
+  .knowledge-graph-shell {
+    grid-template-columns: 300px minmax(0, 1fr);
   }
 
-  .search {
-    grid-column: 1/-1
+  .graph-sidebar-content {
+    padding-inline: 26px;
   }
 
-  .stats {
-    justify-content: space-between;
-    gap: 8px
+  .graph-title {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 760px) {
+  .knowledge-graph-shell {
+    display: block;
+    overflow-y: auto;
   }
 
-  .stage {
-    height: 62vh;
-    min-height: 430px;
-    border-radius: 14px
+  .graph-sidebar {
+    height: auto;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--vp-c-divider);
+  }
+
+  .graph-sidebar-content {
+    height: auto;
+    padding: 30px 22px 26px;
+    overflow: visible;
+  }
+
+  .graph-title {
+    font-size: 40px;
+  }
+
+  .graph-description {
+    max-width: 480px;
+  }
+
+  .graph-stats {
+    max-width: 360px;
+  }
+
+  .graph-workspace {
+    height: max(680px, calc(100svh - var(--vp-nav-height)));
+    padding: 24px 16px 28px;
+    overflow: visible;
+  }
+
+  .graph-workspace-header {
+    align-items: center;
+  }
+
+  .graph-stage {
+    height: 100%;
+    min-height: 480px;
+    border-radius: 18px;
   }
 
   .help {
-    display: none
+    display: none;
+  }
+}
+
+@media (max-width: 440px) {
+  .graph-workspace-header button {
+    min-width: auto;
+    padding-inline: 13px;
   }
 }
 </style>

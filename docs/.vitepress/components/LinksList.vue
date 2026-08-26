@@ -116,7 +116,6 @@ const linkGroups: LinkGroup[] = [
 .link-card:hover {
   border-color: var(--vp-c-brand-soft);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
 }
 
 .link-icon {

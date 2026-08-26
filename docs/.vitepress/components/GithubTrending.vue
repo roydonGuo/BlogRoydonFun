@@ -235,7 +235,7 @@ onBeforeUnmount(() => {
 .spinning { animation: spin .8s linear infinite; }
 .repo-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .repo-card { display: flex; align-items: center; gap: 16px; min-width: 0; padding: 18px 20px; border: 1px solid var(--vp-c-divider); border-radius: 15px; background: var(--vp-c-bg); transition: transform .2s, border-color .2s, box-shadow .2s; }
-.repo-card:hover { border-color: rgba(36,69,235,.36); box-shadow: 0 10px 25px rgba(15,23,42,.07); transform: translateY(-2px); }
+.repo-card:hover { border-color: rgba(36,69,235,.36); box-shadow: 0 10px 25px rgba(15,23,42,.07); }
 .rank { flex: 0 0 34px; color: var(--vp-c-text-3); font: 800 14px/1 monospace; text-align: center; }
 .rank-1 { color: #f59e0b; font-size: 18px; }.rank-2 { color: #94a3b8; font-size: 17px; }.rank-3 { color: #b7791f; font-size: 16px; }
 .repo-main { min-width: 0; flex: 1; }
