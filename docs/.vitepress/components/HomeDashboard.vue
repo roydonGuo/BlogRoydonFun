@@ -2,43 +2,24 @@
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useRouter} from 'vitepress'
 import {
-  RiAiGenerate2Line,
   RiArrowRightLine,
   RiArticleLine,
   RiBookmarkFill,
   RiBookmarkLine,
   RiCodeBoxLine,
-  RiCodeSSlashLine,
   RiFigmaLine,
-  RiFolder6Line,
   RiGithubFill,
   RiNodejsLine,
-  RiPaletteLine,
   RiPriceTag3Line,
-  RiQuillPenLine,
-  RiSparkling2Line,
-  RiStarLine,
-  RiTimeLine,
   RiToolsLine,
   RiVuejsLine,
 } from '@remixicon/vue'
-import {data as postData} from '../../posts/posts.data'
-import type {PostItem} from '../composables/usePostFilter'
-import {selectedCategory, selectedTag} from '../composables/usePostFilter'
+import type {CategoryFeature} from '../composables/usePostFilter'
+import {features, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
 
 type FeaturedMode = 'latest' | 'ai' | 'backend'
 
-interface FeatureCard {
-  title: string
-  description: string
-  href: string
-  category?: string
-  tone: 'brand' | 'mint' | 'rose'
-  icon: typeof RiCodeSSlashLine
-}
-
 const router = useRouter()
-const posts = postData as PostItem[]
 const featuredMode = ref<FeaturedMode>('latest')
 const bookmarkedUrls = ref(new Set<string>())
 const wavingHandRef = ref<HTMLElement | null>(null)
@@ -61,31 +42,6 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => destroyWavingHand?.())
-
-const features: FeatureCard[] = [
-  {
-    title: '技术',
-    description: '前端开发、系统架构、工具链与工程实践',
-    href: '/posts/',
-    tone: 'brand',
-    icon: RiCodeSSlashLine,
-  },
-  {
-    title: '随笔',
-    description: '生活记录、思考碎片与阅读笔记',
-    href: '/posts/',
-    category: '随笔',
-    tone: 'mint',
-    icon: RiQuillPenLine,
-  },
-  {
-    title: '设计',
-    description: 'UI/UX、视觉表达与设计系统',
-    href: '/projects/',
-    tone: 'rose',
-    icon: RiPaletteLine,
-  },
-]
 
 const featureTabs: Array<{ key: FeaturedMode; label: string }> = [
   {key: 'latest', label: '最新'},
@@ -132,12 +88,10 @@ const featuredPosts = computed(() => {
   return posts.slice(0, 3)
 })
 
-function openFeature(feature: FeatureCard): void {
-  if (feature.category) {
-    selectedCategory.value = feature.category
-    selectedTag.value = null
-  }
-  router.go(feature.href)
+function openFeature(feature: CategoryFeature): void {
+  selectedCategory.value = feature.category
+  selectedTag.value = null
+  router.go('/posts/')
 }
 
 function openTag(tag: string): void {
@@ -187,23 +141,32 @@ function formatDate(date: string): string {
 
     <section class="home-overview" aria-label="内容概览">
       <div class="home-main-column">
-        <div class="feature-grid">
-          <button
-              v-for="feature in features"
-              :key="feature.title"
-              type="button"
-              class="feature-card home-panel"
-              :class="`feature-${feature.tone}`"
-              @click="openFeature(feature)"
-          >
-            <span class="feature-icon"><component :is="feature.icon"/></span>
-            <span class="feature-copy">
-              <strong>{{ feature.title }} <RiArrowRightLine aria-hidden="true"/></strong>
-              <small>{{ feature.description }}</small>
-            </span>
-          </button>
+        <div class="feature-viewport" aria-label="文章分类">
+          <div class="feature-track">
+            <div
+                v-for="isDuplicate in [false, true]"
+                :key="String(isDuplicate)"
+                class="feature-list"
+                :aria-hidden="isDuplicate ? 'true' : undefined"
+            >
+              <button
+                  v-for="feature in features"
+                  :key="feature.title"
+                  type="button"
+                  class="feature-card home-panel"
+                  :style="{'--feature-color': feature.primaryColor, '--feature-gradient': feature.iconGradient}"
+                  :tabindex="isDuplicate ? -1 : 0"
+                  @click="openFeature(feature)"
+              >
+                <span class="feature-icon"><component :is="feature.icon"/></span>
+                <span class="feature-copy">
+                  <strong>{{ feature.title }} <span class="feature-count">{{ feature.count }} 篇</span></strong>
+                  <small>{{ feature.description }}</small>
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-
 
         <section class="featured-section home-panel" aria-labelledby="featured-title">
           <header class="section-heading">
@@ -437,14 +400,14 @@ function formatDate(date: string): string {
   margin-top: 3rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 335px;
-  gap: 18px;
+  gap: 16px;
   align-items: start;
 }
 
 .home-main-column,
 .home-side-column {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   min-width: 0;
 }
 
@@ -454,10 +417,31 @@ function formatDate(date: string): string {
   box-shadow: var(--home-shadow);
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.feature-viewport {
+  overflow: hidden;
+  padding: 2px 0 0;
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+.feature-track {
+  display: flex;
+  width: max-content;
+  gap: 16px;
+  animation: feature-marquee 34s linear infinite;
+}
+
+.feature-list {
+  display: flex;
   gap: 14px;
+}
+
+.feature-viewport:hover .feature-track,
+.feature-viewport:focus-within .feature-track {
+  animation-play-state: paused;
+}
+
+@keyframes feature-marquee {
+  to { transform: translateX(calc(-50% - 7px)); }
 }
 
 .feature-card {
@@ -465,12 +449,13 @@ function formatDate(date: string): string {
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
   align-items: center;
-  gap: 15px;
-  min-height: 112px;
-  padding: 18px;
+  gap: 12px;
+  width: 220px;
+  flex: 0 0 220px;
+  padding: 1rem;
   overflow: hidden;
-  border-radius: 18px;
-  color: inherit;
+  border-radius: 20px;
+  color: var(--feature-color, #64748b);
   text-align: left;
   cursor: pointer;
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
@@ -480,17 +465,17 @@ function formatDate(date: string): string {
   position: absolute;
   right: 22px;
   bottom: 0;
-  width: 34px;
-  height: 3px;
+  width: 42px;
+  height: 4px;
   border-radius: 99px 99px 0 0;
   background: currentColor;
   content: '';
-  opacity: 0.72;
+  opacity: 0.5;
 }
 
 .feature-card:hover {
   border-color: color-mix(in srgb, currentColor 38%, var(--vp-c-divider));
-  box-shadow: 0 20px 40px color-mix(in srgb, currentColor 13%, transparent);
+  box-shadow: 0 10px 20px color-mix(in srgb, currentColor 6%, transparent);
 }
 
 .feature-icon {
@@ -498,71 +483,48 @@ function formatDate(date: string): string {
   width: 54px;
   height: 54px;
   place-items: center;
-  border-radius: 16px;
+  border-radius: 18px;
   color: #fff;
+  background: var(--feature-gradient, linear-gradient(135deg, #64748b, #94a3b8));
   box-shadow: 0 12px 24px color-mix(in srgb, currentColor 25%, transparent);
 }
 
 .feature-icon svg {
-  width: 28px;
+  width: 32px;
 }
 
 .feature-copy {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   min-width: 0;
 }
 
 .feature-copy strong {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
   color: var(--vp-c-text-1);
-  font-size: 17px;
+  font-size: 16px;
 }
 
-.feature-copy strong svg {
-  width: 16px;
+.feature-count {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
   color: currentColor;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .feature-copy small {
+  overflow: hidden;
   color: var(--vp-c-text-3);
   font-size: 12px;
   line-height: 1.55;
-}
-
-.feature-brand {
-  color: #536df6;
-}
-
-.feature-brand .feature-icon {
-  background: linear-gradient(135deg, #4266ff, #7044f7);
-}
-
-.feature-mint {
-  color: #3fcba2;
-}
-
-.feature-mint .feature-icon {
-  background: linear-gradient(135deg, #3ed8aa, #29b987);
-}
-
-.feature-rose {
-  color: #ff7598;
-}
-
-.feature-rose .feature-icon {
-  background: linear-gradient(135deg, #ff879d, #ff668d);
-}
-
-.stats-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  min-height: 86px;
-  margin: 0;
-  padding: 13px 8px;
-  border-radius: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stats-bar > div {
@@ -1186,6 +1148,10 @@ function formatDate(date: string): string {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .feature-track {
+    animation: none;
+  }
+
   .home-dashboard *,
   .home-dashboard *::before,
   .home-dashboard *::after {
