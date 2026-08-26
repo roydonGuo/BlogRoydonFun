@@ -135,9 +135,9 @@ function formatDate(date: string) {
   gap: 0.75rem;
   margin-bottom: 1.25rem;
   padding: 0.6rem 1rem;
-  border-radius: 8px;
+  border-radius: 9rem;
   background: var(--vp-c-brand-soft);
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .filter-label {

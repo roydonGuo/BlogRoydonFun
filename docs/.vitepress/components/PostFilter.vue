@@ -88,7 +88,7 @@ const isPostsPage = computed(() => {
   text-align: left;
   padding: 0.3rem 0.6rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 9rem;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

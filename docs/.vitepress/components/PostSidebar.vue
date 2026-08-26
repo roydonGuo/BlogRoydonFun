@@ -2,6 +2,7 @@
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
+import {features} from '../composables/usePostFilter'
 import {
   RiUserSmileLine,
   RiProfileLine,
@@ -59,7 +60,11 @@ const categoryGroups = computed(() => {
     groups.set(post.category, group)
   })
 
-  return Array.from(groups, ([category, items]) => ({category, items}))
+  return Array.from(groups, ([category, items]) => ({
+    category,
+    items,
+    feature: features.value.find(feature => feature.category === category),
+  }))
 })
 
 // 统计全部文章去重后的标签总数，供资料卡展示。
@@ -178,7 +183,10 @@ function toggleCategory(category: string): void {
               :aria-expanded="expandedCategories.has(group.category)"
               @click="toggleCategory(group.category)"
           >
-            <span>{{ group.category }}</span>
+            <span class="post-sidebar-category-name">
+              <img v-if="group.feature" :src="group.feature.icon" :alt="`${group.category}分类图标`">
+              <span>{{ group.category }}</span>
+            </span>
             <small>{{ group.items.length }}</small>
             <svg aria-hidden="true" viewBox="0 0 16 16" :class="{ expanded: expandedCategories.has(group.category) }">
               <path d="m5 6 3 3 3-3"/>
@@ -339,7 +347,7 @@ function toggleCategory(category: string): void {
   margin-bottom: 18px;
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
-  border-radius: 12px;
+  border-radius: 16px;
   background: linear-gradient(135deg, var(--vp-c-brand-soft), transparent);
 }
 
@@ -392,6 +400,27 @@ function toggleCategory(category: string): void {
   font-weight: 700;
   text-align: left;
   cursor: pointer;
+}
+
+.post-sidebar-category-name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+.post-sidebar-category-name img {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+  object-fit: contain;
+}
+
+.post-sidebar-category-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-sidebar-category svg {
