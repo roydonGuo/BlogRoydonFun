@@ -23,25 +23,25 @@ const router = useRouter()
 const featuredMode = ref<FeaturedMode>('latest')
 const bookmarkedUrls = ref(new Set<string>())
 const wavingHandRef = ref<HTMLElement | null>(null)
-let destroyWavingHand: (() => void) | undefined
+const featuredFireRef = ref<HTMLElement | null>(null)
+const destroyAnimations: Array<() => void> = []
 
 onMounted(async () => {
-  if (!wavingHandRef.value) return
+  if (!wavingHandRef.value && !featuredFireRef.value) return
 
   // 客户端挂载后再加载 Lottie，避免 VitePress 服务端渲染阶段访问浏览器对象。
   const {default: lottie} = await import('lottie-web')
-  const animation = lottie.loadAnimation({
-    container: wavingHandRef.value,
-    renderer: 'svg',
-    loop: false,
-    autoplay: true,
-    path: '/lottie/waving_hand.json',
-  })
-
-  destroyWavingHand = () => animation.destroy()
+  if (wavingHandRef.value) {
+    const wavingHand = lottie.loadAnimation({container: wavingHandRef.value, renderer: 'svg', loop: false, autoplay: true, path: '/lottie/waving_hand.json'})
+    destroyAnimations.push(() => wavingHand.destroy())
+  }
+  if (featuredFireRef.value) {
+    const featuredFire = lottie.loadAnimation({container: featuredFireRef.value, renderer: 'svg', loop: true, autoplay: true, path: '/lottie/fire.json'})
+    destroyAnimations.push(() => featuredFire.destroy())
+  }
 })
 
-onBeforeUnmount(() => destroyWavingHand?.())
+onBeforeUnmount(() => destroyAnimations.forEach(destroy => destroy()))
 
 const featureTabs: Array<{ key: FeaturedMode; label: string }> = [
   {key: 'latest', label: '最新'},
@@ -170,7 +170,10 @@ function formatDate(date: string): string {
 
         <section class="featured-section home-panel" aria-labelledby="featured-title">
           <header class="section-heading">
-            <div id="featured-title"><span class="heading-dot"/>精选文章</div>
+            <div id="featured-title" class="featured-title">
+              <span ref="featuredFireRef" class="featured-fire" aria-hidden="true"/>
+              精选文章
+            </div>
             <div class="featured-tabs" aria-label="文章分类">
               <button
                   v-for="tab in featureTabs"
@@ -257,7 +260,7 @@ function formatDate(date: string): string {
 
 <style scoped>
 .home-dashboard {
-  --home-panel: color-mix(in srgb, var(--vp-c-bg) 88%, transparent);
+  --home-panel: color-mix(in srgb, var(--vp-c-bg) 50%, transparent);
   --home-panel-strong: color-mix(in srgb, var(--vp-c-bg) 95%, transparent);
   margin: 0 auto;
   padding: 2rem 0 0;
@@ -455,10 +458,11 @@ function formatDate(date: string): string {
   padding: 1rem;
   overflow: hidden;
   border-radius: 20px;
+  backdrop-filter: blur(40px);
   color: var(--feature-color, #64748b);
   text-align: left;
   cursor: pointer;
-  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  transition: all 0.22s ease;
 }
 
 .feature-card::after {
@@ -615,12 +619,19 @@ function formatDate(date: string): string {
   font-weight: 800;
 }
 
-.heading-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6fb5ff, #7957f3);
-  box-shadow: 0 0 0 5px rgba(88, 115, 243, 0.08);
+.featured-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--vp-c-text-1);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.featured-fire {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
 }
 
 .featured-tabs {
@@ -751,7 +762,7 @@ function formatDate(date: string): string {
   gap: 10px;
   padding-top: 2px;
   color: var(--vp-c-text-3);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .bookmark-button {
