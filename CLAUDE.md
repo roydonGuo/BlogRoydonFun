@@ -53,3 +53,4 @@ Tailwind v4 is pulled in through `@tailwindcss/vite` (no `tailwind.config` — t
 - 仿苹果IOS26毛玻璃质感
 - 大圆角设计
 - 浅色/深色双主题
+- 简单UI采用tailwindcss进行CSS编写，复杂布局可采用tailwindcss加CSS的形式，例如flex、gap等tailwindcss里的常用且简单用法可直接使用tailwindcss，然后复杂布局可单独使用CSS编写，这种方式更灵活。
