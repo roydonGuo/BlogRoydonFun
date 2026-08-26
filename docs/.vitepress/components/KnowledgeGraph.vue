@@ -570,16 +570,6 @@ canvas:active {
   box-shadow: 0 0 7px rgba(15, 159, 145, .22)
 }
 
-:global(.dark) .legend .category-link {
-  background: #fbbf24;
-  box-shadow: 0 0 8px rgba(251, 191, 36, .36)
-}
-
-:global(.dark) .legend .tag-link {
-  background: #2dd4bf;
-  box-shadow: 0 0 8px rgba(45, 212, 191, .3)
-}
-
 .category-select {
   position: relative;
   display: grid;
