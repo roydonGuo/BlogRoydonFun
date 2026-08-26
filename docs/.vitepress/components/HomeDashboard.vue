@@ -158,7 +158,7 @@ function formatDate(date: string): string {
                   :tabindex="isDuplicate ? -1 : 0"
                   @click="openFeature(feature)"
               >
-                <span class="feature-icon"><component :is="feature.icon"/></span>
+                <span class="feature-icon"><img :src="feature.icon" :alt="`${feature.title}分类图标`"></span>
                 <span class="feature-copy">
                   <strong>{{ feature.title }} <span class="feature-count">{{ feature.count }} 篇</span></strong>
                   <small>{{ feature.description }}</small>
@@ -260,7 +260,7 @@ function formatDate(date: string): string {
 
 <style scoped>
 .home-dashboard {
-  --home-panel: color-mix(in srgb, var(--vp-c-bg) 50%, transparent);
+  --home-panel: color-mix(in srgb, var(--vp-c-bg) 30%, transparent);
   --home-panel-strong: color-mix(in srgb, var(--vp-c-bg) 95%, transparent);
   margin: 0 auto;
   padding: 2rem 0 0;
@@ -489,12 +489,15 @@ function formatDate(date: string): string {
   place-items: center;
   border-radius: 18px;
   color: #fff;
-  background: var(--feature-gradient, linear-gradient(135deg, #64748b, #94a3b8));
+  /*background: var(--feature-gradient, linear-gradient(135deg, #64748b, #94a3b8));*/
   box-shadow: 0 12px 24px color-mix(in srgb, currentColor 25%, transparent);
 }
 
-.feature-icon svg {
-  width: 32px;
+.feature-icon img {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  object-fit: contain;
 }
 
 .feature-copy {
@@ -1004,8 +1007,9 @@ function formatDate(date: string): string {
     border-radius: 13px;
   }
 
-  .feature-icon svg {
+  .feature-icon img {
     width: 23px;
+    height: 23px;
   }
 }
 
