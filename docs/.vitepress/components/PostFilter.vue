@@ -7,9 +7,16 @@
 <!--          <button :class="['filter-item', { active: !selectedCategory && !selectedTag }]"-->
 <!--            @click="clearFilter">全部</button>-->
 <!--        </li>-->
-        <li v-for="cat in categories" :key="cat">
-          <button :class="['filter-item', { active: selectedCategory === cat }]" @click="filterByCategory(cat)">{{ cat
-            }}</button>
+        <li v-for="feature in features" :key="feature.category">
+          <button
+            :class="['filter-item', { active: selectedCategory === feature.category }]"
+            :style="{'--category-color': feature.primaryColor}"
+            @click="filterByCategory(feature.category)"
+          >
+            <span class="filter-category-icon"><img :src="feature.icon" :alt="`${feature.title}分类图标`"></span>
+            <span class="filter-category-name">{{ feature.title }}</span>
+            <span class="filter-category-count">{{ feature.count }}</span>
+          </button>
         </li>
       </ul>
     </div>
@@ -31,14 +38,13 @@
 import { computed } from 'vue'
 import { useRoute } from 'vitepress'
 import {
-  categories,
+  features,
   tags,
   tagArticleCounts,
   selectedCategory,
   selectedTag,
   filterByCategory,
   filterByTag,
-  clearFilter,
 } from '../composables/usePostFilter'
 
 const route = useRoute()
@@ -75,18 +81,20 @@ const isPostsPage = computed(() => {
 }
 
 .filter-item {
-  display: block;
+  display: flex;
   width: 100%;
+  align-items: center;
+  gap: 0.5rem;
   text-align: left;
   padding: 0.3rem 0.6rem;
   border: none;
   border-radius: 5px;
-  font-size: 0.82rem;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   background: transparent;
   color: var(--vp-c-text-2);
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 
 .filter-item:hover {
@@ -95,9 +103,45 @@ const isPostsPage = computed(() => {
 }
 
 .filter-item.active {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
-  font-weight: 500;
+  background: color-mix(in srgb, var(--category-color) 20%, transparent);
+  color: var(--category-color);
+  font-weight: 900;
+}
+
+.filter-category-icon {
+  display: inline-grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: 0 0 1.65rem;
+  place-items: center;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--category-color) 5%, transparent);
+}
+
+.filter-category-icon img {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  object-fit: contain;
+}
+
+.filter-category-name {
+  min-width: 0;
+  flex: 1;
+}
+
+.filter-category-count {
+  display: inline-grid;
+  min-width: 1.45rem;
+  height: 1.45rem;
+  padding: 0 0.35rem;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--category-color) 10%, var(--vp-c-bg-soft));
+  color: var(--category-color);
+  font-size: 0.68rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
 }
 
 .filter-tags {
@@ -113,12 +157,12 @@ const isPostsPage = computed(() => {
   padding: 0.15rem 0.75rem;
   border: 1px solid var(--vp-c-border-1);
   border-radius: 1rem;
-  font-size: 0.75rem;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  background: transparent;
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 50%, transparent);
   color: var(--vp-c-text-2);
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 
 .filter-tag-count {
@@ -135,12 +179,13 @@ const isPostsPage = computed(() => {
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .filter-tag:hover {
   border-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 50%, transparent);
 }
 
 .filter-tag:hover .filter-tag-count {

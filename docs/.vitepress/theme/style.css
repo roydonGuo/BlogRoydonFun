@@ -327,7 +327,7 @@ body {
 }
 
 .aside {
-    max-width: 340px !important;
+    max-width: var(--vp-sidebar-width) !important;
 }
 
 .aside-container {
@@ -364,13 +364,14 @@ body {
 }
 
 /* 本地搜索窗 */
-.VPLocalSearchBox .shell{
+.VPLocalSearchBox .shell {
     border-radius: 1rem !important;
 }
 
-.VPLocalSearchBox .shell .search-bar{
+.VPLocalSearchBox .shell .search-bar {
     border-radius: 9rem !important;
 }
-.VPLocalSearchBox .shell .result{
+
+.VPLocalSearchBox .shell .result {
     border-radius: 1rem !important;
 }
