@@ -39,17 +39,18 @@
       }}</b> 个标签</span><span><b>{{ activeLinks.length }}</b> 条关联</span></div>
     <div ref="stage" class="stage">
       <canvas ref="canvas" aria-label="文章知识图谱。拖拽探索，滚轮缩放，点击文章节点阅读。" @pointerdown="pointerDown"
-              @pointermove="pointerMove" @pointerup="pointerUp" @pointerleave="pointerUp" @wheel.prevent="wheel"/>
+              @pointermove="pointerMove" @pointerup="pointerUp" @pointerleave="pointerLeave" @wheel.prevent="wheel"/>
       <div v-if="hovered" class="tip" :style="{ left: `${pointer.x + 14}px`, top: `${pointer.y + 14}px` }"><b>{{
           hovered.label
         }}</b><small>{{
           hovered.type === 'article' ? `${hovered.category} · 点击阅读` : hovered.type === 'category' ? '文章分类' : '文章标签'
         }}</small></div>
       <div v-if="!articleCount" class="empty">没有匹配的文章</div>
-      <div class="help">拖拽探索 · 滚轮缩放 · 点击文章阅读</div>
+      <div class="help">悬停查看关联 · 拖拽探索 · 滚轮缩放 · 点击文章阅读</div>
     </div>
     <div class="legend"><span><i class="article"/>文章</span><span><i class="category"/>分类</span><span><i
-        class="tag"/>标签</span></div>
+        class="tag"/>标签</span><span><i class="relation-line category-link"/>文章—分类</span><span><i
+        class="relation-line tag-link"/>文章—标签</span></div>
   </section>
 </template>
 
@@ -195,18 +196,36 @@ function draw() {
   ctx.translate(width / 2 + offsetX, height / 2 + offsetY);
   ctx.scale(scale, scale)
   const byId = new Map(activeNodes.value.map(node => [node.id, node]));
-  ctx.strokeStyle = css('--vp-c-divider', '#d8dee9');
-  ctx.lineWidth = 1 / scale;
-  ctx.globalAlpha = .55
+  const dark = document.documentElement.classList.contains('dark')
+  const linkColors = dark
+      ? {category: '#fbbf24', tag: '#2dd4bf'}
+      : {category: '#d97706', tag: '#0f9f91'}
+  const highlightedNodeId = hovered.value?.id
+  ctx.lineCap = 'round'
   activeLinks.value.forEach(link => {
     const a = byId.get(link.source), b = byId.get(link.target);
     if (!a || !b) return;
+    const relationType = b.type === 'category' ? 'category' : 'tag'
+    const highlighted = Boolean(highlightedNodeId)
+        && (link.source === highlightedNodeId || link.target === highlightedNodeId)
+    const hasHoveredNode = Boolean(highlightedNodeId)
+    ctx.strokeStyle = linkColors[relationType]
+    ctx.globalAlpha = hasHoveredNode
+        ? (highlighted ? 1 : .12)
+        : (relationType === 'category' ? (dark ? .84 : .74) : (dark ? .62 : .52))
+    ctx.lineWidth = (highlighted ? 2.8 : relationType === 'category' ? 1.55 : 1.15) / scale
+    ctx.shadowColor = highlighted ? linkColors[relationType] : 'transparent'
+    ctx.shadowBlur = highlighted ? 8 / scale : 0
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
     ctx.stroke()
   })
-  ctx.globalAlpha = 1
+  ctx.globalAlpha = 1;
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0
+  const textColor = css('--vp-c-text-1', '#1b1b1f')
+  const hoverOutline = css('--vp-c-bg', '#fff')
   activeNodes.value.forEach(node => {
     const r = radius(node);
     ctx.beginPath();
@@ -215,12 +234,12 @@ function draw() {
     ctx.fill()
     if (node === hovered.value) {
       ctx.lineWidth = 3 / scale;
-      ctx.strokeStyle = css('--vp-c-bg', '#fff');
+      ctx.strokeStyle = hoverOutline;
       ctx.stroke()
     }
     if (scale >= .72 || node.type !== 'tag') {
       ctx.font = `${node.type === 'article' ? 600 : 500} ${node.type === 'article' ? 12 : 11}px PingFang,sans-serif`;
-      ctx.fillStyle = css('--vp-c-text-1', '#1b1b1f');
+      ctx.fillStyle = textColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(short(node.label, node.type === 'article' ? 18 : 12), node.x, node.y + r + 5, 150)
@@ -281,6 +300,12 @@ function pointerUp() {
   if (dragged && !moved && dragged.type === 'article' && dragged.url) router.go(dragged.url);
   dragged = null;
   panning = false
+}
+
+function pointerLeave() {
+  dragged = null;
+  panning = false;
+  hovered.value = null
 }
 
 function wheel(event: WheelEvent) {
@@ -496,6 +521,7 @@ canvas:active {
 
 .legend {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 22px;
   padding: 16px 0 0;
@@ -525,6 +551,33 @@ canvas:active {
 
 .legend .tag {
   background: #14b8a6
+}
+
+.legend .relation-line {
+  width: 22px;
+  height: 3px;
+  border-radius: 999px
+}
+
+.legend .category-link {
+  background: #d97706;
+  box-shadow: 0 0 7px rgba(217, 119, 6, .25)
+}
+
+.legend .tag-link {
+  height: 2px;
+  background: #0f9f91;
+  box-shadow: 0 0 7px rgba(15, 159, 145, .22)
+}
+
+:global(.dark) .legend .category-link {
+  background: #fbbf24;
+  box-shadow: 0 0 8px rgba(251, 191, 36, .36)
+}
+
+:global(.dark) .legend .tag-link {
+  background: #2dd4bf;
+  box-shadow: 0 0 8px rgba(45, 212, 191, .3)
 }
 
 .category-select {
