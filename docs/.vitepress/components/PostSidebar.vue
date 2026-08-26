@@ -369,7 +369,7 @@ function toggleCategory(category: string): void {
 .post-sidebar-home small,
 .post-sidebar-category small {
   color: var(--vp-c-text-3);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .post-sidebar-groups {
@@ -388,7 +388,7 @@ function toggleCategory(category: string): void {
   background: transparent;
   color: var(--vp-c-text-1);
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   text-align: left;
   cursor: pointer;
@@ -421,10 +421,10 @@ function toggleCategory(category: string): void {
   align-items: center;
   gap: 8px;
   margin: 2px 0;
-  padding: 7px 9px;
+  padding: 5px 9px;
   border-radius: 8px;
   color: var(--vp-c-text-2);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.45;
   transition: color 0.2s ease, background-color 0.2s ease;
 }

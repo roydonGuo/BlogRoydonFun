@@ -26,7 +26,7 @@
       <div class="filter-tags">
         <button v-for="tag in tags" :key="tag" :class="['filter-tag', { active: selectedTag === tag }]"
           @click="filterByTag(tag)">
-          <span>{{ tag }}</span>
+          <span>#{{ tag }}</span>
           <span class="filter-tag-count">{{ tagArticleCounts[tag] }}</span>
         </button>
       </div>
@@ -202,6 +202,6 @@ const isPostsPage = computed(() => {
   background: var(--vp-c-brand-soft);
   border-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
-  font-weight: 500;
+  font-weight: 600;
 }
 </style>
