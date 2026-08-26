@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, onMounted} from 'vue'
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
 import {
@@ -16,6 +16,8 @@ const expandedCategories = ref(new Set(posts.map(post => post.category)))
 
 // 文章列表页挂载后随机抽 5 篇作为推荐，避免 SSR 与客户端水合结果不一致。
 const recommended = ref<typeof posts>([])
+const recommendedWaveRef = ref<HTMLElement | null>(null)
+let destroyRecommendedWave: (() => void) | undefined
 
 function pickRecommended(): void {
   const pool = [...posts]
@@ -26,7 +28,23 @@ function pickRecommended(): void {
   recommended.value = pool.slice(0, 5)
 }
 
-onMounted(pickRecommended)
+onMounted(async () => {
+  pickRecommended()
+  if (!recommendedWaveRef.value) return
+
+  // 仅在客户端加载推荐阅读标题动画，避免影响 VitePress 服务端渲染。
+  const {default: lottie} = await import('lottie-web')
+  const animation = lottie.loadAnimation({
+    container: recommendedWaveRef.value,
+    renderer: 'svg',
+    loop: true,
+    autoplay: true,
+    path: '/lottie/emoji_star_strike.json',
+  })
+  destroyRecommendedWave = () => animation.destroy()
+})
+
+onBeforeUnmount(() => destroyRecommendedWave?.())
 
 // /posts/ 是文章列表页，其余 /posts/* 路由均按文章详情页处理。
 const isPostListPage = computed(() => normalizePath(route.path) === '/posts')
@@ -120,7 +138,10 @@ function toggleCategory(category: string): void {
       </div>
 
       <div class="recommended-articles">
-        <h3 class="recommended-title">📖 推荐阅读</h3>
+        <h3 class="recommended-title">
+          <span ref="recommendedWaveRef" class="recommended-wave" aria-hidden="true"/>
+          推荐阅读
+        </h3>
         <ul class="recommended-list">
           <li v-for="post in recommended" :key="post.url">
             <a :href="post.url" class="recommended-item">
@@ -439,11 +460,20 @@ function toggleCategory(category: string): void {
 }
 
 .recommended-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0 0 14px;
   color: var(--vp-c-text-1);
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+.recommended-wave {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 36px;
 }
 
 .recommended-list {

@@ -646,9 +646,9 @@ function formatDate(date: string): string {
 }
 
 .featured-fire {
-  width: 26px;
-  height: 26px;
-  flex: 0 0 26px;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
 }
 
 .featured-tabs {
