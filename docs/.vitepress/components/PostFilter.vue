@@ -153,8 +153,8 @@ const isPostsPage = computed(() => {
 .filter-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.15rem 0.75rem;
+  gap: 0.25rem;
+  padding: 0.15rem 0.625rem;
   border: 1px solid var(--vp-c-border-1);
   border-radius: 1rem;
   font-size: 13px;

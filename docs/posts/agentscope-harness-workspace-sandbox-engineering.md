@@ -1,5 +1,5 @@
 ---
-title: AgentScope AbstractFilesystem 工程实践：Workspace 路由与沙箱隔离
+title: AgentScope Harness v1 详解：把 OpenClaw 的持续进化装进企业级安全边界
 date: 2026-08-27
 category: AI
 cover: /images/posts/agentscope-harness-workspace-sandbox-engineering-knowledge-map.webp
@@ -7,256 +7,332 @@ tags:
   - AgentScope
   - AI Agent
   - Java
+  - Harness
+  - OpenClaw
   - Workspace
   - Sandbox
-excerpt: AgentScope 的 Workspace 是逻辑目录，AbstractFilesystem 才决定文件真正落在哪里。工程关键是让本地模板、共享存储、租户命名空间与沙箱执行遵循同一套路由规则，避免多副本续跑时出现状态断片或数据串租。
+excerpt: 过去一年 OpenClaw、Hermes、Claude Code 把 Harness Engineering 带到台前，但把这套思路搬进企业级智能体开发时，问题才刚开始。AgentScope Java 1.1 给出 Harness Framework：在 ReActAgent 关键时机插入 Hook，把工作区、文件系统、记忆、子 Agent 和沙箱的工程答案打包进框架。
 ---
 
-# AgentScope AbstractFilesystem 工程实践：Workspace 路由与沙箱隔离
+# AgentScope Harness v1 详解：把 OpenClaw 的持续进化装进企业级安全边界
 
-<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering-knowledge-map.webp" alt="AgentScope AbstractFilesystem 工程实践：Workspace 路由与沙箱隔离知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering-knowledge-map.webp" alt="AgentScope Harness v1 知识串联图" style="border-radius: 10px;" />
 
-AgentScope 的 Workspace 是逻辑目录，AbstractFilesystem 才决定文件真正落在哪里。工程关键是让本地模板、共享存储、租户命名空间与沙箱执行遵循同一套路由规则，避免多副本续跑时出现状态断片或数据串租。
+过去一年，OpenClaw、Hermes、Claude Code 等产品把 **Harness Engineering**（工作区驱动的智能体工程）带到了台前。结构化工作区、上下文管理和工具约定，正在替代"每次对话各自为战"的原始用法。
 
-可以把 **Harness** 理解成一张“移动木工台”。`ReActAgent` 是负责判断下一刀怎么切的木匠，Harness 则提供图纸柜、可换底盘、检查卡扣和防护罩。没有它，木匠也能完成一次加工；有了它，同一套工艺才能跨会话继续、在多实例间接力，并把危险工具关进隔离区。
+但把这套思路搬进企业级智能体开发时，问题才刚刚开始：多租户怎么隔离、命令执行怎么安全、多副本状态怎么同步、长对话上下文怎么不爆、子任务怎么编排。
 
-> 版本说明：内容按 AgentScope Java `2.0.1` 官方仓库与 2.0 文档核对，核对日期为 2026-08-27。1.1 时代以 Hook 为主的示例不能直接套用到 2.0；2.0 的核心扩展链路已经统一到 Middleware、Toolkit、AgentState 与 RuntimeContext 等契约。
+AgentScope Java 1.1 给出的答案是 **Harness Framework**。它不替换 `ReActAgent` 的推理循环，而是在循环关键时机插入 Hook，补齐工作区、文件系统、记忆、子 Agent 和沙箱的一组约定，让同一套 Agent 逻辑既能跑在本机当个人助手，也能直接切到分布式、多租户、隔离执行的企业场景。
 
-## 一、先分清逻辑目录与物理存储
+> **一句话结论**：Harness 是把"下一轮怎么办、下一天怎么办、上下文爆了怎么办、状态丢了怎么办"的工程答案打包进框架，而不是让每个项目自己从零发明一遍。
 
-### 1、Harness 只提供问题发生的背景
+## 一、OpenClaw/Hermes 很好，但在企业级场景用不起来？
 
-**ReAct**（Reasoning and Acting）负责模型推理、选择工具、消费工具结果，再决定继续还是结束。它解决的是单次执行循环。
+### 1、个人助手和企业级 Agent 是两种工程形态
 
-**HarnessAgent** 复用这套推理内核，并在外层补齐长时间运行所需的工程能力：
+个人助手单用户、单进程，状态可以全部放在本机；企业级 Agent 要水平扩容、多租户、服务不中断，状态必须能分布式存储和恢复。
 
-| 层次 | 主要职责 | 典型组件 |
+从几个维度看，两者的要求完全不同：
+
+| 维度 | 个人助手 | 企业级 Agent |
 | --- | --- | --- |
-| 推理内核 | 推理、工具调用、生成响应 | `ReActAgent` |
-| 执行拦截 | 注入上下文、压缩、持久化、权限检查 | Middleware |
-| 工具表面 | 文件、记忆、Skill、SubAgent 等能力 | Toolkit |
-| 持久资产 | 人设、知识、记忆、任务与会话日志 | Workspace |
-| 运行状态 | 支持一次会话中断后恢复 | AgentState |
-| 隔离设施 | 限制文件范围和命令执行环境 | AbstractFilesystem、Sandbox |
+| 部署形态 | 单用户单进程 | 水平扩容、多副本 |
+| 安全边界 | 本机执行无风险 | 任意 Shell 执行都是攻击面 |
+| 可观测性 | 自己看日志 | 记忆落盘、会话可审计、状态变更可追踪 |
+| Token 经济 | 对延迟和费用不敏感 | 每次无效上下文重推都是成本 |
 
-**关键区别：Harness 不替模型做决策，而是约束决策发生在哪里、能够读写什么、状态如何延续。**
+**关键判断**：用同一套假设去应对两种场景必然碰壁。
 
-### 2、一次调用经过哪些边界
+### 2、企业落地最常见的五个障碍
 
-图意：业务请求先获得租户身份，再装载工作区上下文，进入 ReAct 循环；工具执行必须经过权限与隔离边界，最后同时写回运行状态和长期资产。
+来自一线开发者的反馈，大致可以收敛成五个问题：
 
-```mermaid
-flowchart LR
-    A[业务请求] --> B[运行上下文]
-    B --> C[装载工作区]
-    C --> D[ReAct 循环]
-    D --> E{调用工具}
-    E -->|允许| F[文件或沙箱]
-    E -->|拒绝| G[失败反馈]
-    F --> H[保存状态]
-    G --> H
-```
+1. **多用户、多副本，工作区怎么办？** 本地目录假设在分布式场景下直接崩掉。
+2. **Tool 和 Skill Script 不能在宿主机上跑，怎么隔离执行？** 沙箱不是可选项，是上线前提。
+3. **"workspace + 文件系统"怎么搬到分布式环境？** OSS、KV、对象存储接口各异，重写一遍等于把 Agent 逻辑和基础设施耦合死。
+4. **Multi-Agent 怎么做才对？** 子任务分发、上下文隔离、异步执行、结果回收、超时取消要拼成可管理的编排层。
+5. **上下文压缩和分层记忆有没有开箱即用的实现？** 多数框架只给抽象接口，具体实现还是要自己写。
 
-这条链路把“模型决定做什么”与“系统允许怎么做”分开。生产环境最重要的不是让模型永远判断正确，而是让错误判断也无法越过系统边界。
+AgentScope Harness 就是围绕这五个问题设计的。它用 **Workspace + AbstractFilesystem + Hook 管线**，把工程答案打包成可配置项。
 
-## 二、Workspace 是智能体的事实来源
+## 二、Harness 设计理念：两个核心支柱
 
-### 1、同一棵目录承载三种生命周期
+### 1、Workspace 作为唯一事实来源
 
-**Workspace**（工作区）是智能体定义与持续演进的事实来源。它不是简单的聊天记录目录，至少要区分三类内容：
+Harness 为每个 Agent 引入 **workspace（工作区）** —— 一个结构化目录，承载 Agent 运行所需的一切持久化内容：人格定义（`AGENTS.md`）、长期记忆（`MEMORY.md`）、领域知识（`knowledge/`）、可复用技能（`skills/`）、子 Agent 规格（`subagents/`）以及会话历史（`agents/<agentId>/`）。
 
-| 生命周期 | 内容示例 | 维护者 | 用途 |
-| --- | --- | --- | --- |
-| 静态资产 | `AGENTS.md`、`knowledge/`、`skills/`、`subagents/`、`tools.json` | 工程团队 | 定义身份、知识和能力 |
-| 运行文件 | 会话日志、任务记录、计划文件 | 框架与 Agent | 支持审计和后续继续 |
-| 长期记忆 | `MEMORY.md`、按日期沉淀的记忆文件 | Agent 与后台任务 | 跨会话复用稳定事实 |
+工作区不是临时存储，而是 Agent 的"大脑外化"：所有状态的读写都围绕工作区展开，而不是散落在代码、数据库和内存里。
 
-![Workspace 作为 Agent 定义与持续演化的事实来源](/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-source-of-truth.webp)
+运行流程大致如下：
 
-原图来自 AgentScope Java 1.1 Harness 介绍，图中的核心关系在 2.0 仍成立：`AGENTS.md`、记忆、知识和 Skill 都围绕 Workspace 组织；具体注入链路应以 2.0 的 Middleware 契约为准。
+- 每次推理开始前，`WorkspaceContextHook` 把 `AGENTS.md`、`MEMORY.md`、`knowledge/` 等关键文件注入 system prompt。
+- 推理结束后，`MemoryFlushHook` 从当次对话中提炼新事实写入记忆流水账。
+- 后台 `MemoryConsolidator` 周期性合并、去重、精炼，输出到 `MEMORY.md`。
 
-目录放在一起便于版本化、部署和迁移，但读取策略并不相同。`AGENTS.md` 会进入每轮系统上下文；知识目录通常只注入入口与文件清单，需要时再读取；运行中的可恢复快照则交给独立的 `AgentStateStore`。
+<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-as-source-of-truth.webp" alt="Workspace 作为 Source of Truth，左右两侧分别是持续演化机制和运行时上下文层" style="border-radius: 10px;" />
 
-### 2、Workspace 不等于 AgentState
+**上图要点**：工作区是 Source of Truth；左侧负责"持续演化"（记忆提取、会话压缩、技能沉淀），右侧负责"运行时上下文注入"（会话上下文、记忆召回、上下文控制）。
 
-这个边界很容易混淆：
+**为什么这比把 prompt 写死在代码里更好**：人格、知识、技能、子 Agent 规格都在文件里，调整行为只需改文件，不需要重新编译部署。
 
-- Workspace 保存可阅读、可审计、可长期积累的文件资产。
-- **AgentState** 保存当前对话缓冲、滚动摘要、权限状态、工具状态等恢复快照。
+### 2、AbstractFilesystem 让工作区可以运行在任何环境
 
-把二者混成一份数据会产生两个问题：长期资产被高频覆盖，或者恢复状态被当成知识错误注入提示词。正确做法是分别设计保留周期、备份方式和访问权限。
+工作区很美，但现实约束是：本地磁盘在分布式场景下行不通。多个 Pod 各有一块本地磁盘，`MEMORY.md` 写到哪里？哪个副本的版本才是"真"的？
 
-### 3、每轮重新装载意味着配置可热更新
+AgentScope Harness 用 **AbstractFilesystem（抽象文件系统）** 解决这个问题。对上层 Agent 来说，只有统一的 `read/write/ls/grep` 等接口；对下层来说，可以适配本地磁盘、远端对象存储（OSS）、KV 数据库（Redis）、沙箱文件系统等任意介质，还能通过 `CompositeFilesystem` 把不同路径路由到不同后端。
 
-AgentScope 2.0 的 `WorkspaceContextMiddleware` 会在每轮推理前重新组装工作区上下文。修改 `AGENTS.md` 或 `MEMORY.md` 后，下一次调用即可看到变化，不必重建 Agent。
+<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering/abstract-filesystem-inheritance.webp" alt="AbstractFilesystem 继承图：四种实现 LocalFilesystemWithShell、CompositeFilesystem、LocalFilesystem、RemoteFilesystem、SandboxFilesystem" style="border-radius: 10px;" />
 
-这也带来治理要求：
+**上图要点**：三种拓展实现对应三种使用模式：
 
-- `AGENTS.md` 应进入代码审查，避免线上行为被静默改写。
-- `MEMORY.md` 需要容量上限和错误事实纠正机制。
-- `knowledge/` 只暴露目录不代表安全，文件读取仍要经过权限与路径校验。
-- 会话日志默认适合审计，不等于可以无限保留，必须配套归档与删除策略。
+- **LocalFilesystemWithShell**：本机目录 + Shell 执行，适合个人开发/本地应用。
+- **CompositeFilesystem**：把不同路径映射到不同后端（例如本地放代码，远端放记忆），灵活度最高。
+- **SandboxFilesystem**：文件读写和命令执行都在隔离沙箱内完成。
 
-## 三、AbstractFilesystem 才是核心路由层
+<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-based-on-abstract-filesystem.webp" alt="FilesystemTool、ShellExecuteTool、Memory 三大模块统一以 Workspace Based on AbstractFilesystem 为入口" style="border-radius: 10px;" />
 
-### 1、一套工具面对不同后端
+**上图要点**：文件系统之上，`FilesystemTool`、`ShellExecuteTool`、`Memory` 三大模块统一以 Workspace 为入口，Agent 不直接触碰物理存储。
 
-**AbstractFilesystem**（抽象文件系统）统一提供 `ls`、`read`、`write`、`edit`、`grep`、`glob`、上传与下载等文件能力。上层 Middleware 和工具只依赖抽象接口，不需要知道文件最终落在本机磁盘、共享存储还是沙箱。
+基于这一层抽象，Harness 给企业级智能体开发带来三大能力：
 
-这种设计类似给移动木工台安装可换底盘：桌面工序不变，底部可以换成本地轮子、共享轨道或封闭作业舱。
+- **安全与隔离**：Shell/Code/Skill 通过沙箱后端隔离；`execute` 工具只在本机或沙箱模式下暴露。
+- **分布式部署**：关键文件路由到远端共享存储，多副本读到同一份状态。
+- **Subagent 与异步任务**：子 Agent 的工作区、文件系统、会话状态可继承或独立配置，异步任务状态机开箱即用。
 
-| 模式 | 适用场景 | 主要边界 |
-| --- | --- | --- |
-| 本地文件系统 | 单机开发、可信内部任务 | 数据绑定单机，Shell 权限必须单独控制 |
-| 共享或远程文件系统 | 多副本服务、跨实例续跑 | 依赖命名空间隔离与一致性策略 |
-| 沙箱文件系统 | 不可信代码、外部文件处理 | 文件和进程在隔离环境执行，可做快照恢复 |
+## 三、三种典型使用场景
 
-![文件、Shell 与记忆能力统一通过 AbstractFilesystem 操作 Workspace](/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-based-on-abstract-filesystem.webp)
+Harness 不是"非此即彼"的选型，而是从简单到复杂的三条路径。
 
-原图保留了 Harness 1.1 对统一文件能力入口的表达。2.0 中组件名称和扩展链路已有调整，但“上层能力不直接绑定本机磁盘”仍是理解 AbstractFilesystem 的关键。
+### 1、个人代理 Agent —— 典型如 OpenClaw 类应用
 
-### 2、双层读取兼顾模板与运行时覆盖
+特点：单用户、本机运行、操作本地文件或脚本。
 
-官方 Workspace 契约采用“文件系统优先、本地模板兜底”的双层读取：
+Harness 在这里的价值是"让 Agent 真正了解我、记住我"：
 
-```text
-读取 AGENTS.md
-  ├─ 抽象文件系统中存在：读取运行时覆盖版本
-  └─ 不存在：读取镜像或项目内的本地模板
+- **持续记忆**：对话结束后自动提炼事实写入工作区，下次启动无需重新告知背景。
+- **本地 Shell 执行**：在可信本机环境下直接运行脚本、操作文件。
+- **工作区即配置**：改 `AGENTS.md` 调人格，在 `skills/` 里加技能，不需要重新编译部署。
+- **会话跨进程恢复**：只要 `sessionId` 不变，关闭再打开状态全部还原。
 
-写入 Workspace
-  └─ 始终写入抽象文件系统
-```
+### 2、企业级数据服务 —— 典型如 DataAgent
 
-这对多实例很实用：容器镜像携带默认模板，共享存储保存线上覆盖内容。新实例启动时先能工作，管理员更新共享版本后，各实例在下一轮调用读取同一份事实来源。
+特点：服务多用户、执行 SQL/Python/Shell、任务耗时较长、输入不可信。
 
-**注意：双层读取不是最终一致性的替代品。** 多实例同时修改同一记忆文件时，仍需依赖存储端的版本号、条件写入或串行化策略，避免后写覆盖前写。
+这类场景最大的风险是执行安全：
 
-## 四、RuntimeContext 是多租户路由键
+- **隔离沙箱执行**：命令在隔离环境内运行，宿主服务进程不受影响。
+- **多轮沙箱状态恢复**：每轮结束后保存沙箱状态，下轮或重启后原位恢复。
+- **分布式记忆共享**：长期记忆放在共享存储，多节点读到同一份"对用户的了解"。
+- **子 Agent 并行编排**：长任务拆给多个子 Agent 并发执行，主 Agent 只协调和汇总。
+- **多租户隔离**：按会话或用户维度隔离工作区与执行环境。
 
-### 1、身份必须随调用传入
+### 3、企业在线服务 —— 典型如交易/客服 Agent
 
-AgentScope 2.0 要求调用 `HarnessAgent` 时传入 **RuntimeContext**（运行上下文）。其中 `sessionId` 区分会话，`userId` 可参与用户级隔离。隔离信息会继续影响工作区路径、远程存储命名空间、状态存储和沙箱槽位。
+特点：主要调用业务 API，不执行 Shell，但需要多实例运行、会话状态可持久、跨用户知识共享。
 
-下面是按官方 2.0.1 快速开始契约精简的最小示例：
+这类场景核心是稳定与安全：
+
+- **默认安全边界**：不配置沙箱时，框架不暴露 Shell 工具，Agent 只能通过业务工具交互。
+- **多实例共享记忆**：用户记忆落到远端存储，任意实例读到同一份上下文。
+- **会话跨请求连续**：每次请求带相同用户标识，Agent 自动恢复上次对话状态。
+- **并行子任务支持**：同时查库存、计算优惠、生成摘要等子任务可委派给子 Agent 并行执行。
+
+## 四、Harness 详解：从快速开始到底层机制
+
+### 1、Quick Start：三步上手
+
+**第一步：引入依赖**
 
 ```xml
 <dependency>
     <groupId>io.agentscope</groupId>
     <artifactId>agentscope-harness</artifactId>
-    <version>2.0.1</version>
-</dependency>
-
-<dependency>
-    <groupId>io.agentscope</groupId>
-    <artifactId>agentscope-extensions-model-dashscope</artifactId>
-    <version>2.0.1</version>
+    <version>${agentscope.version}</version>
 </dependency>
 ```
+
+**第二步：准备工作区**
+
+在磁盘上选一个目录作为 `workspace`，并在其中创建 `AGENTS.md`。这是 Harness 的核心入口：人格、记忆、技能、子 Agent 规格全部围绕这个目录展开。
+
+**第三步：构建 HarnessAgent 并调用**
 
 ```java
-import io.agentscope.core.agent.RuntimeContext;
-import io.agentscope.core.message.UserMessage;
-import io.agentscope.harness.agent.HarnessAgent;
+HarnessAgent agent = HarnessAgent.builder()
+    .name("my-agent")
+    .model(model)
+    .workspace(Paths.get(".agentscope/workspace"))
+    .compaction(CompactionConfig.builder()
+        .triggerMessages(50)
+        .keepMessages(20)
+        .build())
+    .build();
 
-import java.nio.file.Paths;
+RuntimeContext ctx = RuntimeContext.builder()
+    .sessionId("user-session-001")
+    .userId("alice")
+    .build();
 
-public class CustomerSupportAgent {
-
-    public static void main(String[] args) {
-        HarnessAgent agent = HarnessAgent.builder()
-                .name("customer-support")
-                .sysPrompt("处理售后问题，涉及退款时只整理依据，不直接执行退款。")
-                // 模型注册器会从环境变量读取对应凭证，禁止把密钥写进代码。
-                .model("dashscope:qwen-plus")
-                .workspace(Paths.get(".agentscope/workspace"))
-                .build();
-
-        RuntimeContext context = RuntimeContext.builder()
-                // 业务侧必须传入已鉴权的真实标识，不能信任模型生成的租户 ID。
-                .userId("user-10086")
-                .sessionId("ticket-20260827-001")
-                .build();
-
-        agent.call(
-                new UserMessage("整理订单退款条件，并列出缺失材料。"),
-                context
-        ).block();
-    }
-}
+Msg reply = agent.call(userMessage, ctx).block();
 ```
 
-### 2、不要让模型决定租户身份
+**关键配置点**：
 
-`userId` 和 `sessionId` 应来自登录态、网关令牌或服务端业务上下文。以下做法都不安全：
+- `sessionId` 相同则自动续接上下文；
+- 多用户场景必须传 `userId`，用于命名空间隔离；
+- `CompactionConfig` 建议一开始就配，避免线上 context overflow。
 
-- 从用户自然语言里提取 `userId`。
-- 允许工具参数覆盖当前租户。
-- 多个用户共用固定 `sessionId`。
-- 只在数据库查询时加租户条件，却让文件、记忆和沙箱共用命名空间。
+运行后检查工作区：如果 `AGENTS.md`、`memory/`、`agents/<agentId>/` 都存在，说明 Agent 已经在正常写入记忆和持久化会话状态。
 
-**隔离必须端到端一致。** 任意一层漏传上下文，都可能让正确的文件系统抽象落到错误的数据桶。
+### 2、核心概念总览
 
-## 五、沙箱隔离的是副作用，不是提示词
+掌握下面六个概念，就基本掌握了 Harness 的运行逻辑。
 
-### 1、文件工具与 Shell 不是同一种能力
+| 概念 | 定义 | 解决的问题 |
+| --- | --- | --- |
+| **HarnessAgent（Harness 智能体入口）** | 基于 `ReActAgent` 的工程化封装入口，构建时自动装配 Hook、内置工具、技能与会话持久化 | 不想从零拼装压缩、记忆、会话、子任务、文件系统 |
+| **workspace（工作区）** | Agent 的工作目录，承载 `AGENTS.md`、`MEMORY.md`、`skills/`、`subagents/`、会话历史等全部持久化内容 | 人格、知识、记忆、状态放哪、如何持续演化 |
+| **filesystem（文件系统抽象）** | 文件读写的统一接口，是工具层与物理存储之间的抽象层 | 同一套逻辑如何在本地、共享存储、沙箱间切换 |
+| **RuntimeContext（运行时上下文）** | 单次 `call()` 的身份上下文，含 `sessionId`、`userId` | 这一轮是谁、状态读写到哪、多租户如何隔离 |
+| **sandbox（沙箱）** | 隔离执行环境，命令在沙箱侧运行，每轮结束后持久化状态 | 不可信输入下如何安全执行并保持多轮状态连续 |
+| **memory（记忆）** | 双层记忆系统：自动提炼新事实 + 周期性合并成可注入的长期记忆 | 长对话不丢事实、上下文不爆、历史可检索 |
 
-能读取工作区文件，不代表必须开放命令执行。文件工具可以限制在抽象路径和固定操作集合内；Shell 则可能启动进程、访问网络、消耗资源或绕过上层工具契约。
+**总纲**：`HarnessAgent` 负责编排，`workspace` 负责沉淀，`filesystem` 负责落点，`RuntimeContext` 负责身份，`sandbox` 负责边界，`memory` 负责长期演化。
 
-因此，生产配置应把能力拆开：
+### 3、Workspace 目录结构
 
-- 只需读写业务文件：开放受控文件工具，不开放 Shell。
-- 需要执行不可信代码：放入独立沙箱，限制 CPU、内存、时间、网络和挂载目录。
-- 涉及付款、删除、发信等外部副作用：继续经过权限引擎与人工审批，不能因为进了沙箱就自动放行。
+一个标准工作区长这样：
 
-### 2、沙箱不是完整安全方案
+```
+workspace/
+├── AGENTS.md              ← Agent 人格与行为约定
+├── MEMORY.md              ← 精炼的长期记忆
+├── knowledge/             ← 领域知识
+├── skills/                ← 可复用技能
+├── subagents/             ← 子 Agent 规格声明
+└── agents/<agentId>/
+    ├── context/           ← 会话状态快照（进程重启后恢复）
+    ├── sessions/          ← 对话 JSONL 与压缩上下文
+    └── memory/            ← 每日记忆流水账
+```
 
-沙箱可以缩小主机受损范围，但无法判断业务动作是否合理。例如删除沙箱里的临时文件风险较低，调用真实退款接口即使在沙箱中执行，业务损失仍然存在。
+**工作区在每次推理中如何工作**：
 
-生产边界至少包含四层：
+- 推理前：把 `AGENTS.md`、`MEMORY.md`、`knowledge/` 拼入 system prompt。
+- 推理后：把新事实追加到当日记忆流水账。
+- 工作区随每次对话持续演化，Agent 随时间变得"更了解"业务和用户。
 
-1. **参数校验**：Schema、长度、枚举值和资源归属都由服务端校验。
-2. **权限决策**：工具按允许、需审批、拒绝分级。
-3. **执行隔离**：危险文件和进程操作进入沙箱。
-4. **审计追踪**：记录租户、会话、工具、参数摘要、结果和耗时。
+### 4、会话持久化：跨请求、跨进程的状态连续
 
-## 六、落地时先做四个取舍
+Harness 把会话落盘分成两条并行路径：
 
-### 1、选择 ReActAgent 还是 HarnessAgent
+- **状态快照（`context/`）**：每次 `call()` 结束后，Agent 运行状态序列化为 JSON 文件。下次用相同 `sessionId` 调用时，框架自动加载快照，恢复到上次结束位置。
+- **对话日志（`sessions/`）**：完整对话历史以 JSONL 追加写入，供审计和 `session_search` 使用；另有一份压缩后的 JSONL 是模型实际"看到"的上下文。
 
-一次性问答、无持久状态、工具很少时，`ReActAgent` 更轻。出现跨会话记忆、工作区资产、分布式恢复、SubAgent 或沙箱需求时，再使用 `HarnessAgent`。
+**开发者唯一要做的事**：每次调用时稳定传入相同的 `sessionId`。
 
-### 2、定义 Workspace 的所有权
+### 5、记忆管理：从对话到长期知识的自动沉淀
 
-静态资产由工程团队管理，运行文件由框架管理，长期记忆由 Agent 生成但必须可审计。不要让所有目录都对模型开放任意写权限。
+很多 Agent 框架的"记忆"只是把历史消息堆进上下文，迟早撑爆。Harness 的做法是 **双层分离**：
 
-### 3、确定隔离粒度
+**第一层——每日流水账**：每次对话结束后，框架用 LLM 提炼"新增事实"，追加到 `memory/YYYY-MM-DD.md`。这一层只追加、不修改，保证新事实不丢失。
 
-先回答哪些内容按组织共享、哪些按用户隔离、哪些仅在会话内有效，再设置命名空间。隔离粒度过粗会串数据，过细则无法复用知识并放大存储成本。
+**第二层——长期记忆**：后台调度器周期性读取近期流水账，与 `MEMORY.md` 合并、去重、精炼，输出 Token 预算内的"可注入版"。
 
-### 4、把失败当成正常路径
+两层关系：第一层保证 **不丢**，第二层保证 **可用**。
 
-文件写入冲突、状态保存失败、沙箱创建超时、工具被拒绝都应返回结构化结果。模型可以解释失败并调整计划，但不能吞掉错误后假装任务已经完成。
+**对话压缩**是另一面：当消息数或 Token 数超过阈值，Harness 用 LLM 把之前的对话压缩成摘要，保留最近若干条，其余卸载到 JSONL。如果模型返回 context overflow，框架会捕获异常、强制压缩、自动重试，整个过程对调用方透明。
 
-建议至少观测以下指标：
+```java
+.compaction(CompactionConfig.builder()
+    .triggerMessages(50)    // 消息数超过 50 触发压缩
+    .keepMessages(20)       // 保留最近 20 条
+    .flushBeforeCompact(true)
+    .build())
+```
 
-| 指标 | 作用 |
+### 6、子 Agent 编排：复杂任务的分解与委派
+
+当主 Agent 遇到耗时长、上下文重或可并行的子任务时，可以委派给子 Agent。
+
+**子 Agent 声明方式**（灵活度由低到高）：
+
+1. **内置 `general-purpose` Agent**：镜像主 Agent 配置，适合临时委派。
+2. **工作区文件驱动**：在 `subagents/` 下放置 Markdown 文件（YAML front matter 定义名称、描述、工具；body 是 system prompt），框架自动发现加载。
+3. **代码声明**：用 `builder.subagent(spec)` 编程式指定。
+4. **自定义工厂**：完全控制子 Agent 构建逻辑。
+
+**调用方式**：
+
+- **同步调用**：主 Agent 阻塞等待，适合必须拿到结果才能下一步的场景。
+- **异步调用**：提交任务后立即拿到任务 ID，可用 `task_output` 轮询结果。耗时任务强烈建议异步。
+
+**防无限递归**：子 Agent 默认是叶子形态，框架也有最大深度兜底。
+
+### 7、内置工具：一套覆盖闭环的工具集
+
+`HarnessAgent` 构建时会自动注册以下工具：
+
+| 工具类别 | 工具列表 |
 | --- | --- |
-| 每轮上下文 Token 数 | 发现工作区注入或工具结果膨胀 |
-| 状态恢复成功率 | 判断跨实例续跑是否可靠 |
-| 文件读写延迟与冲突数 | 定位共享存储瓶颈 |
-| 沙箱创建与执行耗时 | 区分模型慢和环境慢 |
-| 工具允许、审批、拒绝数量 | 发现权限策略漂移 |
-| 租户维度错误率 | 排查特定命名空间或数据问题 |
+| 文件操作 | `read_file`、`write_file`、`edit_file`、`grep_files`、`glob_files`、`list_files` |
+| 记忆检索 | `memory_search`、`memory_get` |
+| 会话查询 | `session_search`、`session_list`、`session_history` |
+| 子任务管理 | `agent_spawn`、`agent_send`、`agent_list`、`task_output`、`task_list`、`task_cancel` |
+| Shell 执行 | `execute`（仅在本机或沙箱模式下注册） |
 
-## 七、总结
+**注意**：在"远端共享存储"模式下，框架**默认不注册** `execute` 工具。这是有意设计：如果你的 Agent 不需要执行命令，用这个模式可以消除一整类执行安全风险。
 
-Workspace 说明要读写哪份资产，AbstractFilesystem 决定资产落在哪里，RuntimeContext 与 Sandbox 决定谁能在什么边界内操作它。
+### 8、文件系统三种模式：按需选型
 
-**要点回顾**：Workspace 只定义逻辑文件树，AbstractFilesystem 决定物理落点；Workspace 保存可审计资产，AgentState 保存可恢复运行状态；RuntimeContext 把用户和会话身份贯穿到状态、文件与沙箱；沙箱限制执行副作用，权限与审批继续约束业务副作用。
+| 模式 | 配置方式 | 适用场景 |
+| --- | --- | --- |
+| 本机 + Shell（默认） | `new LocalFilesystemSpec()` | 个人本机应用、开发测试 |
+| 远端共享存储 | `new RemoteFilesystemSpec(store)` | 多副本在线服务、跨节点共享记忆 |
+| 沙箱执行 | `sandboxSpec` | 执行不可信代码、DataAgent、Coding Agent |
 
-**关联知识点**：Agent 上下文工程决定哪些 Workspace 内容进入本轮提示词，以及何时压缩或卸载大结果；Agent 分层记忆区分当前对话、长期事实与原始会话日志的生命周期；Agent Skills 将可复用操作说明按需加载到 Workspace；SubAgent 委派通过独立角色拆分复杂任务并回收状态；HITL 审批为高风险工具增加人工决策节点。
+三种模式的核心区别是：**谁来执行命令、数据落在哪、隔离粒度是多少**。同一套 Agent 代码，切换 `filesystem` 配置就能迁移。
 
-**面试常问**：HarnessAgent 会替代 ReActAgent 吗？→ 不会，它是在 ReAct 推理内核外叠加工程能力；Workspace 与 AgentState 有什么区别？→ 前者保存长期可阅读资产，后者保存可恢复运行快照；有了沙箱为什么还要权限控制？→ 沙箱限制主机级副作用，权限控制限制业务级副作用，两者不能互相替代。
+### 9、沙箱：隔离执行 + 状态可恢复
 
-**参考资料**：[AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/en/docs/quickstart.html)、[Harness 架构](https://java.agentscope.io/v2/en/docs/harness/architecture.html)、[Workspace](https://java.agentscope.io/v2/en/docs/harness/workspace.html)、[文件系统](https://java.agentscope.io/v2/en/docs/harness/filesystem.html)、[沙箱](https://java.agentscope.io/v2/en/docs/harness/sandbox.html)、[AgentScope Java 官方仓库](https://github.com/agentscope-ai/agentscope-java)。
+沙箱模式解决的不只是"隔离执行"，更是"多轮对话中隔离环境的连续性"。
+
+- **执行边界**：命令和文件操作发生在沙箱侧，宿主进程只协调。
+- **状态可恢复**：每次 `call()` 结束，沙箱状态被持久化为快照；下次调用按 `sessionId` 或 `userId` 恢复。
+- **工作区投影**：`AGENTS.md`、`skills/`、`subagents/`、`knowledge/` 等宿主内容会在每次调用开始时同步到沙箱。
+- **隔离粒度**：SESSION / USER / AGENT / GLOBAL 可选，按需切分。
+
+**关键结论**：沙箱不是"用完即毁"的一次性容器，而是能在多轮对话间保持工作现场的持久化执行环境。
+
+## 五、总结
+
+### 1、要点回顾
+
+- Harness 不是新推理框架，而是在 `ReActAgent` 关键时机插入 Hook 的工程化封装。
+- **Workspace** 是唯一事实来源，Agent 的人格、知识、技能、记忆、子 Agent 规格全部沉淀在结构化目录里。
+- **AbstractFilesystem** 让同一套 Agent 逻辑在本机、远端共享存储、沙箱之间切换，只改配置不改代码。
+- **双层记忆**（流水账 + 长期记忆）和**对话压缩**保证长对话不爆上下文、新事实不丢。
+- **子 Agent 编排**支持同步/异步委派，复杂任务可拆解并行执行。
+- **沙箱**提供隔离执行 + 多轮状态恢复，是企业级 Agent 上线的安全前提。
+
+### 2、一句话结论
+
+**AgentScope Harness v1 把 OpenClaw 式的"持续进化"体验，装进了一套可配置、可分布式、可隔离的企业级边界里。**
+
+<img src="/images/posts/agentscope-harness-workspace-sandbox-engineering/harness-end-to-end-overview.webp" alt="Harness 端到端总览：AbstractFilesystem 继承关系 + 三大模块基于 Workspace + Agent 与 Sandbox 通过 Snapshot State 同步" style="border-radius: 10px;" />
+
+**上图要点**：Harness 把抽象文件系统、工具与记忆接入、Agent 端工作区、沙箱端工作区和 Snapshot State 这几层串成端到端视图，是上面所有章节的一张速查地图。
+
+### 3、关联知识点
+
+- **ReAct Agent**：Harness 的推理基础，理解 Hook 插入时机需要先理解 ReAct 循环。
+- **LLM 上下文压缩**：长对话场景的通用优化，Harness 把它做成了自动管线。
+- **沙箱与容器隔离**：Kata、gVisor、Docker 等技术与 Harness 沙箱后端的结合点。
+- **多租户数据隔离**：SESSION / USER / AGENT / GLOBAL 的隔离粒度设计。
+- **Multi-Agent 系统**：子 Agent 委派、任务状态机、结果回收的通用模式。
+
+### 4、参考资料
+
+- [AgentScope Harness v1 官方原文](https://java.agentscope.io/v1/zh/blogs/agentscope-v1-harness.html)
+- [AgentScope 官方文档 - Harness 概览](https://java.agentscope.io/v1/zh/blogs/agentscope-v1-harness.html#../overview.md)
+- [AgentScope 官方文档 - Filesystem](https://java.agentscope.io/v1/zh/blogs/agentscope-v1-harness.html#../filesystem.md)

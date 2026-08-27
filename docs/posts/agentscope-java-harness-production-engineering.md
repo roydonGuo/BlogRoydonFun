@@ -1,5 +1,5 @@
 ---
-title: AgentScope Java 2.0 Harness：状态、工作区与生产隔离
+title: 深入理解 AgentScope Java 2.0 Harness：从“能跑”到“生产可用”
 date: 2026-08-27
 category: AI
 cover: /images/posts/agentscope-java-harness-production-engineering-knowledge-map.webp
@@ -9,16 +9,53 @@ tags:
   - AI Agent
   - Harness
   - 分布式系统
-excerpt: AgentScope Java 2.0 Harness 的关键不是再包一层 Agent，而是把调用身份、运行状态和持久工作区拆成独立边界，再为沙箱、子 Agent、记忆与多副本恢复提供统一装配方式。
+excerpt: AgentScope Java 2.0 Harness 在 ReAct 推理内核之上统一状态恢复、Workspace、上下文压缩、双层记忆、Sandbox、Skill、子 Agent、Plan Mode 与 Channel，解决多租户、长会话和多副本部署问题。
 ---
 
-# AgentScope Java 2.0 Harness：状态、工作区与生产隔离
+# 深入理解 AgentScope Java 2.0 Harness：从“能跑”到“生产可用”
 
-<img src="/images/posts/agentscope-java-harness-production-engineering-knowledge-map.webp" alt="AgentScope Java 2.0 Harness：状态、工作区与生产隔离知识串联图" style="border-radius: 10px;" />
+<img src="/images/posts/agentscope-java-harness-production-engineering-knowledge-map.webp" alt="深入理解 AgentScope Java 2.0 Harness 知识串联图" style="border-radius: 10px;" />
 
-AgentScope Java 2.0 Harness 的关键不是再包一层 Agent，而是把调用身份、运行状态和持久工作区拆成独立边界，再为沙箱、子 Agent、记忆与多副本恢复提供统一装配方式。
+`ReActAgent` 已经可以完成推理、调用工具并返回结果，但企业真正上线一个 Agent 时，难点往往不在“这一轮能不能回答”，而在“下一轮、下一天、下一台机器还能不能正确继续”。AgentScope Java 2.0 将这部分工程能力收拢进 Harness：在不替换 ReAct 推理循环的前提下，统一装配状态恢复、Workspace、上下文压缩、长期记忆、Sandbox、Skill、子 Agent、Plan Mode 与 Channel。
 
-## 一、先记住三个结论
+本文基于 AgentScope Java 2.0 官方文档与官方 Harness 技术解析整理。重点不是罗列 Builder 方法，而是解释每种状态放在哪里、能力之间怎样协作，以及单机示例迁移到多租户、多副本生产环境时还缺哪些边界。
+
+AgentScope Java 2.0 GA 在 5 个 RC 版本后发布，版本说明见 [v2.0.0 Release Notes](https://github.com/agentscope-ai/agentscope-java/releases/tag/v2.0.0)。本文核对日期为 2026-08-27，后续小版本若调整默认阈值或 Builder API，应以[官方文档](https://java.agentscope.io)为准。
+
+## 一、先看 2.0 的定位与迁移重点
+
+### 1、AgentScope 生态里 Harness 在哪一层
+
+AgentScope 的底层仍然是 Agent 框架：模型、消息与事件、工具调用、Middleware、Permission 和 ReAct 循环都属于核心层。模型提供商、MCP、可观测平台、Skill 仓库和业务应用位于外部扩展层。Harness 夹在二者之间，把长时间运行 Agent 所需的通用工程能力组合起来。
+
+从官方生态全景看，AgentScope 已形成 Python、Java、TypeScript 多语言实现，Go 实现仍在推进；模型侧可以接入 OpenAI 兼容协议、DeepSeek、Qwen 等提供商；观测侧使用 OpenTelemetry，可对接 LangFuse、ARMS 等平台；Higress 可承接模型与 MCP 代理，Nacos 等后端可以作为 Skill 或 MCP 的集中管理入口。Harness 的价值正是把这些外部能力约束到统一的运行上下文和工程边界中。
+
+```text
+业务入口 / IM / Issue / PR / API
+                ↓
+Channel 与应用路由层
+                ↓
+Harness：Workspace、Memory、Compaction、Sandbox、Skill、Subagent、Plan
+                ↓
+ReActAgent：Reasoning、Tool Call、Middleware、Permission
+                ↓
+Model / MCP / 业务工具 / 可观测基础设施
+```
+
+因此，Harness 不是新的推理范式，也不是另一个 Agent Loop。它更像生产运行层：将原本散落在业务代码中的会话恢复、文件路由、压缩、隔离和编排变成框架能力。
+
+### 2、从 1.x 迁移到 2.0 要关注什么
+
+迁移时可以按四类变化处理：
+
+- **核心概念变化**：运行状态统一进入 `AgentState`，状态的保存和恢复由 `AgentStateStore` 负责；
+- **调用入口变化**：`call()` 或流式调用需要携带 `RuntimeContext`，由其中的 `userId`、`sessionId` 建立多租户与会话边界；
+- **扩展点变化**：新的扩展逻辑优先使用 Middleware 与 Permission；旧 Hook 即使存在兼容期，也不应继续作为新代码的设计基础。
+- **事件流变化**：新代码应使用返回 `Flux<AgentEvent>` 的 `streamEvents()`；旧的粗粒度 `stream()` 已进入废弃迁移路径。
+
+升级不必一次打开全部 Harness 能力。更稳妥的顺序是先迁移调用上下文与状态，再接 Workspace 和会话日志，之后根据风险逐步开启压缩、记忆、Sandbox、Skill 和子 Agent。
+
+### 3、先记住三个结论
 
 1. **Harness（工程运行层）**不替换 `ReActAgent` 的推理循环，只负责装配工作区、状态持久化、上下文压缩、记忆、沙箱、Skill 和子 Agent 等能力。
 2. `RuntimeContext`、`AgentStateStore`、Workspace 不是同一个东西。前者描述“本次是谁在调用”，中间保存“下次从哪里继续”，后者承载“长期文件资产”。
@@ -120,6 +157,21 @@ workspace/
 
 完整会话日志不会因上下文压缩而消失。压缩影响模型当前携带的上下文，Workspace 中的追加日志仍可用于审计和检索。
 
+### 4、AbstractFilesystem：把逻辑工作区与物理存储解耦
+
+Workspace 是逻辑目录，`AbstractFilesystem` 才决定文件最终落在哪里。Harness 通过统一文件系统抽象，让上层的 `read_file`、`write_file`、Skill 和记忆逻辑不必感知本机磁盘、共享存储还是沙箱容器。
+
+| 文件系统模式 | 适用场景 | 需要注意的边界 |
+| --- | --- | --- |
+| 本地文件系统 | 开发机、单用户个人助手 | 绑定单机，Shell 直接接触宿主环境 |
+| 共享或远端文件系统 | 多副本在线业务 Agent | 需要稳定命名空间、分布式状态存储和并发协调 |
+| Sandbox 文件系统 | Coding Agent、高风险工具执行 | 需要容器生命周期、快照恢复、网络和凭据控制 |
+| Composite 文件系统 | 平台型产品、混合存储 | 不同目录可路由到不同后端，必须统一处理用户隔离 |
+
+同一个 Agent 被多个用户调用时，`userId` 不只是状态查询条件，也会参与 Workspace、Skill 和沙箱的逻辑命名空间。比如 `workspace/alice/skills/` 表示 Alice 的用户级 Skill，但在远端存储中它可能映射成 KV 前缀，在沙箱模式下则投影成容器里的 `/workspace/skills/`。
+
+这也是为什么自定义中间件不能绕开 `WorkspaceManager` 直接调用 `java.nio.file.Files`：前者会遵循当前文件系统的隔离与路由，后者只会落到运行 Harness 的 JVM 宿主磁盘。
+
 ## 四、一次调用的数据流
 
 相同 `(userId, sessionId)` 是状态寻址的核心。一次调用可以简化为：
@@ -146,7 +198,7 @@ sequenceDiagram
 
 - `AGENTS.md` 或 `MEMORY.md` 修改后，系统提示词会在后续推理步骤重新构建，无需重启 Agent。
 - 压缩、记忆提炼和后台维护带有节流机制，并非每一轮都执行。
-- 同一 `(userId, sessionId)` 的调用会串行化，不同会话可以并行。
+- 单个 Agent 或 Gateway 内，同一 `(userId, sessionId)` 的调用会串行化，不同会话可以并行；多副本仍要配置跨节点协调。
 
 ## 五、最小 Java 装配
 
@@ -206,7 +258,75 @@ public final class AgentService {
 
 示例接收官方 Model 接口，实际项目可传入对应厂商扩展构造的模型实例。这样能避免用未经核实的提供商名称、模型编号或认证字段污染核心示例。
 
-## 六、从单机迁移到多副本
+## 六、上下文压缩：四道防线守住窗口
+
+长会话不能只依赖模型越来越大的上下文窗口。Harness 的压缩栈包含四种相互独立但可以组合的策略：
+
+| 防线 | 触发时机 | 处理方式 |
+| --- | --- | --- |
+| 对话摘要压缩 | 消息数量或 Token 接近阈值 | 摘要旧前缀，只保留最近若干条消息 |
+| 大工具结果卸载 | 单条工具结果超过阈值 | 全文写入 Workspace，上下文只保留首尾与文件路径 |
+| 上下文溢出兜底 | 模型返回上下文超限错误 | 强制极限压缩，并自动重试一次 |
+| 预压缩参数截断 | 摘要前发现超长工具参数 | 不调用模型，先截断低价值的大字符串参数 |
+
+对话摘要和工具结果卸载不是一回事。前者压缩整个历史前缀，后者只处理异常大的单次工具输出。例如 Shell 打印数万行日志时，应先把原始结果卸载到文件，再让 Agent 通过 `read_file` 按需查看，而不是让一条工具消息占满窗口。
+
+```java
+HarnessAgent agent = HarnessAgent.builder()
+        .name("engineering-assistant")
+        .model(model)
+        .workspace(Paths.get(".agentscope/workspace"))
+        .compaction(CompactionConfig.builder()
+                // 超过阈值后摘要旧消息
+                .triggerMessages(80)
+                // 保留最近对话，避免摘要后失去当前任务细节
+                .keepMessages(20)
+                // 摘要前先截断体积很大的工具参数
+                .truncateArgs(CompactionConfig.TruncateArgsConfig.builder()
+                        .maxArgLength(2_000)
+                        .truncationText("... [truncated] ...")
+                        .build())
+                .build())
+        .toolResultEviction(ToolResultEvictionConfig.defaults())
+        .build();
+```
+
+压缩只处理 `AgentState.contextMutable()` 中的对话消息，不会粗暴删除所有运行状态：
+
+- Plan Mode 状态保存在独立的 `planModeContext`，计划文件位于 `plans/`；
+- 后台子 Agent 的 `taskId`、状态和结果由 `TaskRepository` 单独维护；
+- `todo_write` 清单和 Permission 规则位于各自的 `AgentState` 字段；
+- 原始消息可以在摘要前写入永不压缩的 `*.log.jsonl`，供 `session_search` 检索。
+
+生产环境还要给“写入 Workspace 的大结果”设置生命周期。否则模型上下文虽然变小，磁盘或对象存储会不断增长，只是把内存问题转移成了存储问题。
+
+## 七、双层长期记忆：从会话事实到 MEMORY.md
+
+压缩解决“当前窗口放不下”，长期记忆解决“跨会话还要记住”。Harness 将两者设计为独立能力，不能把摘要消息直接当作长期记忆。
+
+长期记忆有两层：
+
+```text
+对话消息
+   │ Flush：抽取值得长期保留的事实
+   ▼
+memory/YYYY-MM-DD.md        每日追加，原始、允许重复
+   │ Consolidation：后台合并、去重、蒸馏
+   ▼
+MEMORY.md                   全局长期记忆，每轮推理注入 System Prompt
+```
+
+这条管线实际包含三类不同的模型调用：
+
+1. **Flush**：从即将被压缩或已累积的对话中抽取事实，追加到每日记忆；
+2. **Consolidation**：定期整理每日流水账，重写高质量的 `MEMORY.md`；
+3. **Compaction summary**：压缩当前对话前缀，只影响本次会话上下文。
+
+三者默认可以共享主 Agent 的模型，但触发策略、Prompt 和写入目标不同。生产系统可以给 Flush 与 Consolidation 配置成本更低的模型，同时严格控制 `MEMORY.md` 的大小、敏感字段和冲突事实。
+
+配套查询也分两类：`memory_search`、`memory_get` 查询长期记忆；`session_list`、`session_history`、`session_search` 查询未被压缩的完整会话日志。正确的使用方式是让 `MEMORY.md` 保存稳定事实和检索线索，需要细节时再查询每日记忆或历史会话，而不是把所有聊天原文永久塞回 System Prompt。
+
+## 八、从单机迁移到多副本
 
 只把 Workspace 挂到共享盘仍然不够。多副本中的任意节点要接住同一会话，至少要同时处理以下三层：
 
@@ -228,7 +348,7 @@ public final class AgentService {
 
 <img src="/images/posts/AgentScope Java 2.0 Harness：状态、工作区与生产隔离/sandbox-distributed-recovery.webp" alt="AgentScope 沙箱隔离、恢复与分布式部署原理图" style="border-radius: 10px;" />
 
-## 七、Sandbox 的边界不只是“能执行命令”
+## 九、Sandbox 的边界不只是“能执行命令”
 
 Sandbox 需要同时隔离文件、进程和恢复元数据。风险主要来自四个方向：
 
@@ -239,25 +359,80 @@ Sandbox 需要同时隔离文件、进程和恢复元数据。风险主要来自
 
 自定义中间件若要读写工作区，应通过 `HarnessAgent#getWorkspaceManager()`。直接使用 `java.nio.file.Files` 只会写当前 JVM 所在磁盘，在远端文件系统或沙箱模式下很可能落错位置。
 
-## 八、Skill、Subagent 与 Plan Mode 如何协作
+## 十、子 Agent 编排：委派、后台执行与结果回传
 
-这些能力应围绕职责边界组合，而不是全部默认开启。
+子 Agent 解决的是“由谁做”，不是简单地把一段 Prompt 再调用一次。主 Agent 可以把研究、编码、审查等任务交给拥有独立角色、工具与上下文的临时实例，并通过任务记录持续跟踪。
 
-### 1、Skill：复用“怎么做”
+| 执行形态 | 主 Agent 是否等待 | 适用任务 | 结果如何返回 |
+| --- | --- | --- | --- |
+| 同步委派 | 等待 | 快速检索、短分析、单步校验 | 子 Agent 返回后继续当前推理 |
+| 后台任务 | 不等待 | 长时间构建、研究、批量处理 | 完成后以系统提醒回注主 Agent |
+| 远程子 Agent | 取决于协议 | 独立服务、跨团队能力 | 由远程调用协议返回事件和结果 |
 
-Skill 适合封装按需加载的流程、约束和脚本。它减少系统提示词常驻内容，但不能代替服务端鉴权。Skill 中声明可用工具，不代表调用者自动获得业务权限。
+Workspace 可以在 `subagents/<id>.md` 中声明子 Agent，也可以通过 Builder 代码配置。框架还要处理四类容易被业务代码忽略的问题：
 
-### 2、Subagent：隔离“由谁做”
+- **上下文边界**：子 Agent 默认不应依赖父 Agent 的全部隐式对话，任务输入要显式携带目标、材料、约束和输出契约；
+- **事件归属**：流式输出要携带来源标识，前端才能区分主 Agent 与多级子 Agent；
+- **权限继承**：子 Agent 获得的工具权限不应超过任务所需范围，父 Agent 有权限不代表子 Agent 必须继承；
+- **恢复能力**：后台任务状态保存在独立任务记录中，重启或多副本接力后仍需按 `taskId` 查询。
 
-子 Agent 适合把研究、实现或审查交给独立角色。Workspace 可在 `subagents/<id>.md` 中声明角色，也可通过内置通用子 Agent或代码配置声明。每次子 Agent 执行是临时实例，并拥有自己的会话。
+异步结果不放进普通历史消息，而是由任务仓库保存，并在主 Agent 下一轮推理前通过 system reminder 注入。这样既不会被上下文摘要误删，也不要求主 Agent 为等待长任务一直占用请求线程。
 
-子 Agent 的输入应包含明确目标、输入材料、允许使用的工具和期望输出；不要依赖父 Agent 的隐式上下文。
+## 十一、Skill、Plan Mode 与 Channel
 
-### 3、Plan Mode：控制“什么时候做”
+这三项能力分别回答“怎么复用”“什么时候执行”和“从哪里接入”。它们与子 Agent、Sandbox 组合后，才形成完整的生产工作流。
 
-Plan Mode 适合高风险任务的先读后写流程。规划阶段应限制为只读能力，退出规划后再经过人工确认进入执行阶段。它降低误操作概率，但不能代替 Sandbox 和工具权限。
+### 1、Skill：四层组合与沙箱内执行
 
-## 九、生产落地检查表
+Skill 是包含 `SKILL.md`、参考资料、脚本和样例的能力包。Harness 当前支持四层来源：
+
+| 层级 | 来源 | 典型用途 |
+| --- | --- | --- |
+| Layer 1 | 项目全局注册 | 应用代码内置的基础能力 |
+| Layer 2 | Git、Nacos、MySQL、Classpath 等 Skill 仓库 | 团队统一分发、在线更新 |
+| Layer 3 | `workspace/skills/` | 当前 Agent 或项目共享能力 |
+| Layer 4 | `<userId>/skills/` | 用户私有能力，可覆盖同名共享版本 |
+
+这些来源可以同时启用，而不是四选一。Skill 元数据预载后，Agent 只在需要时读取完整说明和资源，从而减少 System Prompt 常驻内容。带脚本的市场 Skill 会先物化到 `.skills-cache`，再投影进 Sandbox，最终在容器内执行；工作区 Skill 则直接随 Workspace 投影。
+
+这套机制解决了分发和文件可见性，但不等于业务授权。即使某个 Skill 声明了数据库或发布工具，服务端仍要根据租户、环境与操作类型执行 Permission 校验。
+
+### 2、Plan Mode：想清楚、写下来、确认后再执行
+
+Plan Mode 将高风险任务分成只读规划和可写执行两个阶段。进入规划后，Agent 可以调查、拆分步骤并把计划写入 `plans/`；退出规划时通过 Permission 或人工确认切回执行模式。
+
+计划文件、Plan Mode 状态和待办清单都有独立的持久化位置，因此对话压缩不会把它们一起摘要掉。但 Plan Mode 只控制执行时机，不能替代 Sandbox、租户鉴权或工具白名单。
+
+### 3、Channel：消息平台到 Agent 的稳定入口
+
+Channel 把不同传输协议统一成 Agent 可处理的消息与事件流：
+
+```text
+CLI / Web / DingTalk / Feishu / GitHub Webhook
+                      ↓
+              Gateway / Channel Adapter
+                      ↓
+       路由、鉴权、去重、Thread/Session 映射
+                      ↓
+                  HarnessAgent
+                      ↓
+          流式事件或后台任务结果回传
+```
+
+Channel 的重点不是“接一个聊天窗口”，而是稳定地把外部线程映射为 `(userId, sessionId)`，同时处理签名校验、重复投递、忙会话排队、流式事件和后台结果回推。例如 Issue 与 PR Review 应映射到不同线程，避免两个任务共享错误的上下文。
+
+## 十二、企业级实战形态
+
+官方技术解析给出了四类典型 Harness 应用，它们的差异主要体现在文件系统、隔离粒度和入口方式：
+
+1. **个人助手**：Workspace 直连本机文件系统和 Shell，部署简单、可以持续积累记忆，但天然绑定单机，不适合作为多租户服务；
+2. **Managed Agent 平台**：集中部署 Agent Builder，让用户创建私有或共享 Agent，通过 Composite Filesystem、`userId` 命名空间和控制面实现数据隔离；
+3. **数据 Agent 平台**：每个用户拥有隔离的数据空间与私有 Skill，沉淀出的能力经过审核后才能升级为组织共享 Skill；
+4. **自主编码机器人**：通过 GitHub/GitLab Webhook 接收 Issue 或 Review，请求按 Thread 路由，每个任务进入独立 Docker Sandbox，长任务结果再通过原 Channel 回传。
+
+这四类示例不是四套互不相关的框架，而是同一组 Harness 组件的不同组合：个人助手偏本地 Workspace；平台产品强调多租户文件路由和状态存储；数据 Agent 额外增加 Skill 生命周期；Coding Agent 则把 Channel、后台子 Agent、Sandbox 和线程恢复组合在一起。
+
+## 十三、生产落地检查表
 
 ### 1、身份与隔离
 
@@ -290,26 +465,29 @@ traceId -> userId -> sessionId -> agentId -> taskId -> toolCallId
 
 关键指标包括首 Token 延迟、总耗时、模型与工具错误率、压缩次数、状态读写耗时、沙箱恢复耗时和单会话资源占用。日志记录参数摘要和结果状态即可，避免完整输出泄露敏感数据。
 
-## 十、常见误区
+## 十四、常见误区
 
 | 误区 | 正确认知 |
 | --- | --- |
 | AgentState 存在 Workspace 中 | AgentState 默认在独立 `AgentStateStore`，Workspace 只保存文件资产与日志 |
 | 共享 Workspace 就能多副本恢复 | 还需要分布式 AgentState、沙箱快照和跨节点协调 |
 | 上下文压缩会删除历史记录 | 压缩模型上下文，完整会话日志仍可在 Workspace 追加保存 |
+| Compaction 等于长期记忆 | Compaction 生成当前会话摘要；Flush 与 Consolidation 才负责沉淀长期事实 |
 | Sandbox 已经解决所有安全问题 | 仍需凭据、网络、MCP、租户和人工确认边界 |
 | Subagent 会自动继承父任务信息 | 应显式传递目标、材料、工具范围和输出契约 |
+| Skill 仓库等于权限中心 | Skill 负责能力发现和加载，业务授权仍由 Permission 与服务端鉴权控制 |
+| Channel 只负责收发消息 | 还要承担签名、去重、线程映射、排队和结果回推 |
 | 直接用 `Files` 写入工作区更简单 | 非本地模式可能写错位置，应走 WorkspaceManager |
 
-## 十一、总结
+## 十五、总结
 
-AgentScope Java 2.0 Harness 的工程价值可以压缩成一句话：用 `RuntimeContext` 确定本次调用身份，用 `AgentStateStore` 恢复运行状态，用 Workspace 沉淀持久资产，再把 Sandbox、Skill、Subagent 和 Plan Mode 挂到这组边界上。
+AgentScope Java 2.0 Harness 的工程价值可以压缩成一句话：它不改变 Agent 如何推理，而是把一个 Agent 长期运行所需的状态、记忆、隔离、编排、权限和接入能力，从业务代码中抽出来变成可组合的框架设施。
 
-**要点回顾**：`RuntimeContext` 只描述本次调用身份；`AgentStateStore` 保存可恢复的运行状态；Workspace 承载会话日志、长期记忆和文件产物；多副本恢复必须同时共享状态、文件与沙箱快照；Sandbox、Plan Mode 和工具权限分别约束执行环境、执行时机与可用能力。
+**要点回顾**：`RuntimeContext` 只描述本次调用身份；`AgentStateStore` 保存可恢复的运行状态；Workspace 承载会话日志、长期记忆和文件产物；四道压缩防线控制当前上下文，双层 Memory 沉淀跨会话事实；Subagent、Skill、Plan Mode 分别处理任务委派、能力复用与执行时机；Channel 负责把外部线程稳定映射到会话；多副本恢复必须同时共享状态、文件与沙箱快照。
 
-**关联知识点**：ReAct 推理与工具循环决定 Agent 如何行动；上下文压缩与长期记忆决定信息如何跨轮次保留；多租户隔离保证状态、文件和工具授权使用同一身份；分布式锁与幂等避免同一会话并发覆盖或重复副作用；MCP 工具治理负责外部能力的最小权限与审计。
+**关联知识点**：ReAct 推理与工具循环决定 Agent 如何行动；AgentState 与事件溯源决定任务如何恢复；上下文压缩与检索增强决定信息怎样在有限窗口内保真；多租户隔离保证状态、文件、Skill 和工具授权使用同一身份；分布式锁与幂等避免同一会话并发覆盖或重复副作用；MCP 与 Channel 治理负责外部能力和外部入口的最小权限与审计。
 
-**面试常问**：`RuntimeContext`、`AgentState` 和 Workspace 的生命周期分别是什么？→ `RuntimeContext` 仅在单次调用中传递身份，`AgentState` 跨调用保存运行快照，Workspace 长期保存可审计文件；为什么共享 Workspace 不能独立完成多副本恢复？→ 运行状态仍位于独立 `AgentStateStore`，沙箱还需要远端快照和跨节点协调；上下文压缩会删除完整历史吗？→ 不会，它只缩减当前模型上下文，完整会话日志仍追加到 Workspace；为什么不能直接用 `java.nio.file.Files` 写 Workspace？→ 远端或沙箱模式下会绕过 `WorkspaceManager` 路由并写错物理位置。
+**面试常问**：`RuntimeContext`、`AgentState` 和 Workspace 的生命周期分别是什么？→ `RuntimeContext` 仅在单次调用中传递身份，`AgentState` 跨调用保存运行快照，Workspace 长期保存可审计文件；四道上下文防线是什么？→ 对话摘要、大结果卸载、溢出强制压缩重试、预压缩参数截断；为什么共享 Workspace 不能独立完成多副本恢复？→ 运行状态仍位于独立 `AgentStateStore`，沙箱还需要远端快照和跨节点协调；Compaction 与 Memory 有什么区别？→ 前者控制当前上下文，后者通过每日记忆与 `MEMORY.md` 保存跨会话事实；为什么不能直接用 `java.nio.file.Files` 写 Workspace？→ 远端或沙箱模式下会绕过 `WorkspaceManager` 路由并写错物理位置。
 
-**参考资料**：[AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/zh/docs/quickstart.html)；[Harness Architecture](https://java.agentscope.io/v2/en/docs/harness/architecture.html)；[上下文与 AgentState](https://java.agentscope.io/v2/zh/docs/building-blocks/context.html)；[工作区（Workspace）](https://java.agentscope.io/v2/zh/docs/harness/workspace.html)；[沙箱（Sandbox）](https://java.agentscope.io/v2/zh/docs/harness/sandbox.html)；[子智能体（Subagent）](https://java.agentscope.io/v2/zh/docs/harness/subagent.html)。
+**参考资料**：[AgentScope 2.0 Harness 官方技术解析](https://java.agentscope.io/v2/zh/blogs/agentscope-v2-explained.html)；[AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/zh/docs/quickstart.html)；[V1 迁移指南](https://java.agentscope.io/v2/zh/docs/change-log.html)；[Harness Architecture](https://java.agentscope.io/v2/en/docs/harness/architecture.html)；[上下文压缩](https://java.agentscope.io/v2/zh/docs/harness/compaction.html)；[记忆（Memory）](https://java.agentscope.io/v2/zh/docs/harness/memory.html)；[工作区（Workspace）](https://java.agentscope.io/v2/zh/docs/harness/workspace.html)；[文件系统（Filesystem）](https://java.agentscope.io/v2/zh/docs/harness/filesystem.html)；[沙箱（Sandbox）](https://java.agentscope.io/v2/zh/docs/harness/sandbox.html)；[子 Agent](https://java.agentscope.io/v2/zh/docs/harness/subagent.html)；[技能（Skill）](https://java.agentscope.io/v2/zh/docs/harness/skill.html)；[计划模式](https://java.agentscope.io/v2/zh/docs/harness/plan-mode.html)；[Channel](https://java.agentscope.io/v2/zh/docs/harness/channel.html)。
 

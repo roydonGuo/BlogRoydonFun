@@ -113,9 +113,9 @@ function buildField(): void {
       if (base < 0.025 && !spark) continue
 
       const [particleRed, particleGreen, particleBlue] = palette.particle
-      const particleAlpha = theme === 'light' ? 0.04 + base * 0.25 : 0.03 + base * 0.29
+      const particleAlpha = theme === 'light' ? 0.02 + base * 0.12 : 0.015 + base * 0.14
       staticContext.beginPath()
-      staticContext.arc(x, y, 0.58 + base * 0.54, 0, Math.PI * 2)
+      staticContext.arc(x, y, 0.48 + base * 0.3, 0, Math.PI * 2)
       staticContext.fillStyle = `rgba(${particleRed}, ${particleGreen}, ${particleBlue}, ${particleAlpha})`
       staticContext.fill()
 
@@ -168,12 +168,12 @@ function drawPointerSignal(time: number, palette: Palette): void {
       const distance = Math.sqrt(distanceSquared)
       const proximity = Math.exp(-distance / 72)
       const ripple = Math.exp(-Math.pow((distance - rippleRadius) / 12, 2)) * 0.4
-      const signal = Math.min(1, proximity * 0.78 + ripple)
+      const signal = Math.min(1, proximity * 0.5 + ripple)
       if (signal < 0.08) continue
 
       context.beginPath()
       context.arc(x, y, 0.65 + signal * 1.08, 0, Math.PI * 2)
-      context.fillStyle = `rgba(${signalRed}, ${signalGreen}, ${signalBlue}, ${0.08 + signal * 0.58})`
+      context.fillStyle = `rgba(${signalRed}, ${signalGreen}, ${signalBlue}, ${0.05 + signal * 0.4})`
       context.fill()
     }
   }
@@ -193,7 +193,7 @@ function draw(time: number): void {
   const [signalRed, signalGreen, signalBlue] = palette.signal
   for (const node of signalNodes) {
     const wave = Math.sin(node.angle * 2.25 - time * 0.00062 + node.seed * 0.06)
-    const pulse = wave > 0.42 ? Math.pow(wave, 12) : 0
+    const pulse = wave > 0.58 ? Math.pow(wave, 16) : 0
     const sparkPulse = node.spark
       ? node.spark * Math.max(0, Math.sin(time * 0.0027 + node.seed))
       : 0
@@ -202,7 +202,7 @@ function draw(time: number): void {
 
     context.beginPath()
     context.arc(node.x, node.y, 0.72 + signal * 1.2, 0, Math.PI * 2)
-    const signalAlpha = theme === 'light' ? 0.16 + signal * 0.68 : 0.18 + signal * 0.72
+    const signalAlpha = theme === 'light' ? 0.06 + signal * 0.28 : 0.07 + signal * 0.32
     context.fillStyle = `rgba(${signalRed}, ${signalGreen}, ${signalBlue}, ${signalAlpha})`
     context.fill()
   }
