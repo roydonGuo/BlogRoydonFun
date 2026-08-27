@@ -71,6 +71,10 @@ flowchart LR
 | 运行文件 | 会话日志、任务记录、计划文件 | 框架与 Agent | 支持审计和后续继续 |
 | 长期记忆 | `MEMORY.md`、按日期沉淀的记忆文件 | Agent 与后台任务 | 跨会话复用稳定事实 |
 
+![Workspace 作为 Agent 定义与持续演化的事实来源](/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-source-of-truth.webp)
+
+原图来自 AgentScope Java 1.1 Harness 介绍，图中的核心关系在 2.0 仍成立：`AGENTS.md`、记忆、知识和 Skill 都围绕 Workspace 组织；具体注入链路应以 2.0 的 Middleware 契约为准。
+
 目录放在一起便于版本化、部署和迁移，但读取策略并不相同。`AGENTS.md` 会进入每轮系统上下文；知识目录通常只注入入口与文件清单，需要时再读取；运行中的可恢复快照则交给独立的 `AgentStateStore`。
 
 ### 2、Workspace 不等于 AgentState
@@ -106,6 +110,10 @@ AgentScope 2.0 的 `WorkspaceContextMiddleware` 会在每轮推理前重新组�
 | 本地文件系统 | 单机开发、可信内部任务 | 数据绑定单机，Shell 权限必须单独控制 |
 | 共享或远程文件系统 | 多副本服务、跨实例续跑 | 依赖命名空间隔离与一致性策略 |
 | 沙箱文件系统 | 不可信代码、外部文件处理 | 文件和进程在隔离环境执行，可做快照恢复 |
+
+![文件、Shell 与记忆能力统一通过 AbstractFilesystem 操作 Workspace](/images/posts/agentscope-harness-workspace-sandbox-engineering/workspace-based-on-abstract-filesystem.webp)
+
+原图保留了 Harness 1.1 对统一文件能力入口的表达。2.0 中组件名称和扩展链路已有调整，但“上层能力不直接绑定本机磁盘”仍是理解 AbstractFilesystem 的关键。
 
 ### 2、双层读取兼顾模板与运行时覆盖
 
