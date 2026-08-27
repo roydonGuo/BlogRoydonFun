@@ -64,6 +64,8 @@ flowchart TB
 
 ## 三、三类数据边界
 
+<img src="/images/posts/AgentScope Java 2.0 Harness：状态、工作区与生产隔离/agentstate-runtimecontext-migration.webp" alt="AgentScope 2.0 AgentState 与 RuntimeContext 迁移边界图" style="border-radius: 10px;" />
+
 ### 1、RuntimeContext：只描述本次调用
 
 **运行时上下文（Runtime Context）**携带 `userId`、`sessionId` 和业务扩展字段。它由应用在每次请求时创建，不作为长期状态自动保存。
@@ -79,6 +81,8 @@ RuntimeContext context = RuntimeContext.builder()
 
 Msg result = agent.call(new UserMessage(userInput), context).block();
 ```
+
+<img src="/images/posts/AgentScope Java 2.0 Harness：状态、工作区与生产隔离/harness-runtime-context.webp" alt="HarnessAgent 通过 RuntimeContext 接收用户与会话身份的原理图" style="border-radius: 10px;" />
 
 工程上应由认证后的服务端身份生成 `userId`，不能直接相信客户端随意传入的值。否则攻击者可能通过伪造标识读取其他会话。
 
@@ -222,6 +226,8 @@ public final class AgentService {
 
 使用 `SandboxFilesystemSpec` 或 `RemoteFilesystemSpec` 却仍保留本地状态存储时，当前 Harness 会在构建阶段拒绝部分不一致配置。这个限制很有价值：文件跨节点而运行状态留在单机，会形成看似可恢复、实际断片的会话。
 
+<img src="/images/posts/AgentScope Java 2.0 Harness：状态、工作区与生产隔离/sandbox-distributed-recovery.webp" alt="AgentScope 沙箱隔离、恢复与分布式部署原理图" style="border-radius: 10px;" />
+
 ## 七、Sandbox 的边界不只是“能执行命令”
 
 Sandbox 需要同时隔离文件、进程和恢复元数据。风险主要来自四个方向：
@@ -326,6 +332,7 @@ AgentScope Java 2.0 Harness 的工程价值可以压缩成一句话：用 `Runti
 - [工作区（Workspace）](https://java.agentscope.io/v2/zh/docs/harness/workspace.html)
 - [沙箱（Sandbox）](https://java.agentscope.io/v2/zh/docs/harness/sandbox.html)
 - [子智能体（Subagent）](https://java.agentscope.io/v2/zh/docs/harness/subagent.html)
+
 
 
 
