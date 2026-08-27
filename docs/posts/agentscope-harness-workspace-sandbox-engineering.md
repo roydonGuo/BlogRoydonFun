@@ -1,7 +1,7 @@
 ---
 title: AgentScope AbstractFilesystem 工程实践：Workspace 路由与沙箱隔离
 date: 2026-08-27
-category: 后端开发
+category: AI
 cover: /images/posts/agentscope-harness-workspace-sandbox-engineering-knowledge-map.webp
 tags:
   - AgentScope
