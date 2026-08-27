@@ -42,7 +42,7 @@ public class MallApplication {
 
 主路径可以压缩成一张图：
 
-```mermaid
+:::mermaid
 flowchart TD
     A[调用 run] --> B[准备环境]
     B --> C[创建上下文]
@@ -51,7 +51,7 @@ flowchart TD
     E --> F[启动 Web 服务器]
     F --> G[执行 Runner]
     G --> H[应用就绪]
-```
+:::
 
 以 2026-08-27 的 Spring Boot 4.1.1 官方文档为事实基线。Spring Boot 3.x 的核心主线相同，但内部类名、模块路径和部分扩展机制可能不同，排查时应对照项目实际版本源码。
 
@@ -259,7 +259,7 @@ Spring Boot 还会注册 JVM shutdown hook。收到正常退出信号时，它�
 
 ## 九、用事件时间线定位启动卡在哪里
 
-```mermaid
+:::mermaid
 sequenceDiagram
     participant M as main
     participant S as SpringApplication
@@ -275,7 +275,7 @@ sequenceDiagram
     S->>R: 依次执行
     R-->>S: 执行成功
     S-->>M: 返回 Context
-```
+:::
 
 排查时先确定最后出现的事件或日志：
 
