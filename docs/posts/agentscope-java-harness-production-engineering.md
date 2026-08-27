@@ -305,34 +305,11 @@ traceId -> userId -> sessionId -> agentId -> taskId -> toolCallId
 
 AgentScope Java 2.0 Harness 的工程价值可以压缩成一句话：用 `RuntimeContext` 确定本次调用身份，用 `AgentStateStore` 恢复运行状态，用 Workspace 沉淀持久资产，再把 Sandbox、Skill、Subagent 和 Plan Mode 挂到这组边界上。
 
-单机演示最容易忽略的是状态与文件碰巧都在本地；生产部署真正困难的是让它们在故障切换后仍保持同一会话、同一租户和同一权限语义。先把三类数据分开，再讨论模型、提示词和工具数量，系统才有稳定演进的基础。
+**要点回顾**：`RuntimeContext` 只描述本次调用身份；`AgentStateStore` 保存可恢复的运行状态；Workspace 承载会话日志、长期记忆和文件产物；多副本恢复必须同时共享状态、文件与沙箱快照；Sandbox、Plan Mode 和工具权限分别约束执行环境、执行时机与可用能力。
 
-## 十二、关联知识
+**关联知识点**：ReAct 推理与工具循环决定 Agent 如何行动；上下文压缩与长期记忆决定信息如何跨轮次保留；多租户隔离保证状态、文件和工具授权使用同一身份；分布式锁与幂等避免同一会话并发覆盖或重复副作用；MCP 工具治理负责外部能力的最小权限与审计。
 
-- ReAct 推理与工具循环
-- Agent 上下文压缩与长期记忆
-- 多租户数据隔离
-- 分布式锁与幂等
-- Sandbox 生命周期管理
-- MCP 工具权限治理
+**面试常问**：`RuntimeContext`、`AgentState` 和 Workspace 的生命周期分别是什么？→ `RuntimeContext` 仅在单次调用中传递身份，`AgentState` 跨调用保存运行快照，Workspace 长期保存可审计文件；为什么共享 Workspace 不能独立完成多副本恢复？→ 运行状态仍位于独立 `AgentStateStore`，沙箱还需要远端快照和跨节点协调；上下文压缩会删除完整历史吗？→ 不会，它只缩减当前模型上下文，完整会话日志仍追加到 Workspace；为什么不能直接用 `java.nio.file.Files` 写 Workspace？→ 远端或沙箱模式下会绕过 `WorkspaceManager` 路由并写错物理位置。
 
-## 十三、面试题
-
-1. `RuntimeContext`、`AgentState` 和 Workspace 的生命周期分别是什么？
-2. 为什么共享 Workspace 不能独立完成多副本会话恢复？
-3. 上下文压缩与完整会话日志有什么区别？
-4. 自定义中间件为什么不应直接使用 `java.nio.file.Files` 写 Workspace？
-5. Sandbox、Plan Mode 和工具白名单分别防御哪类风险？
-
-## 十四、参考资料
-
-- [AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/zh/docs/quickstart.html)
-- [Harness Architecture](https://java.agentscope.io/v2/en/docs/harness/architecture.html)
-- [上下文与 AgentState](https://java.agentscope.io/v2/zh/docs/building-blocks/context.html)
-- [工作区（Workspace）](https://java.agentscope.io/v2/zh/docs/harness/workspace.html)
-- [沙箱（Sandbox）](https://java.agentscope.io/v2/zh/docs/harness/sandbox.html)
-- [子智能体（Subagent）](https://java.agentscope.io/v2/zh/docs/harness/subagent.html)
-
-
-
+**参考资料**：[AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/zh/docs/quickstart.html)；[Harness Architecture](https://java.agentscope.io/v2/en/docs/harness/architecture.html)；[上下文与 AgentState](https://java.agentscope.io/v2/zh/docs/building-blocks/context.html)；[工作区（Workspace）](https://java.agentscope.io/v2/zh/docs/harness/workspace.html)；[沙箱（Sandbox）](https://java.agentscope.io/v2/zh/docs/harness/sandbox.html)；[子智能体（Subagent）](https://java.agentscope.io/v2/zh/docs/harness/subagent.html)。
 

@@ -4,7 +4,7 @@
 :root {
     --mermaid-width: 100%;
     --mermaid-height: auto;
-    --mermaid-border-radius: 12px;
+    --mermaid-border-radius: 16px;
     --mermaid-background: var(--vp-c-bg-soft);
 }
 
