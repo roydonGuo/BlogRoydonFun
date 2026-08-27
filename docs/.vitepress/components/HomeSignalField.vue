@@ -28,7 +28,7 @@ const palettes: Record<ThemeName, Palette> = {
     vignette: [5, 6, 8],
   },
   light: {
-    background: '#f4f3f0',
+    background: '#fdfdfc',
     particle: [49, 53, 61],
     signal: [48, 73, 220],
     vignette: [239, 238, 233],

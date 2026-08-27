@@ -8,6 +8,7 @@ export default defineConfig({
     lang: 'zh-CN',
     title: 'Ethan',
     description: 'Thoughts on code, design & life',
+    cleanUrls: true,
 
     // 中文作为默认语言，英文内容统一放在 /en/ 路径下。
     locales: {
