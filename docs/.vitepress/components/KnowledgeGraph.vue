@@ -217,8 +217,8 @@ function draw() {
     const hasHoveredNode = Boolean(highlightedNodeId)
     ctx.strokeStyle = linkColors[relationType]
     ctx.globalAlpha = hasHoveredNode
-        ? (highlighted ? 1 : .12)
-        : (relationType === 'category' ? (dark ? .84 : .74) : (dark ? .62 : .52))
+        ? (highlighted ? .5 : .06)
+        : (relationType === 'category' ? (dark ? .42 : .37) : (dark ? .31 : .26))
     ctx.lineWidth = (highlighted ? 2.8 : relationType === 'category' ? 1.55 : 1.15) / scale
     ctx.shadowColor = highlighted ? linkColors[relationType] : 'transparent'
     ctx.shadowBlur = highlighted ? 8 / scale : 0

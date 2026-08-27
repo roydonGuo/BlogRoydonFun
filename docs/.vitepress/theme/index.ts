@@ -17,6 +17,7 @@ import ProgrammingResources from '../components/ProgrammingResources.vue'
 import GithubTrending from '../components/GithubTrending.vue'
 import MermaidDiagram from '../components/MermaidDiagram.vue'
 import ArticleReader from '../components/ArticleReader.vue'
+import ArticleMetadata from '../components/ArticleMetadata.vue'
 import ArticleImagePreview from '../components/ArticleImagePreview.vue'
 import HomeDashboard from '../components/HomeDashboard.vue'
 import HomeSignalField from '../components/HomeSignalField.vue'
@@ -93,8 +94,11 @@ const AnimatedLayout = defineComponent({
         // 文章页左侧栏复用 posts.data.ts，自动按分类展示全部文章。
         'sidebar-nav-before': () => h(PostSidebar),
         'aside-top': () => h(PostFilter),
-        // 在文章正文前提供浏览器原生语音朗读控件。
-        'doc-before': () => h(ArticleReader),
+        // 在文章正文前依次提供语音朗读控件和文章元数据。
+        'doc-before': () => h(Fragment, null, [
+          h(ArticleReader),
+          h(ArticleMetadata),
+        ]),
         // 文章详情页继续复用文章数据源提供上一篇和下一篇导航。
         'doc-after': () => h(Fragment, null, [
           h(PostPrevNext),

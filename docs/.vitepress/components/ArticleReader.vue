@@ -55,7 +55,7 @@ function articleText() {
   const article = document.querySelector<HTMLElement>('.VPDoc .vp-doc')
   if (!article) return ''
   const clone = article.cloneNode(true) as HTMLElement
-  clone.querySelectorAll('.article-reader, pre, code, script, style, button, .header-anchor, .footnotes').forEach(node => node.remove())
+  clone.querySelectorAll('.article-reader, .article-metadata, pre, code, script, style, button, .header-anchor, .footnotes').forEach(node => node.remove())
   return clone.textContent ?? ''
 }
 
@@ -208,7 +208,7 @@ watch(() => page.value.relativePath, stop)
   gap: 20px;
   align-items: center;
   justify-content: space-between;
-  margin: 1rem 0 2rem;
+  margin: 1rem 0;
   padding: 14px 16px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 14%, var(--vp-c-divider));
   border-radius: 9rem;
