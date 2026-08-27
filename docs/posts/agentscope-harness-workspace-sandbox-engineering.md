@@ -251,43 +251,12 @@ public class CustomerSupportAgent {
 
 ## 七、总结
 
-AgentScope AbstractFilesystem 的价值不在于把 `Files.readString()` 再包装一层，而在于明确五条存储边界：
+Workspace 说明要读写哪份资产，AbstractFilesystem 决定资产落在哪里，RuntimeContext 与 Sandbox 决定谁能在什么边界内操作它。
 
-- Workspace 只定义逻辑文件树，AbstractFilesystem 决定物理落点。
-- Workspace 保存可审计资产，AgentState 保存可恢复运行状态。
-- AbstractFilesystem 解耦逻辑目录与物理存储。
-- RuntimeContext 把用户和会话身份贯穿到状态、文件与沙箱。
-- 沙箱限制执行副作用，权限与审批继续约束业务副作用。
+**要点回顾**：Workspace 只定义逻辑文件树，AbstractFilesystem 决定物理落点；Workspace 保存可审计资产，AgentState 保存可恢复运行状态；RuntimeContext 把用户和会话身份贯穿到状态、文件与沙箱；沙箱限制执行副作用，权限与审批继续约束业务副作用。
 
-**一句话记忆：Workspace 说明要读写哪份资产，AbstractFilesystem 决定资产落在哪里，RuntimeContext 与 Sandbox 决定谁能在什么边界内操作它。**
+**关联知识点**：Agent 上下文工程决定哪些 Workspace 内容进入本轮提示词，以及何时压缩或卸载大结果；Agent 分层记忆区分当前对话、长期事实与原始会话日志的生命周期；Agent Skills 将可复用操作说明按需加载到 Workspace；SubAgent 委派通过独立角色拆分复杂任务并回收状态；HITL 审批为高风险工具增加人工决策节点。
 
-## 八、关联知识点
+**面试常问**：HarnessAgent 会替代 ReActAgent 吗？→ 不会，它是在 ReAct 推理内核外叠加工程能力；Workspace 与 AgentState 有什么区别？→ 前者保存长期可阅读资产，后者保存可恢复运行快照；有了沙箱为什么还要权限控制？→ 沙箱限制主机级副作用，权限控制限制业务级副作用，两者不能互相替代。
 
-- **Agent 上下文工程**：决定哪些 Workspace 内容进入本轮提示词，以及何时压缩或卸载大结果。
-- **Agent 分层记忆**：区分当前对话、长期事实与原始会话日志的生命周期。
-- **Agent Skills**：把可复用操作说明按需加载到 Workspace，而不是永久塞进系统提示词。
-- **SubAgent 委派**：把复杂任务拆给子智能体，并通过 Workspace 回收任务状态与结果。
-- **HITL 审批**：为高风险工具提供允许、审批、拒绝之外的人工决策节点。
-
-## 九、面试常问
-
-### 1、HarnessAgent 会替代 ReActAgent 吗？
-
-不会。HarnessAgent 在 ReAct 推理内核外叠加 Middleware、Toolkit、Workspace、持久化和隔离能力；只需要轻量推理循环时仍可直接使用 ReActAgent。
-
-### 2、Workspace 与 AgentState 有什么区别？
-
-Workspace 保存长期、可阅读的文件资产；AgentState 保存对话运行时的恢复快照。二者存储位置、更新频率和保留周期不同。
-
-### 3、有了沙箱为什么还要工具权限控制？
-
-沙箱限制主机级副作用，权限控制限制业务级副作用。沙箱里的代码仍可能调用真实业务接口，所以两者不能互相替代。
-
-## 十、参考资料
-
-- [AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/en/docs/quickstart.html)
-- [AgentScope Harness 架构](https://java.agentscope.io/v2/en/docs/harness/architecture.html)
-- [AgentScope Workspace](https://java.agentscope.io/v2/en/docs/harness/workspace.html)
-- [AgentScope 文件系统](https://java.agentscope.io/v2/en/docs/harness/filesystem.html)
-- [AgentScope 沙箱](https://java.agentscope.io/v2/en/docs/harness/sandbox.html)
-- [AgentScope Java 官方仓库](https://github.com/agentscope-ai/agentscope-java)
+**参考资料**：[AgentScope Java 2.0 快速开始](https://java.agentscope.io/v2/en/docs/quickstart.html)、[Harness 架构](https://java.agentscope.io/v2/en/docs/harness/architecture.html)、[Workspace](https://java.agentscope.io/v2/en/docs/harness/workspace.html)、[文件系统](https://java.agentscope.io/v2/en/docs/harness/filesystem.html)、[沙箱](https://java.agentscope.io/v2/en/docs/harness/sandbox.html)、[AgentScope Java 官方仓库](https://github.com/agentscope-ai/agentscope-java)。
