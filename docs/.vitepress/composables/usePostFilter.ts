@@ -40,7 +40,9 @@ const categoryFeatureConfig: Record<string, CategoryFeatureConfig> = {
   MySQL: {description: '索引、事务、锁与数据库内核', primaryColor: '#2496ed', iconGradient: 'linear-gradient(135deg, #1676bd, #39a9ef)', icon: '/category/mysql.svg'},
   Redis: {description: '数据结构、持久化与高可用实践', primaryColor: '#ef5350', iconGradient: 'linear-gradient(135deg, #dc382d, #f56b61)', icon: '/category/redis.svg'},
   '随笔': {description: '阅读记录、生活观察与思考碎片', primaryColor: '#ff7598', iconGradient: 'linear-gradient(135deg, #ff879d, #ff668d)', icon: '/category/sb.svg'},
-  MQ: {description: '消息可靠性、异步架构与中间件实践', primaryColor: '#f59e0b', iconGradient: 'linear-gradient(135deg, #e88b00, #ffc247)', icon: '/category/mq.svg'},
+  MQ: {description: '消息可靠性、异步架构与中间件实践', primaryColor: '#ff6600', iconGradient: 'linear-gradient(135deg, #e88b00, #ff6600)', icon: '/category/mq.svg'},
+  '计算机网络': {description: '消息可靠性、异步架构与中间件实践', primaryColor: '#c35d12', iconGradient: 'linear-gradient(135deg, #a94b0b, #e57a24)', icon: '/category/network.svg'},
+  '算法': {description: '消息可靠性、异步架构与中间件实践', primaryColor: '#3e75ff', iconGradient: 'linear-gradient(135deg, #2858d9, #6a9aff)', icon: '/category/algo.svg'},
 }
 
 const defaultCategoryFeatureConfig: CategoryFeatureConfig = {

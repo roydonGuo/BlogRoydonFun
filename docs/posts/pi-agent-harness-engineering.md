@@ -3,7 +3,7 @@ title: Pi Agent 框架详细解读：最小内核、Agent Loop 与扩展体系
 date: 2026-08-24
 category: AI
 cover: /images/posts/pi-agent-harness-engineering-knowledge-map.webp
-tags: [ai, agent, pi, coding-agent, agent-loop, llm]
+tags: [agent, pi, coding-agent, agent-loop, llm]
 excerpt: Pi 不是功能缩水的 Claude Code，而是一套模型中立、最小化且可编程的 Agent Harness。本文拆解它的五层包结构、工具循环、会话树、扩展机制与安全边界，并与 Claude Code、Codex 做工程选型比较。
 top: true
 ---

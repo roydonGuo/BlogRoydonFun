@@ -3,7 +3,7 @@ title: jQuery之Ajax
 date: 2022-08-24 09:12:01
 category: 前端开发
 cover: /images/posts/jquery-ajax/ethan-jquery-ajax-knowledge-map.webp
-tags: [jQuery, Ajax, 前端请求, XMLHttpRequest]
+tags: [jQuery, Ajax, XMLHttpRequest]
 excerpt: 从 $.get / $.post / $.ajax 三件套到 serialize 取表单，从 art-template 模板引擎到原生 XMLHttpRequest，讲清 jQuery 发起异步请求的写法、参数与底层原理。
 ---
 

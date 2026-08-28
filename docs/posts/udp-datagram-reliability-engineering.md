@@ -1,9 +1,9 @@
 ---
 title: UDP 工程实践：报文边界、丢包处理与 Java 服务治理
 date: 2026-08-25
-category: 后端开发
+category: 计算机网络
 cover: /images/posts/udp-datagram-reliability-engineering-knowledge-map.webp
-tags: [udp, networking, datagram, java, nio, reliability]
+tags: [udp, network, datagram, java, nio]
 excerpt: UDP 保留数据报边界，却不承诺送达、顺序、去重、拥塞控制或业务成功。本文从协议语义、MTU 与分片风险出发，给出 Java 数据报协议、幂等重试、安全防护和线上诊断的完整工程边界。
 ---
 

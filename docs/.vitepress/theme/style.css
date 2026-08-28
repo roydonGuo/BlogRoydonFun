@@ -3,56 +3,6 @@
  * Brand color: #2445EB
  */
 
-
-/* PingFang font family bundled with the site. */
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang ExtraLight_0.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang Light_0.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang Regular_0.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang Medium_0.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang Bold_0.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PingFang';
-    src: url('/assets/font/PingFang Heavy_0.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* 方块字体 */
 @font-face {
     font-family: "BubbledotICG-FinePos";
@@ -69,7 +19,6 @@
 
 :root {
     /* Override VitePress's default interface and content font stack. */
-    --vp-font-family-base: 'PingFang', sans-serif;
 
     /* Brand colors */
     --vp-c-brand-1: #2445EB;
@@ -196,13 +145,9 @@ html {
 }
 
 body {
-    font-weight: 500;
     font-size: 16px;
 }
 
-.outline-link {
-    font-weight: 500 !important;
-}
 
 .outline-link:hover, .outline-link.active {
     color: var(--vp-c-brand-1) !important;
@@ -211,7 +156,6 @@ body {
 /* 文章目录层级：h2 为主项，h3/h4 逐级缩进并用辅助线串联。 */
 .VPDocAsideOutline .VPDocOutlineItem.root > li > .outline-link {
     color: var(--vp-c-text-1);
-    font-weight: 600 !important;
 }
 
 .VPDocAsideOutline .VPDocOutlineItem.nested {

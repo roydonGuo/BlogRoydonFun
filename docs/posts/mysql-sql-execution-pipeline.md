@@ -3,7 +3,7 @@ title: MySQL 8.4 SQL 执行链路：连接、解析、优化与执行
 date: 2026-08-24
 category: MySQL
 cover: /images/posts/mysql-sql-execution-pipeline-knowledge-map.webp
-tags: [mysql, sql, optimizer, explain, performance-schema, java]
+tags: [sql, explain]
 excerpt: 一条 SQL 的耗时不只发生在存储引擎读写：它还要经过连接认证、解析与语义检查、基于成本的计划选择、执行器迭代取数和结果返回。理解每一段的边界，才能把连接慢、优化慢、锁等待和扫描量过大分别定位。
 ---
 

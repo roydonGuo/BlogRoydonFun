@@ -3,7 +3,7 @@ title: Java ThreadLocal 工程实践：线程池污染、上下文传递与 Scop
 date: 2026-08-21
 category: 后端开发
 cover: /images/posts/java-threadlocal-context-engineering-knowledge-map.webp
-tags: [java, threadlocal, concurrency, thread-pool, scoped-value, spring]
+tags: [java, threadlocal, concurrency, thread-pool, spring]
 excerpt: ThreadLocal 适合保存与当前执行线程绑定的少量上下文，却不会自动形成安全的请求作用域。本文从 ThreadLocalMap 的引用关系出发，讲清线程池污染、跨线程传播、虚拟线程边界，以及 JDK 25 ScopedValue 的替代条件。
 ---
 

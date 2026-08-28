@@ -3,7 +3,7 @@ title: Spring 循环依赖工程实践：三级缓存、代理暴露与设计治
 date: 2026-08-22
 category: 后端开发
 cover: /images/posts/spring-circular-dependency-three-level-cache-knowledge-map.webp
-tags: [spring, circular-dependency, bean, ioc, aop, java]
+tags: [spring, bean, ioc, aop]
 excerpt: Spring 的三级缓存只能在特定条件下暴露尚未完成初始化的单例引用，并不等于所有循环依赖都可解决。本文从 Bean 创建时序、三级缓存与 AOP 早期代理出发，讲清可解析边界、失败原因和拆环方法。
 ---
 

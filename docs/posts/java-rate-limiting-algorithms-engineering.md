@@ -3,7 +3,7 @@ title: Java 服务限流工程实践：固定窗口、滑动窗口、漏桶与�
 date: 2026-08-28
 category: 后端开发
 cover: /images/posts/java-rate-limiting-algorithms-engineering-knowledge-map.webp
-tags: [java, rate-limiting, redis, spring-cloud-gateway, resilience]
+tags: [java, rate-limit, redis, gateway]
 excerpt: 限流不是简单地拒绝超额请求。固定窗口适合低成本配额，滑动窗口换取更平滑的统计，漏桶负责匀速整形，令牌桶允许受控突发；工程落地还要处理限流维度、集群一致性、失败策略与 429 响应契约。
 ---
 

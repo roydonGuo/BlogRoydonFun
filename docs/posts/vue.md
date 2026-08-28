@@ -3,7 +3,7 @@ title: Vue 2 核心笔记：模板语法、六大指令、侦听器、计算属�
 date: 2022-10-24 13:12:30
 category: 前端开发
 cover: /images/posts/vue/ethan-vue2-knowledge-map.webp
-tags: [Vue, Vue2, 前端, 框架, 指令, 组件化, 教程]
+tags: [Vue, Vue2]
 excerpt: 从 MVVM 视角讲清 Vue 2 为什么能让数据与视图自动同步，系统拆解模板语法、内容/属性/事件/双向/条件/列表六大指令、watch 侦听器、computed 计算属性，再到 vue-cli 工程化、单文件组件、父子/兄弟通信与组件生命周期，配本地截图与流程图，离线可看。
 ---
 

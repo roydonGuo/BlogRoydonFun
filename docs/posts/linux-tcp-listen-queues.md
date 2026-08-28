@@ -3,7 +3,7 @@ title: Linux TCP 监听队列：SYN Queue、Accept Queue 与连接洪峰治理
 date: 2026-08-06
 category: 后端开发
 cover: /images/posts/linux-tcp-listen-queues-knowledge-map.webp
-tags: [linux, tcp, networking, java, observability]
+tags: [linux, tcp, network, java]
 excerpt: 从三次握手、两级监听队列和 listen backlog 出发，定位 Java 服务连接洪峰中的握手积压、Accept 溢出与过载边界。
 ---
 

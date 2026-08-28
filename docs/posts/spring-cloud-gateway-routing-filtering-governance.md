@@ -3,7 +3,7 @@ title: Spring Cloud Gateway 工程实践：路由、过滤器与流量治理
 date: 2026-08-19
 category: 后端开发
 cover: /images/posts/spring-cloud-gateway-routing-filtering-governance-knowledge-map.webp
-tags: [spring-cloud-gateway, spring-cloud, webflux, api-gateway, microservices]
+tags: [gateway, spring-cloud, webflux]
 excerpt: 网关不是简单的反向代理，而是由路由断言、过滤器链和下游转发组成的流量控制面。本文以 Spring Cloud Gateway 5.0.2 为基线，讲清路由匹配、过滤器顺序、JWT 鉴权、限流、灰度、熔断与可观测性。
 ---
 

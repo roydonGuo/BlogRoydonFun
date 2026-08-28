@@ -3,7 +3,7 @@ title: Spring Boot 启动流程：从 main 方法到 Web 应用就绪
 date: 2026-08-27
 category: 后端开发
 cover: /images/posts/spring-boot-startup-lifecycle-knowledge-map.webp
-tags: [java, spring-boot, application-context, auto-configuration, web-server]
+tags: [java, spring-boot]
 excerpt: Spring Boot 启动不是简单地扫描 Bean 再启动 Tomcat，而是由 SpringApplication 串联环境准备、上下文创建、配置类解析、自动配置、容器刷新、Web 服务器初始化、Runner 和就绪事件。抓住这条主线，就能解释启动扩展点与常见失败位置。
 ---
 

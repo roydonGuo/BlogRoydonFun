@@ -3,7 +3,7 @@ title: MySQL 索引优化实战
 date: 2026-06-08
 category: MySQL
 cover: /images/posts/mysql-index-optimization-knowledge-map.webp
-tags: [mysql, database, index]
+tags: [索引]
 excerpt: 通过实际案例学习 MySQL 索引的设计原则与优化技巧，提升查询性能。
 ---
 

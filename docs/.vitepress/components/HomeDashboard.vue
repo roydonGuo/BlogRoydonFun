@@ -9,9 +9,12 @@ import {
   RiCalendar2Line,
   RiCodeBoxLine,
   RiFigmaLine,
+  RiFileTextLine,
+  RiFolderLine,
   RiGithubFill,
   RiNodejsLine,
   RiPriceTag3Line,
+  RiTimeLine,
   RiToolsLine,
   RiVuejsLine,
 } from '@remixicon/vue'
@@ -170,6 +173,14 @@ function formatDate(date: string): string {
             </div>
           </div>
         </div>
+
+        <dl class="stats-bar home-panel" aria-label="博客内容统计">
+          <div><span class="stat-icon stat-brand"><RiArticleLine aria-hidden="true"/></span><span><dt>{{ posts.length }}</dt><dd>文章总数</dd></span></div>
+          <div><span class="stat-icon stat-mint"><RiFolderLine aria-hidden="true"/></span><span><dt>{{ categories.size }}</dt><dd>分类总数</dd></span></div>
+          <div><span class="stat-icon stat-amber"><RiPriceTag3Line aria-hidden="true"/></span><span><dt>{{ tagStats.length }}</dt><dd>标签总数</dd></span></div>
+          <div><span class="stat-icon stat-rose"><RiFileTextLine aria-hidden="true"/></span><span><dt>30万+</dt><dd>总字数</dd></span></div>
+          <div><span class="stat-icon stat-violet"><RiTimeLine aria-hidden="true"/></span><span><dt>{{ writingYears }}年+</dt><dd>写作时长</dd></span></div>
+        </dl>
 
         <section class="featured-section home-panel" aria-labelledby="featured-title">
           <header class="section-heading">
@@ -551,6 +562,14 @@ function formatDate(date: string): string {
   white-space: nowrap;
 }
 
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 16px 0;
+  border-radius: 20px;
+}
+
 .stats-bar > div {
   display: flex;
   align-items: center;
@@ -564,15 +583,15 @@ function formatDate(date: string): string {
 
 .stats-bar dt {
   color: var(--vp-c-text-1);
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.05;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .stats-bar dd {
   margin: 4px 0 0;
   color: var(--vp-c-text-3);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .stat-icon {
@@ -605,6 +624,11 @@ function formatDate(date: string): string {
 .stat-violet {
   background: rgba(126, 82, 245, 0.12);
   color: #7958ee;
+}
+
+.stat-rose {
+  background: rgba(244, 99, 132, 0.12);
+  color: #eb5d81;
 }
 
 .featured-section,
@@ -1196,13 +1220,19 @@ function formatDate(date: string): string {
     min-height: 62px;
   }
 
-  .stats-bar > div:nth-child(3) {
+  .stats-bar > div:nth-child(odd):not(:first-child) {
     border-left: 0;
     border-top: 1px solid var(--vp-c-divider);
   }
 
-  .stats-bar > div:nth-child(4) {
+  .stats-bar > div:nth-child(even):not(:nth-child(2)),
+  .stats-bar > div:last-child {
     border-top: 1px solid var(--vp-c-divider);
+  }
+
+  .stats-bar > div:last-child {
+    grid-column: 1 / -1;
+    border-left: 0;
   }
 
   .tags-panel {

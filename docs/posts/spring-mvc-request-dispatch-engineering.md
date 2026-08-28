@@ -3,7 +3,7 @@ title: Spring MVC 请求链路工程实践：DispatcherServlet、映射、适配
 date: 2026-08-24
 category: 后端开发
 cover: /images/posts/spring-mvc-request-dispatch-engineering-knowledge-map.webp
-tags: [spring, spring-mvc, dispatcher-servlet, servlet, java]
+tags: [spring, spring-mvc, servlet]
 excerpt: Spring MVC 的请求处理不是 Controller 前后两次拦截，而是一条由 DispatcherServlet 统筹、HandlerMapping 定位、HandlerAdapter 调用、参数与返回值处理器完成协议转换、异常解析器统一收口的分派链。本文讲清 REST 与视图渲染的分叉、拦截器时序和工程扩展边界。
 ---
 

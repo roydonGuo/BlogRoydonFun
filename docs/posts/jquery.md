@@ -3,7 +3,7 @@ title: jQuery 入门到会用：DOM 操作、选择器、事件与动画全梳�
 date: '2022-08-24 09:01:01'
 category: 前端开发
 cover: /images/posts/jquery/ethan-jquery-knowledge-map.webp
-tags: [JavaScript, jQuery, 前端, DOM, 教程]
+tags: [js, jQuery, DOM]
 excerpt: 从“写得少，做的多”的宗旨出发，系统梳理 jQuery 的入口函数、$ 顶级对象、jQuery 对象与 DOM 对象互转、选择器、样式/效果/属性/内容操作、元素增删改、尺寸位置以及事件处理，配本地示例与运行时截图。
 ---
 

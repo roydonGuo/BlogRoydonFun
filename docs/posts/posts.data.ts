@@ -1,5 +1,23 @@
 import { createContentLoader } from 'vitepress'
 
+function countWords(markdown?: string): number {
+  if (!markdown) return 0
+
+  // 去除 Markdown 结构和代码片段，只统计正文中的中日韩字符与英文/数字单词。
+  const plainText = markdown
+    .replace(/^---[\s\S]*?---\s*/u, '')
+    .replace(/```[\s\S]*?```/gu, '')
+    .replace(/`[^`]*`/gu, '')
+    .replace(/!\[[^\]]*]\([^)]*\)/gu, '')
+    .replace(/\[([^\]]+)]\([^)]*\)/gu, '$1')
+    .replace(/<[^>]+>/gu, ' ')
+    .replace(/[#>*_~|=-]/gu, ' ')
+
+  const cjkCount = plainText.match(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/gu)?.length || 0
+  const wordCount = plainText.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/gu)?.length || 0
+  return cjkCount + wordCount
+}
+
 function getDefaultCover(category?: string): string {
   const map: Record<string, string> = {
     '后端开发': '/covers/backend.svg',

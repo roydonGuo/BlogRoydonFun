@@ -3,7 +3,7 @@ title: Java 装饰器模式工程实践：组合增强、顺序语义与 Spring 
 date: 2026-08-26
 category: 后端开发
 cover: /images/posts/java-decorator-pattern-engineering-knowledge-map.webp
-tags: [java, design-pattern, decorator, spring, architecture]
+tags: [java, design-pattern, spring]
 excerpt: 装饰器模式的关键不是“多包一层”，而是在保持同一接口的前提下，用对象组合按需叠加职责。本文通过 Java 报价服务说明结构、装配顺序、异常边界、Spring 配置及其与代理、适配器的区别。
 ---
 

@@ -3,7 +3,7 @@ title: 企业 RAG 元数据过滤工程实践：版本、权限与检索前置�
 date: 2026-08-25
 category: AI
 cover: /images/posts/rag-metadata-filtering-access-control-knowledge-map.webp
-tags: [ai, rag, spring-ai, metadata, access-control, vector-store]
+tags: [rag, spring-ai, metadata, vector-store]
 excerpt: 元数据过滤不是召回后的清理步骤，而是进入相似度检索前的候选集约束。本文从元数据建模、租户与权限过滤、Spring AI 2.0.1 实现、失败语义和可观测性出发，给出企业 RAG 防止旧版本混入与越权召回的工程方案。
 ---
 

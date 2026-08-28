@@ -3,7 +3,7 @@ title: RBAC 权限模型工程实践：角色继承、数据权限与高性能�
 date: 2026-08-21
 category: 后端开发
 cover: /images/posts/rbac-permission-model-engineering-knowledge-map.webp
-tags: [rbac, authorization, spring-security, data-permission, java, security]
+tags: [rbac, auth, spring-security, data-permission, java, security]
 excerpt: RBAC 的核心不是给用户堆权限字符串，而是通过用户、角色、权限、会话和约束建立可治理的授权关系。本文讲清标准模型、表结构、请求鉴权、数据权限、缓存失效与 Spring Security 落地边界。
 ---
 

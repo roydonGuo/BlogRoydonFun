@@ -3,7 +3,7 @@ title: Redis Cluster 工程实践：哈希槽、重定向与故障转移
 date: 2026-08-24
 category: Redis
 cover: /images/posts/redis-cluster-sharding-failover-engineering-knowledge-map.webp
-tags: [redis, redis-cluster, sharding, hash-slot, failover, java]
+tags: [cluster, sharding, hash-slot]
 excerpt: Redis Cluster 用固定的 16384 个哈希槽把 Key 分散到多个主分片，并通过客户端重定向、在线迁槽和 Replica 晋升维持扩缩容与故障恢复。真正的工程难点是 Key 设计、拓扑刷新、迁移期重试和异步复制的数据边界。
 ---
 

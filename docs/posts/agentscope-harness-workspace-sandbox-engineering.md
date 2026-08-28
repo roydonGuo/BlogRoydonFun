@@ -9,7 +9,6 @@ tags:
   - Java
   - Harness
   - OpenClaw
-  - Workspace
   - Sandbox
 excerpt: 过去一年 OpenClaw、Hermes、Claude Code 把 Harness Engineering 带到台前，但把这套思路搬进企业级智能体开发时，问题才刚开始。AgentScope Java 1.1 给出 Harness Framework：在 ReActAgent 关键时机插入 Hook，把工作区、文件系统、记忆、子 Agent 和沙箱的工程答案打包进框架。
 ---

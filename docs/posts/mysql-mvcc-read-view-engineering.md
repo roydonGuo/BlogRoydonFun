@@ -3,7 +3,7 @@ title: MySQL 8.4 MVCC 工程实践：Read View、版本链与一致性读
 date: 2026-08-10
 category: MySQL
 cover: /images/posts/mysql-mvcc-read-view-engineering-knowledge-map.webp
-tags: [mysql, innodb, mvcc, read-view, transaction]
+tags: [mvcc, read-view, 事务]
 excerpt: 从 Read View、隐藏事务字段与 undo 版本链出发，讲清 RC、RR 的可见性差异，并把快照读、当前读、长事务治理落到真实订单场景。
 top: true
 ---

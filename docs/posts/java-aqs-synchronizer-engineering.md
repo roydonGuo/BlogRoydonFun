@@ -3,7 +3,7 @@ title: Java AQS 工程实践：state、同步队列、共享模式与 Condition
 date: 2026-08-25
 category: 后端开发
 cover: /images/posts/java-aqs-synchronizer-engineering-knowledge-map.webp
-tags: [java, aqs, concurrency, lock, condition, juc]
+tags: [java, aqs, concurrency, lock, juc]
 excerpt: AQS 把同步器拆成两层：子类只定义 state 的获取与释放规则，框架统一处理排队、阻塞、唤醒、中断和超时。理解独占、共享与 Condition 三条链路，才能读懂 ReentrantLock、Semaphore、CountDownLatch，也能避免自定义同步器里的并发漏洞。
 top: true
 ---

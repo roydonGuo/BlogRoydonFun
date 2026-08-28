@@ -3,7 +3,7 @@ title: Kafka 消息不丢失工程实践：确认、ISR 与端到端提交
 date: 2026-08-19
 category: 后端开发
 cover: /images/posts/kafka-message-durability-engineering-knowledge-map.webp
-tags: [kafka, message-queue, reliability, idempotence, distributed-systems]
+tags: [kafka, mq]
 excerpt: Kafka 的可靠性不是一个开关，而是生产确认、副本提交、消费位点和业务结果共同组成的链路。本文以 Apache Kafka 4.3.1 为基线，拆清三段丢失窗口，并给出可落地的配置、提交顺序与故障验证方法。
 ---
 

@@ -3,7 +3,7 @@ title: Spring Boot 自动装配原理
 date: 2026-06-10
 category: 后端开发
 cover: /images/posts/springboot-auto-config-knowledge-map.webp
-tags: [java, spring]
+tags: [java, spring-boot, 自动装配]
 excerpt: 深入浅出地解析 Spring Boot 自动装配的核心机制，理解 @EnableAutoConfiguration 的工作原理。
 ---
 

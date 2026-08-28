@@ -3,7 +3,7 @@ title: JVM 垃圾回收工程实践：可达性分析、三色标记、分代收
 date: 2026-08-19
 category: 后端开发
 cover: /images/posts/jvm-gc-garbage-collection-engineering-knowledge-map.webp
-tags: [jvm, gc, 垃圾回收, 可达性分析, 三色标记, g1, zgc, 分代收集]
+tags: [jvm, gc, 垃圾回收, g1, zgc]
 excerpt: GC 管的不是整个 JVM，而是堆里"能不能被根引用链摸到"的对象。本文从判定对象死活的两条路（引用计数 / 可达性分析 / 三色标记）讲起，串起四种引用、三种回收算法、分代模型，再到 Serial / Parallel / CMS / G1 / ZGC 的取舍，并给出 Spring Boot 调优、GC 日志、OOM 排查与选型建议。
 ---
 

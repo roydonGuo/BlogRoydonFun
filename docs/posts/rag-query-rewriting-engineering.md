@@ -3,7 +3,7 @@ title: RAG 查询改写工程实践：富化、分解、多样化与回溯提示
 date: 2026-08-26
 category: AI
 cover: /images/posts/rag-query-rewriting-engineering-knowledge-map.webp
-tags: [ai, rag, query-rewriting, spring-ai, retrieval]
+tags: [rag, 问题重写, spring-ai, retrieval]
 excerpt: 查询改写不是润色用户问题，而是在检索前补齐上下文、拆开复合意图、扩展表达或回退到上位概念。本文给出四类策略的适用边界、Spring AI 2.0.1 实现位置、失败回退与评测方法。
 ---
 

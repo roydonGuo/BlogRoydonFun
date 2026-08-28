@@ -3,7 +3,7 @@ title: HTML5
 date: 2022-08-24 08:31:20
 category: 前端开发
 cover: /images/posts/html5/ethan-html5-knowledge-map.webp
-tags: [html, html5, frontend, 前端]
+tags: [html, html5, 前端]
 excerpt: 从浏览器怎么跑网页讲起，系统梳理 HTML5 的标签体系——排版、文本格式化、媒体、链接、列表、表格、表单、语义化标签与字符实体，配本地自托管图示。
 ---
 

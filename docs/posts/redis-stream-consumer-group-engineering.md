@@ -3,7 +3,7 @@ title: Redis Stream 消费组工程实践：PEL、确认与故障恢复
 date: 2026-08-20
 category: 后端开发
 cover: /images/posts/redis-stream-consumer-group-engineering-knowledge-map.webp
-tags: [redis, stream, consumer-group, message-queue, spring-data-redis]
+tags: [redis, stream, mq, spring]
 excerpt: Redis Stream 消费组通过游标、消费者和待处理列表分摊消息，但可靠消费仍取决于业务幂等、处理后确认、超时认领和安全裁剪。本文用订单事件讲清 PEL 状态机与故障恢复边界。
 ---
 

@@ -3,7 +3,7 @@ title: RabbitMQ 延迟消息工程实践：TTL、死信与插件退场
 date: 2026-08-27
 category: MQ
 cover: /images/posts/rabbitmq-delayed-message-ttl-dlx-engineering-knowledge-map.webp
-tags: [rabbitmq, delayed-message, ttl, dead-letter-exchange, spring-amqp, java]
+tags: [rabbitmq, delayed-message, ttl, amqp]
 excerpt: RabbitMQ 延迟消息不是“设置一个过期时间”这么简单。本文基于 RabbitMQ 4.3，说明 TTL 与死信交换的真实语义、同队列头阻塞、延迟桶设计、至少一次转发、消费幂等，以及旧 delayed-message 插件退场后的选型边界。
 ---
 

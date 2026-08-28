@@ -3,7 +3,7 @@ title: MySQL 分页稳定性：确定性排序、OFFSET 漂移与游标翻页
 date: 2026-08-28
 category: 后端开发
 cover: /images/posts/mysql-pagination-stability-keyset-knowledge-map.webp
-tags: [mysql, pagination, keyset-pagination, sql, java]
+tags: [mysql, sql, java]
 excerpt: 分页重复和漏数据不只是 LIMIT 的问题：排序键不唯一会让同值记录顺序不确定，并发写入会让 OFFSET 的位置发生漂移。稳定分页需要唯一复合排序；大数据量或实时列表还应使用基于最后一条记录的游标翻页。
 ---
 

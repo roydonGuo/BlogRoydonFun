@@ -3,7 +3,7 @@ title: ReAct Agent 工程实践：推理、工具调用与停止条件
 date: 2026-08-10
 category: AI
 cover: /images/posts/react-agent-tool-loop-engineering-knowledge-map.webp
-tags: [ai, agent, react, spring-ai, tool-calling]
+tags: [agent, ReAct, spring-ai, tool-calling]
 excerpt: 从 ReAct 的推理—行动—观察循环出发，用 Spring AI 构建可控工具调用链，并把预算、状态、失败处理、安全与可观测性落到工程边界。
 ---
 

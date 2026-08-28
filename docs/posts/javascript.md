@@ -3,7 +3,7 @@ title: JavaScript
 date: 2022-08-24 11:12:01
 category: 前端开发
 cover: /images/posts/javascript/ethan-javascript-knowledge-map.webp
-tags: [javascript, js, frontend]
+tags: [js]
 excerpt: JavaScript 基础入门笔记，涵盖数据类型、数组、函数、对象、DOM、BOM、事件等核心知识点。
 ---
 

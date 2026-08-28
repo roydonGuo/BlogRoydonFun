@@ -3,7 +3,7 @@ title: Java 21 虚拟线程在 Spring Boot 中的工程化实践
 date: 2026-08-04
 category: 后端开发
 cover: /images/posts/java-virtual-threads-spring-boot-knowledge-map.webp
-tags: [java, jvm, spring-boot, concurrency, performance]
+tags: [java, jvm, spring-boot, concurrency]
 excerpt: 从调度原理、版本差异到 Spring Boot 聚合接口实战，讲清虚拟线程的适用边界、下游限流、上下文传播与排障方法。
 ---
 

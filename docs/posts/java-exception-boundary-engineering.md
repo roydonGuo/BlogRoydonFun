@@ -3,7 +3,7 @@ title: Java 异常处理工程实践：分类、边界转换与资源释放
 date: 2026-08-23
 category: 后端开发
 cover: /images/posts/java-exception-boundary-engineering-knowledge-map.webp
-tags: [java, exception, error-handling, spring, observability]
+tags: [java, exception, spring]
 excerpt: Java 异常治理的关键不是多写 try-catch，而是区分可恢复失败与编程错误，在层间完成语义转换，并用 try-with-resources、统一错误契约和一次性日志保住根因与资源边界。
 ---
 

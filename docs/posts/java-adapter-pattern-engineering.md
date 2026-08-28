@@ -3,7 +3,7 @@ title: Java 适配器模式工程实践：类适配、对象适配与兼容边�
 date: 2026-08-24
 category: 后端开发
 cover: /images/posts/java-adapter-pattern-engineering-knowledge-map.webp
-tags: [java, design-patterns, adapter, integration, spring]
+tags: [java, design-patterns, adapter, spring]
 excerpt: 适配器模式不改变旧组件的核心能力，而是在边界处转换接口、数据与失败语义。本文完整比较类适配器与对象适配器，并用 Java 第三方物流接入讲清兼容层的工程边界。
 ---
 

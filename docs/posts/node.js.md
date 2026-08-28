@@ -3,7 +3,7 @@ title: Node.js
 date: 2022-08-30 11:31:20
 category: 后端开发
 cover: /images/posts/node.js/ethan-nodejs-knowledge-map.webp
-tags: [node.js, javascript, express, mysql, jwt, backend]
+tags: [node.js, js, express, jwt]
 excerpt: 从 Node.js 运行环境、fs/path/http 内置模块，到模块化与 npm、Express 框架、数据库整合，再到 Session 与 JWT 身份认证，系统梳理 Node.js 后端开发基础。
 ---
 

@@ -3,7 +3,7 @@ title: Java 线程池 ThreadPoolExecutor 工程实践：核心参数、执行流
 date: 2026-08-18
 category: 后端开发
 cover: /images/posts/java-threadpool-executor-engineering-knowledge-map.webp
-tags: [java, concurrency, threadpool, executor, 并发编程]
+tags: [java, concurrency, threadpool, executor, 并发]
 excerpt: 从 7 个核心参数和执行流程四步法讲清 ThreadPoolExecutor 为什么“先占核心、再入队、队满才扩容、再满才拒”，并把队列选型、拒绝策略、线程数估算与 Spring Boot 接入落到真实订单异步场景。
 ---
 
