@@ -5,6 +5,7 @@ category: MySQL
 cover: /images/posts/mysql-innodb-row-locks-engineering-ethan-cat.webp
 tags: [mysql, innodb, row-lock, gap-lock, next-key-lock]
 excerpt: 从索引记录出发，讲清 InnoDB 的 Record Lock、Gap Lock、Next-Key Lock 与插入意向锁，并用库存预占场景串起隔离级别、加锁范围、阻塞诊断和死锁治理。
+top: true
 ---
 
 # MySQL 8.4 行锁工程实践：Record、Gap 与 Next-Key Lock

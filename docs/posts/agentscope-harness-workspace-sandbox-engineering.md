@@ -5,7 +5,7 @@ category: AI
 cover: /images/posts/agentscope-harness-workspace-sandbox-engineering-knowledge-map.webp
 tags:
   - AgentScope
-  - AI Agent
+  - Agent
   - Java
   - Harness
   - OpenClaw

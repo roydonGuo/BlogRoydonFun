@@ -7,10 +7,11 @@ tags:
   - AgentScope
   - Java
   - Harness
-  - AI Agent
+  - Agent
   - 多租户
   - 分布式系统
 excerpt: AgentScope Java 2.0 的核心变化是把整套 Harness（工程化套件）内置进了框架。它站在 ReActAgent（推理内核）之上，把企业级分布式智能体必备的能力——上下文管理、持久记忆、Session、Sandbox、Skill、Subagent——统一封装成一套"开关式"能力，开发者可以按需启用。
+top: true
 ---
 
 # 深入理解 AgentScope 2.0 的 Harness：把“能跑的 Agent"变成“能上生产的 Agent”

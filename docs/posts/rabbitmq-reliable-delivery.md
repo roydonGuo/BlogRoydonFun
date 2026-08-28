@@ -5,6 +5,7 @@ category: MQ
 cover: /images/posts/rabbitmq-reliable-delivery-knowledge-map.webp
 tags: [rabbitmq, spring-amqp, message-queue]
 excerpt: 从生产者 Confirm、mandatory Return、消费确认到 Outbox 与幂等表，建立 RabbitMQ 端到端至少一次投递链路。
+top: true
 ---
 
 # RabbitMQ 可靠投递：Confirm、Return 与消费幂等

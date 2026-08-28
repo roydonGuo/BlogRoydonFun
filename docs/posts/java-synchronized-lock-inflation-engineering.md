@@ -5,6 +5,7 @@ category: 后端开发
 cover: /images/posts/java-synchronized-lock-inflation-engineering-knowledge-map.webp
 tags: [java, synchronized, concurrency, monitor, hotspot, lock-inflation]
 excerpt: synchronized 的语义核心是同一 Monitor 上的互斥、可重入与内存可见性；所谓锁升级则是 HotSpot 为降低不同竞争强度下的加锁成本而选择的实现路径。本文以 JDK 25 为基线，讲清字节码、Mark Word、轻量级锁、ObjectMonitor 膨胀及线上诊断边界。
+top: true
 ---
 
 # Java synchronized 原理与锁膨胀：Monitor、轻量级锁与版本边界

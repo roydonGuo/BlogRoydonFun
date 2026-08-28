@@ -54,3 +54,10 @@ Tailwind v4 is pulled in through `@tailwindcss/vite` (no `tailwind.config` — t
 - 大圆角设计
 - 浅色/深色双主题
 - 简单UI采用tailwindcss进行CSS编写，复杂布局可采用tailwindcss加CSS的形式，例如flex、gap等tailwindcss里的常用且简单用法可直接使用tailwindcss，然后复杂布局可单独使用CSS编写，这种方式更灵活。
+
+
+## 文章写作规范！！！重中之重
+
+- 文章在本项目的docs/posts文件夹下，markdown格式，文件名为英文，例如一个标题为：Agent 上下文工程实践：选择、压缩与缓存治理的文章，其文件名为：agent-context-engineering-selection-compaction-cache.md。
+- 文章内容元数据区域格式： 1.title: 文章中文标题 2.date: 发布时间，格式为YYYY-MM-DD HH:MM:SS 3.category: 文章分类 4.cover: 文章封面图片路径（可以是网络图片链接，例如：https://img.com/1.webp ；可以是本地图片路径，例如：/images/posts/agent-context-knowledge-map.webp，此图片在本项目的docs/public/images/posts/agent-context-knowledge-map.webp） 5.tags: 文章标签，可以是多个，使用[]数组表示 6.excerpt: 文章摘要，一段中文文章摘要。
+- 文章正文的一些配图如果是使用本地资源，那么图片资源需要保存到docs/public/images/posts文件夹下，单独简历文件夹，文件夹名称为文章英文文件名，然后再次文件夹下存放正文配图

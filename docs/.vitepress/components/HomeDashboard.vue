@@ -18,10 +18,10 @@ import {
 import type {CategoryFeature} from '../composables/usePostFilter'
 import {features, monthlyArticleStats, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
 
-type FeaturedMode = 'latest' | 'ai' | 'backend'
+type FeaturedMode = 'top' | 'ai' | 'backend'
 
 const router = useRouter()
-const featuredMode = ref<FeaturedMode>('latest')
+const featuredMode = ref<FeaturedMode>('top')
 const bookmarkedUrls = ref(new Set<string>())
 const wavingHandRef = ref<HTMLElement | null>(null)
 const featuredFireRef = ref<HTMLElement | null>(null)
@@ -45,9 +45,9 @@ onMounted(async () => {
 onBeforeUnmount(() => destroyAnimations.forEach(destroy => destroy()))
 
 const featureTabs: Array<{ key: FeaturedMode; label: string }> = [
-  {key: 'latest', label: '最新'},
-  {key: 'ai', label: 'AI'},
-  {key: 'backend', label: '后端'},
+  {key: 'top', label: '置顶'},
+  // {key: 'ai', label: 'AI'},
+  // {key: 'backend', label: '后端'},
 ]
 
 const tools = [
@@ -80,13 +80,15 @@ const writingYears = computed(() => {
 })
 
 const featuredPosts = computed(() => {
+  // 精选区域只展示在文章 frontmatter 中显式声明 top: true 的文章。
+  const topPosts = posts.filter(post => post.top)
   if (featuredMode.value === 'ai') {
-    return posts.filter(post => post.category === 'AI' || post.tags.includes('ai')).slice(0, 3)
+    return topPosts.filter(post => post.category === 'AI' || post.tags.includes('ai'))
   }
   if (featuredMode.value === 'backend') {
-    return posts.filter(post => post.category === '后端开发').slice(0, 3)
+    return topPosts.filter(post => post.category === '后端开发')
   }
-  return posts.slice(0, 3)
+  return topPosts
 })
 
 function openFeature(feature: CategoryFeature): void {
@@ -425,6 +427,8 @@ function formatDate(date: string): string {
   display: grid;
   gap: 16px;
   min-width: 0;
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 1rem)
 }
 
 .home-panel {
@@ -657,9 +661,9 @@ function formatDate(date: string): string {
 }
 
 .featured-tabs button {
-  padding: 5px 9px;
+  padding: 1px 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   background: transparent;
   color: var(--vp-c-text-3);
   font-size: 11px;

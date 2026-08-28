@@ -5,6 +5,7 @@ category: AI
 cover: /images/posts/mainstream-ai-agent-architectures-knowledge-map.webp
 tags: [ai, agent, react, planning, reflection, deep-research, hitl, multi-agent]
 excerpt: Agent 架构的本质是如何组织状态、决策、工具、反馈与停止条件。本文横向拆解六类主流架构解决的问题、运行机制、场景和取舍，并给出带数据结构、接口和异常分支的 Java 示例。
+top: true
 ---
 
 # 主流 AI Agent 架构全景：ReAct、Plan-and-Execute、Reflection、Deep Research、HITL 与 Multi-Agent

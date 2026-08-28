@@ -9,6 +9,7 @@ export interface PostItem {
   tags: string[]
   cover: string
   excerpt: string
+  top: boolean
 }
 
 export interface CategoryFeature {

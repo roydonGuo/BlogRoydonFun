@@ -25,6 +25,8 @@ export default createContentLoader('posts/*.md', {
           tags: page.frontmatter.tags || [],
           cover: page.frontmatter.cover || getDefaultCover(page.frontmatter.category),
           excerpt: page.frontmatter.excerpt || page.excerpt || '',
+          // 仅接受布尔值 true，避免字符串 "true" 等非标准 frontmatter 值被误判为置顶。
+          top: page.frontmatter.top === true,
         }
       })
       .sort((a, b) => b.date.localeCompare(a.date))

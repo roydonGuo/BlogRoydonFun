@@ -4,7 +4,7 @@ date: 2026-08-28 9:19:15
 category: AI
 cover: /images/posts/ai-agent-sandbox-mode-engineering-knowledge-map.webp
 tags:
-  - AI Agent
+  - Agent
   - Sandbox
   - 安全
   - Java
@@ -49,7 +49,7 @@ OWASP 将这类问题归入 **Excessive Agency**（过度代理权）：根因�
 
 因此，“给 Agent 一个临时工作目录”不等于沙箱。路径限制只能减少误写，无法阻止进程读取环境变量、访问宿主服务、扫描内网或耗尽资源。一个可用的沙箱应同时具备**隔离、限制、观测、回收和产物晋升**能力。
 
-```mermaid
+:::mermaid
 flowchart LR
     A[用户目标与外部内容] --> B[Agent 规划]
     B --> C[工具策略与参数校验]
@@ -59,7 +59,7 @@ flowchart LR
     F --> G[结果扫描与验收]
     G -->|通过| H[可信产物区]
     G -->|失败| I[隔离销毁]
-```
+:::
 
 图中最重要的不是沙箱本身，而是沙箱前后的两道门：执行前由策略决定“能不能做”，执行后由验收决定“什么能带出来”。
 
@@ -174,7 +174,7 @@ Kubernetes `NetworkPolicy` 可以控制 Pod 的三、四层流量，但前提是
 
 沙箱不应是“启动容器后执行命令”的单步调用，而是一套可恢复、可审计的状态机。
 
-```mermaid
+:::mermaid
 stateDiagram-v2
     [*] --> Requested
     Requested --> Provisioning: 策略通过
@@ -189,7 +189,7 @@ stateDiagram-v2
     Cancelling --> Destroying
     Failed --> Destroying
     Destroying --> Finished
-```
+:::
 
 ### 1、申请与策略决策
 
