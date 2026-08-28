@@ -889,7 +889,7 @@ function formatDate(date: string): string {
   gap: 8px;
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
-  border-radius: 10px;
+  border-radius: 16px;
   background: color-mix(in srgb, var(--vp-c-bg-soft) 86%, transparent);
 }
 
@@ -1106,6 +1106,13 @@ function formatDate(date: string): string {
 
   .home-overview {
     grid-template-columns: 1fr;
+  }
+
+  /* 移动端改为单列后取消长内容列吸顶，避免 sticky 元素高于视口导致滚动异常。 */
+  .home-main-column,
+  .home-side-column {
+    position: static;
+    top: auto;
   }
 
   .home-side-column {
