@@ -169,17 +169,13 @@ const isPostsPage = computed(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 1.3rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  border-radius: 50%;
-  background: var(--vp-c-bg-soft);
+  flex: 0 0 .3rem;
+  width: .3rem;
+  height: .3rem;
   color: var(--vp-c-text-3);
   font-size: 0.65rem;
-  font-weight: 700;
-  line-height: 1;
   font-variant-numeric: tabular-nums;
-  transition: background-color 0.3s, color 0.3s;
+  transition: all 0.3s;
 }
 
 .filter-tag:hover {

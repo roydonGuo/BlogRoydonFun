@@ -20,7 +20,7 @@
                 {{ formatDate(post.date) }}
               </time>
               <span class="card-category">{{ post.category }}</span>
-              <div v-if="post.tags.length" class="card-tags">
+              <div v-if="post.tags.length" class="card-tags" @wheel="scrollTagsHorizontally">
                 <span v-for="tag in post.tags" :key="tag" class="card-tag">#{{ tag }}</span>
               </div>
             </div>
@@ -106,6 +106,15 @@ function updateBackToTopVisibility() {
 function scrollToTop() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
+}
+
+// 标签溢出时，将鼠标纵向滚轮转换为横向滚动。
+function scrollTagsHorizontally(event: WheelEvent) {
+  const container = event.currentTarget as HTMLElement
+  if (container.scrollWidth <= container.clientWidth) return
+
+  event.preventDefault()
+  container.scrollLeft += event.deltaX || event.deltaY
 }
 
 onMounted(() => {
@@ -259,12 +268,23 @@ function formatDate(date: string) {
 
 .card-tags {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: nowrap;
   gap: 0.35rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.card-tags::-webkit-scrollbar {
+  display: none;
 }
 
 .card-tag {
   display: inline-block;
+  flex-shrink: 0;
   padding: 0.1rem 0.7rem;
   font-size: 0.75rem;
   border-radius: 99px;

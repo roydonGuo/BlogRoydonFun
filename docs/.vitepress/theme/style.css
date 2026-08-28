@@ -167,7 +167,6 @@ body {
 .VPDocAsideOutline .VPDocOutlineItem.nested .outline-link {
     color: var(--vp-c-text-2);
     font-size: 13px;
-    font-weight: 500 !important;
     line-height: 28px;
 }
 
@@ -185,11 +184,6 @@ body {
 
 .VPDocAsideOutline .outline-link.active {
     color: var(--vp-c-brand-1) !important;
-    font-weight: 600 !important;
-}
-
-.VPNavBarMenuLink {
-    font-weight: 600;
 }
 
 /* WebKit (Chrome, Edge, Safari) */
