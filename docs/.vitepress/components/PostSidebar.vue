@@ -67,6 +67,12 @@ const categoryGroups = computed(() => {
   }))
 })
 
+// 顶部开关仅在全部分类均展开时显示“收起”，部分展开时点击会统一展开全部分类。
+const areAllCategoriesExpanded = computed(() => (
+  categoryGroups.value.length > 0
+  && categoryGroups.value.every(group => expandedCategories.value.has(group.category))
+))
+
 // 统计全部文章去重后的标签总数，供资料卡展示。
 const tagCount = computed(() => {
   const tags = new Set<string>()
@@ -86,6 +92,12 @@ function toggleCategory(category: string): void {
   const next = new Set(expandedCategories.value)
   next.has(category) ? next.delete(category) : next.add(category)
   expandedCategories.value = next
+}
+
+function toggleAllCategories(): void {
+  expandedCategories.value = areAllCategoriesExpanded.value
+    ? new Set<string>()
+    : new Set(categoryGroups.value.map(group => group.category))
 }
 </script>
 
@@ -167,13 +179,27 @@ function toggleCategory(category: string): void {
     </template>
 
     <template v-else>
-      <a class="post-sidebar-home" href="/posts/">
-        <span class="post-sidebar-home-icon" aria-hidden="true">#</span>
-        <span>
-          <strong>文章导航</strong>
-          <small>共 {{ posts.length }} 篇文章</small>
-        </span>
-      </a>
+      <div class="post-sidebar-home">
+        <a class="post-sidebar-home-link" href="/posts/">
+          <span class="post-sidebar-home-icon" aria-hidden="true">#</span>
+          <span class="post-sidebar-home-copy">
+            <strong>文章导航</strong>
+            <small>共 {{ posts.length }} 篇文章</small>
+          </span>
+        </a>
+        <button
+            class="post-sidebar-toggle"
+            type="button"
+            :aria-label="areAllCategoriesExpanded ? '折叠全部分类文章' : '展开全部分类文章'"
+            :title="areAllCategoriesExpanded ? '折叠全部' : '展开全部'"
+            :aria-expanded="areAllCategoriesExpanded"
+            @click="toggleAllCategories"
+        >
+          <svg aria-hidden="true" viewBox="0 0 20 20" :class="{ expanded: areAllCategoriesExpanded }">
+            <path d="m6 8 4 4 4-4"/>
+          </svg>
+        </button>
+      </div>
 
       <div class="post-sidebar-groups">
         <section v-for="group in categoryGroups" :key="group.category" class="post-sidebar-group">
@@ -340,15 +366,23 @@ function toggleCategory(category: string): void {
 }
 
 .post-sidebar-home {
-  display: grid;
-  grid-template-columns: 38px 1fr;
+  display: flex;
   align-items: center;
-  gap: 10px;
   margin-bottom: 18px;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 16%, var(--vp-c-divider));
   border-radius: 16px;
   background: linear-gradient(135deg, var(--vp-c-brand-soft), transparent);
+}
+
+.post-sidebar-home-link {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 2px;
 }
 
 .post-sidebar-home-icon {
@@ -363,7 +397,7 @@ function toggleCategory(category: string): void {
   font-weight: 700;
 }
 
-.post-sidebar-home span:last-child {
+.post-sidebar-home-copy {
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -378,6 +412,40 @@ function toggleCategory(category: string): void {
 .post-sidebar-category small {
   color: var(--vp-c-text-3);
   font-size: 12px;
+}
+
+.post-sidebar-toggle {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.post-sidebar-toggle:hover,
+.post-sidebar-toggle:focus-visible {
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.post-sidebar-toggle svg {
+  width: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 0.2s ease;
+}
+
+.post-sidebar-toggle svg.expanded {
+  transform: rotate(180deg);
 }
 
 .post-sidebar-groups {

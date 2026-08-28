@@ -1,15 +1,15 @@
 ---
 title: RabbitMQ
 date: 2026-08-28 16:30:00
-category: 后端开发
-cover: /img-fail.svg
+category: MQ
+cover: /images/posts/rabbitmq/rabbitmq-cover-compressed.webp
 tags: [rabbitmq, mq, spring-amqp]
 excerpt: 从同步/异步通讯聊起，搞清 RabbitMQ 的角色定位、5 种消息模型与 SpringAMQP 实战，再延伸到集群搭建与运维，配套 23 张本地配图与可直接复制的 Java/Shell 示例。
 ---
 
 # RabbitMQ
 
-<img src="/images/posts/rabbitmq/01-sync-async.webp" alt="同步通讯像打电话，异步通讯像发邮件：两种微服务通讯方式对比" style="border-radius: 10px;" />
+<img src="/images/posts/rabbitmq/rabbitmq-cover-compressed.webp" alt="同步通讯像打电话，异步通讯像发邮件：两种微服务通讯方式对比" style="border-radius: 10px;" />
 
 **微服务之间的通讯**（Inter-service Communication）无非两条路：同步与异步。前者像打电话，要实时拿到对方响应；后者像发邮件，丢出去即可，等对方有空再回。两条路没有绝对优劣，关键看业务对**时效性**、**耦合度**与**吞吐**的取舍。RabbitMQ 正是异步路上最成熟的"中间人"——**消息队列**（**MQ**，Message Queue）的一种实现。
 
