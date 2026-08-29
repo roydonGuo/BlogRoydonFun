@@ -63,13 +63,13 @@
               aria-hidden="true"
           />
           <div class="absolute inset-x-0 bottom-0 p-5 text-white">
-            <p class="!m-0 text-[10px] !font-black tracking-[.14em] text-white/70">{{ item.categoryLabel }} · {{ item.status }}</p>
+            <p class="!m-0 text-[12px] !font-black tracking-[.14em] text-white/70">{{ item.categoryLabel }} · {{ item.status }}</p>
             <h2 class="!mb-0 !mt-2 !border-0 !py-0 !text-[23px] !font-black !leading-[1.12] tracking-[-.04em] text-white">{{ item.name }}</h2>
             <p class="!mb-0 !mt-2 text-[12px] font-medium leading-[1.55] text-white/85">{{ item.review }}</p>
 <!--            <p class="!mb-0 !mt-2 text-[11px] font-bold leading-[1.5] text-white/75">{{ item.brand }} · {{ item.model }}</p>-->
             <footer class="mt-4 flex items-end justify-between gap-4 border-t border-white/20 pt-3">
-              <p class="!m-0 min-w-0 break-words text-[10px] font-bold leading-[1.45] text-white/70">{{ item.sku }}</p>
-              <span class="flex shrink-0 items-center gap-1.5 text-[10px] font-black text-white/75">
+              <p class="!m-0 min-w-0 break-words text-[12px] font-bold leading-[1.45] text-white/70">{{ item.sku }}</p>
+              <span class="flex shrink-0 items-center gap-1.5 text-[12px] font-black text-white/75">
                 <RiTimeLine size="14" aria-hidden="true"/>{{ formatDate(item.acquiredAt) }}
               </span>
             </footer>
@@ -111,10 +111,10 @@
                   <header class="equipment-holo-frame-header">
                     <div class="min-w-0">
                       <div class="flex items-center justify-between gap-4">
-                        <p class="!m-0 text-[10px] !font-black tracking-[.16em] text-white/85">{{ selected.categoryLabel }}</p>
+                        <p class="!m-0 text-[12px] !font-black tracking-[.16em] text-white/85">{{ selected.categoryLabel }}</p>
                         <span class="equipment-holo-badge"><span>{{ selected.featured ? 'FEATURED' : selected.status }}</span></span>
                       </div>
-                      <p class="!mb-0 !mt-2 truncate text-[10px] font-bold tracking-[.1em] text-white/65">{{ selected.brand }} · {{ selected.model }}</p>
+                      <p class="!mb-0 !mt-2 truncate text-[14px] font-bold tracking-[.1em] text-white/65">{{ selected.brand }} · {{ selected.model }}</p>
                     </div>
                   </header>
                   <LoadingImage
@@ -129,8 +129,8 @@
                     <h2 id="equipment-modal-title" class="!m-0 !border-0 !p-0 !text-[clamp(22px,3vw,34px)] !font-black !leading-[1.04] tracking-[-.05em] text-white">{{ selected.name }}</h2>
                     <p class="!mb-0 !mt-3 text-xs font-medium leading-[1.55] text-white/78">{{ selected.review }}</p>
                     <div class="mt-4 flex items-end justify-between gap-4 border-t border-white/20 pt-3">
-                      <p class="!m-0 min-w-0 break-words text-[10px] font-bold leading-[1.45] text-white/65">{{ selected.sku }}</p>
-                      <span class="flex shrink-0 items-center gap-1.5 text-[10px] font-black text-white/70">
+                      <p class="!m-0 min-w-0 break-words text-[12px] font-bold leading-[1.45] text-white/65">{{ selected.sku }}</p>
+                      <span class="flex shrink-0 items-center gap-1.5 text-[12px] font-black text-white/70">
                         <RiTimeLine size="14" aria-hidden="true"/>{{ formatDate(selected.acquiredAt) }}
                       </span>
                     </div>
@@ -560,9 +560,16 @@ body.equipment-page-active .VPFooter {
   z-index: 1;
   display: inline-block;
   overflow: hidden;
-  /*padding: 3px;*/
+  padding: 3px clamp(18px, 2.4vw, 30px);
   border-radius: 26px;
-  background: var(--equipment-holo-gradient);
+  background:
+    linear-gradient(rgba(3, 6, 16, .24), rgba(3, 6, 16, .24)),
+    var(--equipment-holo-gradient);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .28),
+    inset 0 -1px 0 rgba(2, 6, 23, .36),
+    inset 1px 0 0 rgba(255, 255, 255, .16),
+    inset -1px 0 0 rgba(2, 6, 23, .24);
   transform: rotateX(var(--equipment-holo-rotate-x)) rotateY(var(--equipment-holo-rotate-y));
   transform-style: preserve-3d;
   filter: drop-shadow(0 28px 34px rgba(0, 0, 0, .82));
@@ -628,12 +635,8 @@ body.equipment-page-active .VPFooter {
   grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border-radius: 23px;
-  background: #080b16;
-  box-shadow:
-    0 20px 44px -10px rgba(0, 0, 0, .9),
-    0 0 34px color-mix(in srgb, var(--equipment-holo-glow-end) 42%, transparent),
-    inset 0 0 0 1px rgba(255, 218, 190, .48),
-    inset 0 0 0 3px rgba(20, 8, 3, .46);
+  background: transparent;
+  /*box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16);*/
 }
 
 .equipment-holo-diffraction {
@@ -661,18 +664,21 @@ body.equipment-page-active .VPFooter {
 
 .equipment-holo-media {
   display: block;
-  max-width: min(88vw, 960px);
+  max-width: min(80vw, 960px);
   max-height: min(64vh, 700px);
-  border-top: 1px solid rgba(255, 255, 255, .2);
-  border-bottom: 1px solid rgba(255, 255, 255, .2);
-  background: #080b16;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #05070d;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .1),
+    inset 0 0 28px rgba(0, 0, 0, .45);
 }
 
 .equipment-holo-cover {
   display: block;
   width: auto;
   height: auto;
-  max-width: min(88vw, 960px);
+  max-width: min(80vw, 960px);
   max-height: min(64vh, 700px);
   opacity: .96;
   filter: saturate(1.08) contrast(1.06);
@@ -711,17 +717,13 @@ body.equipment-page-active .VPFooter {
 }
 
 .equipment-holo-frame-header {
-  padding: 17px 18px 15px;
-  background:
-    linear-gradient(115deg, rgba(3, 6, 16, .5), rgba(3, 6, 16, .78)),
-    var(--equipment-holo-gradient);
+  padding: 21px 4px 18px;
+  background: transparent;
 }
 
 .equipment-holo-frame-footer {
-  padding: 18px 20px 20px;
-  background:
-    linear-gradient(115deg, rgba(3, 6, 16, .68), rgba(3, 6, 16, .88)),
-    var(--equipment-holo-gradient);
+  padding: 20px 4px 22px;
+  background: transparent;
 }
 
 .equipment-holo-badge {
@@ -746,7 +748,7 @@ body.equipment-page-active .VPFooter {
     inset 1px 0 0 rgba(255, 255, 255, .18),
     inset -1px 0 0 rgba(255, 255, 255, .1);
   color: rgba(255, 255, 255, .96);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .1em;
   text-shadow: 0 1px 3px rgba(2, 6, 23, .45);
