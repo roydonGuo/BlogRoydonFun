@@ -1,0 +1,358 @@
+<template>
+  <div class="equipment-shell fixed inset-x-0 bottom-0 top-[var(--vp-nav-height)] z-20 grid grid-cols-[340px_1fr] overflow-hidden border-y border-divider text-text-1 max-[760px]:block max-[760px]:overflow-y-auto">
+    <aside class="relative h-full overflow-hidden border-r border-black/10 px-10 py-8 dark:border-white/10 max-[760px]:h-auto max-[760px]:border-b max-[760px]:border-r-0 max-[760px]:px-[22px]">
+      <div class="pointer-events-none absolute -left-20 top-8 size-52 rounded-full bg-blue-200/80 blur-3xl dark:bg-blue-500/20" aria-hidden="true"></div>
+      <div class="relative z-10">
+        <p class="!mb-4 !mt-0 flex items-center gap-2 text-[10px] !font-black tracking-[.24em]">
+          <span class="size-2 rounded-full bg-brand shadow-[0_0_0_5px_var(--vp-c-brand-soft)]"></span>
+          DAILY TOOLKIT · {{ currentYear }}
+        </p>
+        <h1 class="equipment-title-glow !m-0 !border-0 !text-[45px] !font-black !leading-[.99] !tracking-[-.06em]">
+          我的生产力<br>装备清单<span class="text-brand">。</span>
+        </h1>
+        <p class="mb-0 mt-5 max-w-[238px] text-xs font-medium leading-5 text-text-2 opacity-60">
+          记录真正参与日常工作的设备，以及它们在我的工作流中解决的问题。
+        </p>
+        <div class="mt-7 flex items-end gap-6" aria-label="装备统计">
+          <div><strong class="block text-3xl !font-black">{{ equipment.length }}</strong><span class="text-[10px] font-bold opacity-45">在册装备</span></div>
+          <div><strong class="block text-3xl !font-black">{{ categoryCount }}</strong><span class="text-[10px] font-bold opacity-45">设备分类</span></div>
+        </div>
+        <label class="mt-7 flex h-10 items-center gap-2 rounded-full border border-divider bg-bg px-4 shadow-sm focus-within:ring-2 focus-within:ring-brand">
+          <RiSearchLine size="16" aria-hidden="true"/>
+          <input v-model.trim="keyword" class="w-full border-0 bg-transparent p-0 text-[11px] font-bold outline-none" type="search" placeholder="搜索名称、SKU 或用途" aria-label="搜索生产力装备">
+        </label>
+        <div class="mt-7 border-t border-divider pt-5">
+          <p class="!mb-3 !mt-0 text-[10px] !font-black tracking-[.18em] opacity-40">EXPLORE BY CATEGORY</p>
+          <div class="flex flex-wrap gap-2" role="group" aria-label="装备分类筛选">
+            <button v-for="item in filters" :key="item.value" type="button"
+                    class="cursor-pointer rounded-full border border-divider bg-bg px-[14px] py-[5px] text-[12px] font-bold transition hover:-translate-y-0.5 hover:border-text-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                    :class="activeFilter === item.value ? '!border-text-1 !bg-text-1 !text-bg' : ''"
+                    :aria-pressed="activeFilter === item.value" @click="activeFilter = item.value">
+              {{ item.label }} {{ countByFilter(item.value) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 [overflow-anchor:none] max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7" aria-label="生产力装备瀑布流">
+      <header class="mb-4 flex items-center justify-between gap-4">
+        <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">TOOLS BEHIND THE WORK</p>
+        <span class="text-[11px] font-extrabold text-text-3">已展示 {{ visibleEquipment.length }} / {{ filteredEquipment.length }}</span>
+      </header>
+
+      <div ref="masonryGrid" class="relative">
+        <div class="equipment-masonry-sizer w-[calc((100%-48px)/4)] max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full" aria-hidden="true"></div>
+        <button v-for="(item, index) in visibleEquipment" :key="item.id" type="button"
+                class="equipment-masonry-item equipment-card group relative mb-4 w-[calc((100%-48px)/4)] cursor-pointer overflow-hidden rounded-[20px] border border-black/10 bg-[#080b16] p-0 text-left text-white dark:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full"
+                :aria-label="`查看 ${item.name} 装备详情`" @click="openEquipment(item)">
+          <!-- 图片按自身宽高比撑开整张卡片，不设置固定高度或统一 aspect-ratio。 -->
+          <img class="equipment-card-cover block !m-0 h-auto w-full transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.025]" :src="item.cover" :alt="item.coverAlt">
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#070a12]/95 via-[#070a12]/55 via-45% to-transparent to-72%" aria-hidden="true"></div>
+          <span class="absolute left-4 top-4 rounded-full border border-white/30 bg-white/85 px-3 py-1 text-[10px] !font-black tracking-[.08em] text-[#080b16] shadow-sm backdrop-blur-[10px]">
+            {{ item.featured ? 'FEATURED' : item.categoryLabel }}
+          </span>
+          <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+            <p class="!m-0 text-[10px] !font-black tracking-[.14em] text-white/70">{{ item.categoryLabel }} · {{ item.status }}</p>
+            <h2 class="!mb-0 !mt-2 !border-0 !py-0 !text-[23px] !font-black !leading-[1.12] tracking-[-.04em] text-white">{{ item.name }}</h2>
+            <p class="!mb-0 !mt-2 text-[12px] font-medium leading-[1.55] text-white/85">{{ item.review }}</p>
+            <p class="!mb-0 !mt-2 text-[11px] font-bold leading-[1.5] text-white/75">{{ item.brand }} · {{ item.model }}</p>
+            <footer class="mt-4 flex items-end justify-between gap-4 border-t border-white/20 pt-3">
+              <p class="!m-0 min-w-0 break-words text-[10px] font-bold leading-[1.45] text-white/70">{{ item.sku }}</p>
+              <span class="flex shrink-0 items-center gap-1.5 text-[10px] font-black text-white/75">
+                <RiTimeLine size="14" aria-hidden="true"/>{{ formatDate(item.acquiredAt) }}
+              </span>
+            </footer>
+          </div>
+        </button>
+      </div>
+
+      <div v-if="!filteredEquipment.length" class="flex min-h-[360px] flex-col items-center justify-center rounded-[24px] border border-dashed border-divider bg-bg text-center">
+        <RiSearchLine size="32" class="text-text-3" aria-hidden="true"/>
+        <h2 class="!mb-0 !mt-4 !border-0 !text-xl !font-black">没有找到匹配的装备</h2>
+        <p class="mb-0 mt-2 text-xs text-text-3">换一个关键词，或选择其他分类试试。</p>
+      </div>
+
+      <div v-if="hasMore" ref="loadMoreTrigger" class="py-5 text-center text-[11px] font-bold text-text-3" aria-label="继续加载装备">
+        继续向下滚动，加载下一批装备
+      </div>
+      <p v-else-if="filteredEquipment.length" class="mb-0 mt-3 text-center text-[10px] font-bold tracking-[.16em] text-text-3">END OF TOOLKIT</p>
+    </section>
+
+    <Teleport to="body">
+      <Transition name="equipment-modal">
+        <div v-if="selected" class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/70 p-4 backdrop-blur-[10px]" role="dialog" aria-modal="true" aria-labelledby="equipment-modal-title" @click.self="closeEquipment">
+          <article class="equipment-modal-card grid max-h-[88vh] w-[min(1120px,96vw)] grid-cols-[60%_40%] overflow-hidden rounded-[28px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[900px]:block max-[900px]:overflow-y-auto">
+            <div class="relative min-h-[360px] overflow-hidden bg-[#080b16] max-[900px]:min-h-[260px]">
+              <img class="block !m-0 h-full w-full object-cover" :src="selected.cover" :alt="selected.coverAlt">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#040712]/75 via-transparent to-transparent"></div>
+            </div>
+            <div class="relative overflow-y-auto p-6 max-[900px]:overflow-visible">
+              <button ref="closeButton" type="button" class="absolute right-5 top-5 flex size-9 cursor-pointer items-center justify-center rounded-full border border-divider bg-bg p-0 text-text-1 transition hover:bg-text-1 hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand" aria-label="关闭装备详情" @click="closeEquipment">
+                <RiCloseLine size="19" aria-hidden="true"/>
+              </button>
+              <p class="!mb-2 !mt-0 text-[10px] !font-black tracking-[.18em] text-brand">{{ selected.categoryLabel }} · {{ selected.status }}</p>
+              <h2 id="equipment-modal-title" class="!mb-1 !mt-0 !border-0 !pr-12 !text-[30px] !font-black !leading-tight tracking-[-.04em]">{{ selected.name }}</h2>
+              <p class="!m-0 text-xs font-bold text-text-3">{{ selected.brand }} · {{ selected.model }}</p>
+              <dl class="mt-6">
+                <div class="rounded-2xl bg-bg-soft p-4"><dt class="text-[9px] font-black tracking-[.12em] text-text-3">入手时间</dt><dd class="mb-0 mt-1 text-sm font-black">{{ formatDate(selected.acquiredAt) }}</dd></div>
+              </dl>
+              <section class="mt-6 border-t border-divider pt-5">
+                <p class="!mb-3 !mt-0 text-[10px] !font-black tracking-[.16em] text-text-3">SKU DETAILS</p>
+                <p class="mb-4 mt-0 rounded-xl border border-divider px-4 py-3 text-[11px] font-bold leading-relaxed text-text-2">{{ selected.sku }}</p>
+                <dl class="grid grid-cols-1 gap-y-3">
+                  <div v-for="spec in selected.specs" :key="spec.label" class="border-b border-divider pb-2">
+                    <dt class="text-[9px] font-bold text-text-3">{{ spec.label }}</dt><dd class="mb-0 mt-1 text-xs font-black">{{ spec.value }}</dd>
+                  </div>
+                </dl>
+              </section>
+            </div>
+          </article>
+        </div>
+      </Transition>
+    </Teleport>
+  </div>
+</template>
+
+<script setup lang="ts">
+import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import type Masonry from 'masonry-layout'
+import {RiCloseLine, RiSearchLine, RiTimeLine} from '@remixicon/vue'
+import equipmentData from '../../equipment/equipment.json'
+
+type EquipmentCategory = 'phone' | 'tablet' | 'computer' | 'display' | 'peripheral'
+
+interface EquipmentSpec {
+  label: string;
+  value: string
+}
+
+interface Equipment {
+  id: string;
+  name: string;
+  brand: string;
+  category: EquipmentCategory;
+  categoryLabel: string;
+  model: string;
+  sku: string;
+  acquiredAt: string;
+  status: string;
+  review: string;
+  specs: EquipmentSpec[];
+  cover: string;
+  coverAlt: string;
+  featured?: boolean
+}
+
+const equipment = equipmentData as Equipment[]
+const filters = [
+  {label: '全部', value: 'all'},
+  {label: '手机', value: 'phone'},
+  {label: '平板', value: 'tablet'},
+  {label: '电脑', value: 'computer'},
+  {label: '显示器', value: 'display'},
+  {label: '外设', value: 'peripheral'},
+] as const
+const currentYear = new Date().getFullYear()
+const keyword = ref('')
+const activeFilter = ref<(typeof filters)[number]['value']>('all')
+const selected = ref<Equipment | null>(null)
+const closeButton = ref<HTMLButtonElement | null>(null)
+const masonryGrid = ref<HTMLElement | null>(null)
+const loadMoreTrigger = ref<HTMLElement | null>(null)
+const PAGE_SIZE = 8
+const visibleCount = ref(PAGE_SIZE)
+let masonry: Masonry | null = null
+let loadMoreObserver: IntersectionObserver | null = null
+
+const categoryCount = computed(() => new Set(equipment.map(item => item.category)).size)
+const filteredEquipment = computed(() => {
+  const query = keyword.value.toLocaleLowerCase('zh-CN')
+  return equipment
+    .filter(item => activeFilter.value === 'all' || item.category === activeFilter.value)
+    .filter(item => !query || [item.name, item.brand, item.model, item.sku, item.review, ...item.specs.flatMap(spec => [spec.label, spec.value])].join(' ').toLocaleLowerCase('zh-CN').includes(query))
+    .sort((a, b) => b.acquiredAt.localeCompare(a.acquiredAt))
+})
+const visibleEquipment = computed(() => filteredEquipment.value.slice(0, visibleCount.value))
+const hasMore = computed(() => visibleCount.value < filteredEquipment.value.length)
+const countByFilter = (filter: string) => filter === 'all' ? equipment.length : equipment.filter(item => item.category === filter).length
+const formatDate = (date: string) => date.replace('-', '.')
+
+function openEquipment(item: Equipment) {
+  selected.value = item
+  document.documentElement.style.overflow = 'hidden'
+  nextTick(() => closeButton.value?.focus())
+}
+
+function closeEquipment() {
+  selected.value = null
+  document.documentElement.style.overflow = ''
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && selected.value) closeEquipment()
+}
+
+async function initializeMasonry() {
+  if (!masonryGrid.value) return
+  const [{default: MasonryLayout}, {default: imagesLoaded}] = await Promise.all([
+    import('masonry-layout'),
+    import('imagesloaded'),
+  ])
+  if (!masonryGrid.value) return
+  masonry = new MasonryLayout(masonryGrid.value, {
+    itemSelector: '.equipment-masonry-item',
+    columnWidth: '.equipment-masonry-sizer',
+    gutter: 16,
+    horizontalOrder: true,
+    percentPosition: true,
+    transitionDuration: '0.25s',
+  })
+  imagesLoaded(masonryGrid.value).on('progress', () => masonry?.layout())
+}
+
+async function refreshMasonry() {
+  await nextTick()
+  if (!masonryGrid.value) return
+  if (!masonry) {
+    await initializeMasonry()
+    return
+  }
+  masonry.reloadItems()
+  masonry.layout()
+  const {default: imagesLoaded} = await import('imagesloaded')
+  imagesLoaded(masonryGrid.value).on('progress', () => masonry?.layout())
+}
+
+async function appendEquipment(previousCount: number) {
+  await nextTick()
+  if (!masonryGrid.value || !masonry) return
+  const newItems = Array.from(masonryGrid.value.querySelectorAll<HTMLElement>('.equipment-masonry-item')).slice(previousCount)
+  if (!newItems.length) return
+  newItems.forEach((item, index) => {
+    item.classList.add('is-equipment-entering')
+    item.style.setProperty('--equipment-enter-delay', `${Math.min(index * 45, 270)}ms`)
+    item.addEventListener('animationend', () => {
+      item.classList.remove('is-equipment-entering')
+      item.style.removeProperty('--equipment-enter-delay')
+    }, {once: true})
+  })
+  masonry.appended(newItems)
+  const {default: imagesLoaded} = await import('imagesloaded')
+  imagesLoaded(newItems).on('progress', () => masonry?.layout())
+}
+
+watch([activeFilter, keyword], () => {
+  visibleCount.value = PAGE_SIZE
+  refreshMasonry()
+})
+
+watch(loadMoreTrigger, (trigger) => {
+  loadMoreObserver?.disconnect()
+  loadMoreObserver = null
+  if (!trigger || typeof IntersectionObserver === 'undefined') return
+  loadMoreObserver = new IntersectionObserver((entries) => {
+    if (!entries[0]?.isIntersecting || !hasMore.value) return
+    const previousCount = visibleEquipment.value.length
+    visibleCount.value = Math.min(visibleCount.value + PAGE_SIZE, filteredEquipment.value.length)
+    appendEquipment(previousCount)
+  }, {rootMargin: '0px 0px 160px'})
+  loadMoreObserver.observe(trigger)
+}, {flush: 'post'})
+
+onMounted(() => {
+  initializeMasonry()
+  document.documentElement.classList.add('h-full', 'overflow-hidden')
+  document.body.classList.add('h-full', 'overflow-hidden', 'equipment-page-active')
+  window.addEventListener('keydown', onKeydown)
+})
+
+onBeforeUnmount(() => {
+  loadMoreObserver?.disconnect()
+  masonry?.destroy()
+  masonry = null
+  window.removeEventListener('keydown', onKeydown)
+  document.documentElement.style.overflow = ''
+  document.documentElement.classList.remove('h-full', 'overflow-hidden')
+  document.body.classList.remove('h-full', 'overflow-hidden', 'equipment-page-active')
+})
+</script>
+
+<style>
+body.equipment-page-active .VPFooter {
+  display: none;
+}
+
+.equipment-title-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.equipment-title-glow::after {
+  position: absolute;
+  z-index: -1;
+  right: -8%;
+  bottom: -180%;
+  left: -10%;
+  height: 280%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(51, 243, 120, .17), rgba(59, 130, 246, .11) 56%, transparent);
+  filter: blur(18px);
+  content: '';
+  pointer-events: none;
+}
+
+.equipment-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+
+.equipment-card:hover {
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 42%, transparent);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, .11);
+}
+
+.equipment-masonry-item.is-equipment-entering {
+  animation: equipment-card-enter .42s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: var(--equipment-enter-delay, 0ms);
+}
+
+@keyframes equipment-card-enter {
+  from { opacity: 0; translate: 0 22px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.equipment-modal-enter-active,
+.equipment-modal-leave-active {
+  transition: opacity .25s ease;
+}
+
+.equipment-modal-enter-active .equipment-modal-card,
+.equipment-modal-leave-active .equipment-modal-card {
+  transition: opacity .25s ease, transform .25s cubic-bezier(.2, .8, .2, 1);
+}
+
+.equipment-modal-enter-from,
+.equipment-modal-leave-to,
+.equipment-modal-enter-from .equipment-modal-card,
+.equipment-modal-leave-to .equipment-modal-card {
+  opacity: 0;
+}
+
+.equipment-modal-enter-from .equipment-modal-card,
+.equipment-modal-leave-to .equipment-modal-card {
+  transform: translateY(18px) scale(.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .equipment-card,
+  .equipment-card *,
+  .equipment-masonry-item,
+  .equipment-modal-enter-active,
+  .equipment-modal-leave-active,
+  .equipment-modal-card {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>

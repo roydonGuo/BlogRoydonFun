@@ -9,6 +9,8 @@ import PageHero from '../components/PageHero.vue'
 import LinksList from '../components/LinksList.vue'
 import ProjectGallery from '../components/ProjectGallery.vue'
 import SkillsGallery from '../components/SkillsGallery.vue'
+import EquipmentGallery from '../components/EquipmentGallery.vue'
+import MindMapGallery from '../components/MindMapGallery.vue'
 import PostFilter from '../components/PostFilter.vue'
 import PostPrevNext from '../components/PostPrevNext.vue'
 import PostSidebar from '../components/PostSidebar.vue'
@@ -123,6 +125,10 @@ export default {
     app.component('ProjectGallery', ProjectGallery)
     // Skills 页复用项目页视觉骨架，技能内容从独立 JSON 数据文件读取。
     app.component('SkillsGallery', SkillsGallery)
+    // 生产力页从独立 JSON 读取设备，并以瀑布流分批展示。
+    app.component('EquipmentGallery', EquipmentGallery)
+    // 思维导图页从独立 JSON 读取内容，并以瀑布流分页展示。
+    app.component('MindMapGallery', MindMapGallery)
     app.component('KnowledgeGraph', KnowledgeGraph)
     app.component('ProgrammingResources', ProgrammingResources)
     app.component('GithubTrending', GithubTrending)

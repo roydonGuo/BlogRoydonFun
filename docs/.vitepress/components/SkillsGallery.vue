@@ -41,20 +41,23 @@
     <section
         class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7"
         aria-label="Skills 技能列表">
-      <header class="mb-4"><p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">CAPABILITIES IN MY
-        TOOLBOX</p></header>
-      <div v-if="filteredSkills.length" class="grid grid-cols-4 gap-4 max-[1440px]:grid-cols-3 max-[1240px]:grid-cols-2 max-[820px]:grid-cols-1">
+      <header class="mb-2 flex items-center justify-between">
+        <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">CAPABILITIES IN MY TOOLBOX</p>
+      </header>
+      <div v-if="filteredSkills.length"
+           class="grid grid-cols-4 gap-4 max-[1440px]:grid-cols-3 max-[1240px]:grid-cols-2 max-[820px]:grid-cols-1">
         <div v-for="skill in filteredSkills" :key="skill.id" role="link" tabindex="0"
-           :aria-label="`打开 ${skill.name} Skill 链接`"
-           class="skill-card group relative min-h-[244px] cursor-pointer overflow-hidden rounded-[20px] border border-black/10 bg-bg p-5 text-text-1 no-underline dark:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-           @click="openSkill(skill)" @keydown.enter="openSkill(skill)" @keydown.space.prevent="openSkill(skill)">
+             :aria-label="`打开 ${skill.name} Skill 链接`"
+             class="skill-card group relative cursor-pointer overflow-hidden rounded-[20px] border border-black/10 bg-bg p-5 text-text-1 no-underline dark:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+             @click="openSkill(skill)" @keydown.enter="openSkill(skill)" @keydown.space.prevent="openSkill(skill)">
           <div class="flex items-start !items-center gap-4"><span
               class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-brand transition duration-300 group-hover:-rotate-3 group-hover:scale-105"><component
-              :is="iconMap[skill.icon] || RiSparkling2Line" size="25" aria-hidden="true"/></span><h2 class="!mb-0 !mt-0 !border-0 !py-0 !text-[20px] !font-black !leading-tight tracking-[-.03em]">
-            {{ skill.name }}</h2></div>
+              :is="iconMap[skill.icon] || RiSparkling2Line" size="25" aria-hidden="true"/></span>
+            <h2 class="!mb-0 !mt-0 !border-0 !py-0 !text-[20px] !font-black !leading-tight tracking-[-.03em]">
+              {{ skill.name }}</h2></div>
           <p class="mb-0 mt-2 text-[13px] leading-[1.65] text-text-2">{{ skill.description }}</p>
           <div class="flex flex-wrap gap-1.5"><span v-for="tag in skill.tags" :key="tag"
-                                                         class="rounded-full bg-bg-soft px-2.5 py-0.5 text-[10px] !font-extrabold text-text-2">{{
+                                                    class="rounded-full bg-bg-soft px-2.5 py-0.5 text-[10px] !font-extrabold text-text-2">{{
               tag
             }}</span></div>
           <footer

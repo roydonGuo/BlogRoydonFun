@@ -90,7 +90,6 @@ const isPostsPage = computed(() => {
   border: none;
   border-radius: 9rem;
   font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
   background: transparent;
   color: var(--vp-c-text-2);
@@ -105,7 +104,7 @@ const isPostsPage = computed(() => {
 .filter-item.active {
   background: color-mix(in srgb, var(--category-color) 20%, transparent);
   color: var(--category-color);
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .filter-category-icon {
@@ -158,7 +157,6 @@ const isPostsPage = computed(() => {
   border: 1px solid var(--vp-c-border-1);
   border-radius: 1rem;
   font-size: 13px;
-  font-weight: 600;
   cursor: pointer;
   background: color-mix(in srgb, var(--vp-c-bg-soft) 86%, transparent);
   color: var(--vp-c-text-2);

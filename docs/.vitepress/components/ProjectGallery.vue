@@ -43,7 +43,7 @@
     <section
         class="h-full min-w-0 overflow-y-auto bg-bg-soft/50 px-[clamp(22px,3vw,52px)] pb-16 pt-4 [overflow-anchor:none] max-[760px]:h-auto max-[760px]:overflow-visible max-[760px]:px-4 max-[760px]:pb-12 max-[760px]:pt-7"
         aria-label="项目瀑布流">
-      <header class="flex items-center justify-between">
+      <header class="mb-2 flex items-center justify-between">
         <p class="m-0 text-[10px] !font-black tracking-[.2em] text-text-3">SIGNALS FROM MY LAB</p>
         <!--        <span class="text-[11px] font-extrabold text-text-1">按 ID 升序</span>-->
       </header>

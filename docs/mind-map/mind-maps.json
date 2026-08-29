@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "后端开发框架全景",
+    "summary": "覆盖 Java、JVM、Spring、MySQL、Redis、消息队列、分布式系统、计算机网络与操作系统的后端开发知识框架。",
+    "category": "backend",
+    "categoryLabel": "后端开发",
+    "author": "Ethan",
+    "createdAt": "2026-08-18",
+    "updatedAt": "2026-08-22",
+    "cover": "/mind-map/backend-develop-cover.webp",
+    "coverAlt": "后端开发框架思维导图封面",
+    "coverWidth": 1536,
+    "coverHeight": 1024,
+    "viewer": "/mind-map/backend-develop-viewer/index.html",
+    "nodes": 834,
+    "branches": 8,
+    "images": 97,
+    "sheets": 1,
+    "fileSize": "18.4 MB",
+    "tags": ["Java", "Spring", "MySQL", "Redis", "MQ", "网络"],
+    "featured": true
+  }
+]

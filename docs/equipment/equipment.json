@@ -1,0 +1,230 @@
+[
+  {
+    "id": "iphone-17-pro-max",
+    "name": "iPhone 17 Pro Max",
+    "brand": "Apple",
+    "category": "phone",
+    "categoryLabel": "手机",
+    "model": "iPhone 17 Pro Max",
+    "sku": "256GB / 星宇橙",
+    "acquiredAt": "2025-09",
+    "status": "在用",
+    "review": "影像稳定，生态联动最省心。",
+    "specs": [
+      {"label": "存储容量", "value": "256GB"},
+      {"label": "颜色", "value": "星宇橙"}
+    ],
+    "cover": "/images/equipment/iphone 17 pro max.jpg",
+    "coverAlt": "iPhone 17 Pro Max",
+    "featured": true
+  },
+  {
+    "id": "honor-magic7-pro",
+    "name": "HONOR Magic7 Pro",
+    "brand": "荣耀",
+    "category": "phone",
+    "categoryLabel": "手机",
+    "model": "Magic7 Pro",
+    "sku": "16GB + 512GB / 黑色",
+    "acquiredAt": "2026-02",
+    "status": "在用",
+    "review": "续航扎实，Android 主力体验很全面。",
+    "specs": [
+      {"label": "运行内存", "value": "16GB"},
+      {"label": "存储容量", "value": "512GB"},
+      {"label": "颜色", "value": "黑色"}
+    ],
+    "cover": "/images/equipment/honor magic 7 pro.png",
+    "coverAlt": "荣耀 Magic7 Pro 设备占位封面",
+    "featured": true
+  },
+  {
+    "id": "vivo-pad5-pro",
+    "name": "vivo Pad5 Pro",
+    "brand": "vivo",
+    "category": "tablet",
+    "categoryLabel": "平板",
+    "model": "Pad5 Pro",
+    "sku": "16GB + 512GB / 黑色",
+    "acquiredAt": "2025-11",
+    "status": "在用",
+    "review": "大屏流畅，影音和轻办公都很顺手。",
+    "specs": [
+      {"label": "运行内存", "value": "16GB"},
+      {"label": "存储容量", "value": "512GB"},
+      {"label": "颜色", "value": "黑色"},
+      {"label": "配件", "value": "vivo Pencil 3"}
+    ],
+    "cover": "/images/equipment/vivo pad 5 pro.webp",
+    "coverAlt": "vivo Pad5 Pro 设备占位封面"
+  },
+  {
+    "id": "jiaolong-17k",
+    "name": "蛟龙 17K",
+    "brand": "机械革命",
+    "category": "computer",
+    "categoryLabel": "电脑",
+    "model": "蛟龙 17K",
+    "sku": "17.3 英寸 165Hz / AMD 7735H / RTX 4060 / 32GB + 2TB",
+    "acquiredAt": "2023-02",
+    "status": "在用",
+    "review": "性能释放直接，移动开发也够用。",
+    "specs": [
+      {"label": "屏幕尺寸", "value": "17.3 英寸"},
+      {"label": "刷新率", "value": "165Hz"},
+      {"label": "处理器", "value": "AMD 7735H"},
+      {"label": "显卡", "value": "NVIDIA GeForce RTX 4060"},
+      {"label": "运行内存", "value": "32GB"},
+      {"label": "存储容量", "value": "2TB"}
+    ],
+    "cover": "/images/equipment/jiaolong17k.png",
+    "coverAlt": "机械革命蛟龙 17K 17.3 英寸笔记本设备占位封面"
+  },
+  {
+    "id": "intel-core-i5-14600k",
+    "name": "Intel Core i5-14600K",
+    "brand": "Intel",
+    "category": "computer",
+    "categoryLabel": "电脑硬件",
+    "model": "Core i5-14600K",
+    "sku": "Intel Core i5-14600K",
+    "acquiredAt": "2024-06",
+    "status": "主力使用",
+    "review": "多任务表现稳定，日常编译响应很快。",
+    "specs": [
+      {"label": "类型", "value": "桌面处理器"},
+      {"label": "型号", "value": "Intel Core i5-14600K"},
+      {"label": "内核数", "value": "14"},
+      {"label": "总线程数", "value": "20"},
+      {"label": "最大睿频频率", "value": "5.3GHz"},
+      {"label": "缓存", "value": "24MB"}
+    ],
+    "cover": "/images/equipment/14600k.png",
+    "coverAlt": "Intel Core i5-14600K 处理器设备占位封面",
+    "featured": true
+  },
+  {
+    "id": "asus-rog-strix-b760-g-gaming-wifi-s",
+    "name": "ROG STRIX B760-G GAMING WIFI S 小吹雪",
+    "brand": "华硕 ROG",
+    "category": "computer",
+    "categoryLabel": "电脑硬件",
+    "model": "ROG STRIX B760-G GAMING WIFI S",
+    "sku": "S 小吹雪 / DDR5",
+    "acquiredAt": "2024-06",
+    "status": "主力使用",
+    "review": "白色主题辨识度很高，接口与扩展也很实用。",
+    "specs": [
+      {"label": "类型", "value": "桌面主板"},
+      {"label": "型号", "value": "ROG STRIX B760-G GAMING WIFI S"},
+      {"label": "芯片组", "value": "B760"},
+      {"label": "内存类型", "value": "DDR5"},
+      {"label": "版本", "value": "S 小吹雪"}
+    ],
+    "cover": "/images/equipment/ROG%20STRIX%20B760-G%20GAMING%20WIFI%20S.webp",
+    "coverAlt": "华硕 ROG STRIX B760-G GAMING WIFI S 小吹雪 DDR5 主板"
+  },
+  {
+    "id": "amd-radeon-rx-9070-xt",
+    "name": "盈通 RX 9070 XT 樱瞳花嫁 OC",
+    "brand": "盈通",
+    "category": "computer",
+    "categoryLabel": "电脑硬件",
+    "model": "RX9070XT-16GD6 樱瞳花嫁 OC",
+    "sku": "盈通 RX9070XT-16GD6 樱瞳花嫁 OC",
+    "acquiredAt": "2026-06",
+    "status": "主力使用",
+    "review": "性能与颜值兼顾，还得是改色好看。",
+    "specs": [
+      {"label": "类型", "value": "桌面显卡"},
+      {"label": "GPU", "value": "AMD Radeon RX 9070 XT"},
+      {"label": "完整型号", "value": "RX9070XT-16GD6 樱瞳花嫁 OC"},
+      {"label": "显存容量", "value": "16GB"},
+      {"label": "版本", "value": "樱瞳花嫁 OC"}
+    ],
+    "cover": "/images/equipment/9070xt-v2.png",
+    "coverAlt": "盈通 RX 9070 XT 樱瞳花嫁 OC 显卡设备占位封面",
+    "featured": true
+  },
+  {
+    "id": "ktc-m32p10",
+    "name": "KTC M32P10",
+    "brand": "KTC",
+    "category": "display",
+    "categoryLabel": "显示器",
+    "model": "M32P10",
+    "sku": "31.5 英寸 / 黑色 / 4K 144Hz / Mini LED",
+    "acquiredAt": "2025-07",
+    "status": "在用",
+    "review": "4K 画面细腻，Mini LED 观感很有冲击力。",
+    "specs": [
+      {"label": "尺寸", "value": "31.5 英寸"},
+      {"label": "颜色", "value": "黑色"},
+      {"label": "分辨率", "value": "4K"},
+      {"label": "背光", "value": "Mini LED"},
+      {"label": "刷新率", "value": "144Hz"}
+    ],
+    "cover": "/images/equipment/ktc.png",
+    "coverAlt": "KTC M32P10 31.5 英寸黑色 4K 144Hz Mini LED 显示器设备占位封面",
+    "featured": true
+  },
+  {
+    "id": "asus-rog-xg27acs",
+    "name": "华硕 ROG XG27ACS 绝杀",
+    "brand": "华硕 ROG",
+    "category": "display",
+    "categoryLabel": "显示器",
+    "model": "XG27ACS",
+    "sku": "27 英寸 / 黑色 / 2K 180Hz / IPS",
+    "acquiredAt": "2024-6",
+    "status": "在用",
+    "review": "2K 画面清晰，流畅度和色彩都很舒服。",
+    "specs": [
+      {"label": "尺寸", "value": "27 英寸"},
+      {"label": "颜色", "value": "黑色"},
+      {"label": "分辨率", "value": "2K"},
+      {"label": "面板", "value": "IPS"},
+      {"label": "刷新率", "value": "180Hz"}
+    ],
+    "cover": "/images/equipment/xg27acs.png",
+    "coverAlt": "华硕 ROG XG27ACS 绝杀 27 英寸黑色 2K 180Hz IPS 显示器设备占位封面"
+  },
+  {
+    "id": "aula-f98-pro-v3",
+    "name": "狼蛛 F98 Pro V3",
+    "brand": "狼蛛",
+    "category": "peripheral",
+    "categoryLabel": "外设",
+    "model": "F98 Pro V3",
+    "sku": "白透 / 冰魄轴 / 10000mAh",
+    "acquiredAt": "2026-04",
+    "status": "在用",
+    "review": "配列实用，长时间输入节奏不错。",
+    "specs": [
+      {"label": "配列", "value": "98 配列"},
+      {"label": "轴体", "value": "冰魄轴"},
+      {"label": "配色", "value": "白透"},
+      {"label": "电池容量", "value": "10000mAh"}
+    ],
+    "cover": "/images/equipment/f98prov3.png",
+    "coverAlt": "狼蛛 F98 Pro V3 白透冰魄轴 10000mAh 键盘设备占位封面"
+  },
+  {
+    "id": "aula-mouse",
+    "name": "狼蛛 SC680",
+    "brand": "狼蛛",
+    "category": "peripheral",
+    "categoryLabel": "外设",
+    "model": "SC680",
+    "sku": "狼蛛 SC680 / 湘妃红",
+    "acquiredAt": "2025-11",
+    "status": "在用",
+    "review": "操作轻快，日常使用足够顺手。",
+    "specs": [
+      {"label": "具体型号", "value": "SC680"},
+      {"label": "颜色", "value": "湘妃红"}
+    ],
+    "cover": "/images/equipment/sc680.png",
+    "coverAlt": "狼蛛 SC680 湘妃红鼠标设备占位封面"
+  }
+]

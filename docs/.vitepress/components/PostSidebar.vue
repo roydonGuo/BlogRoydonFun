@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import {computed, nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
 import {features} from '../composables/usePostFilter'
@@ -8,11 +8,15 @@ import {
   RiProfileLine,
   RiGithubLine,
   RiArticleLine,
+  RiFocus3Line,
   RiFolder6Line,
-  RiPriceTag3Line
+  RiPriceTag3Line,
+  RiArrowUpSLine,
+  RiArrowDownSLine
 } from "@remixicon/vue";
 
 const route = useRoute()
+const sidebarRef = ref<HTMLElement | null>(null)
 const expandedCategories = ref(new Set(posts.map(post => post.category)))
 
 // 文章列表页挂载后随机抽 5 篇作为推荐，避免 SSR 与客户端水合结果不一致。
@@ -99,10 +103,33 @@ function toggleAllCategories(): void {
     ? new Set<string>()
     : new Set(categoryGroups.value.map(group => group.category))
 }
+
+async function locateCurrentPost(): Promise<void> {
+  const currentPost = posts.find(post => isActive(post.url))
+  if (!currentPost) return
+
+  if (!expandedCategories.value.has(currentPost.category)) {
+    expandedCategories.value = new Set([
+      ...expandedCategories.value,
+      currentPost.category,
+    ])
+    await nextTick()
+  }
+
+  const activeLink = sidebarRef.value?.querySelector<HTMLElement>('.post-sidebar-list a.active')
+  if (!activeLink) return
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  activeLink.scrollIntoView({
+    behavior: reduceMotion ? 'auto' : 'smooth',
+    block: 'center',
+    inline: 'nearest',
+  })
+}
 </script>
 
 <template>
-  <section class="post-sidebar" :aria-label="isPostListPage ? '作者信息' : '文章导航'">
+  <section ref="sidebarRef" class="post-sidebar" :aria-label="isPostListPage ? '作者信息' : '文章导航'">
     <template v-if="isPostListPage">
       <div class="ethan-profile">
         <div class="ethan-profile-head">
@@ -195,13 +222,22 @@ function toggleAllCategories(): void {
             :aria-expanded="areAllCategoriesExpanded"
             @click="toggleAllCategories"
         >
-          <svg aria-hidden="true" viewBox="0 0 20 20" :class="{ expanded: areAllCategoriesExpanded }">
-            <path d="m6 8 4 4 4-4"/>
-          </svg>
+          <RiArrowUpSLine v-if="areAllCategoriesExpanded" size="18px" aria-hidden="true"/>
+          <RiArrowDownSLine v-else size="18px" aria-hidden="true"/>
+        </button>
+        <button
+            class="post-sidebar-toggle"
+            type="button"
+            aria-label="定位当前正在阅读的文章"
+            title="定位当前文章"
+            aria-controls="post-sidebar-article-list"
+            @click="locateCurrentPost"
+        >
+          <RiFocus3Line size="16px" aria-hidden="true"/>
         </button>
       </div>
 
-      <div class="post-sidebar-groups">
+      <div id="post-sidebar-article-list" class="post-sidebar-groups">
         <section v-for="group in categoryGroups" :key="group.category" class="post-sidebar-group">
           <button
               class="post-sidebar-category"
@@ -432,20 +468,6 @@ function toggleAllCategories(): void {
 .post-sidebar-toggle:focus-visible {
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
-}
-
-.post-sidebar-toggle svg {
-  width: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-  transition: transform 0.2s ease;
-}
-
-.post-sidebar-toggle svg.expanded {
-  transform: rotate(180deg);
 }
 
 .post-sidebar-groups {

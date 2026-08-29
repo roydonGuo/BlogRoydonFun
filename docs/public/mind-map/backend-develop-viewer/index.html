@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>框架 · 思维导图</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 可见控制栏由外层 Vue 弹窗统一提供；这些代理节点只接收父窗口命令。 -->
+  <div hidden aria-hidden="true">
+    <input id="searchInput" tabindex="-1" />
+    <button id="fitView" type="button" tabindex="-1"></button>
+  </div>
+
+  <main id="viewport">
+    <div id="canvas">
+      <svg id="links" aria-hidden="true"></svg>
+      <div id="nodes"></div>
+    </div>
+    <div id="emptyState" hidden>没有匹配的主题</div>
+  </main>
+
+  <aside id="inspector" aria-hidden="true">
+    <button id="closeInspector" class="icon-button" aria-label="关闭">×</button>
+    <div class="eyebrow">主题详情</div>
+    <h2 id="detailTitle"></h2>
+    <div id="breadcrumb"></div>
+    <img id="detailImage" alt="主题配图" hidden />
+    <pre id="detailContent"></pre>
+    <button id="focusNode" class="primary wide">在导图中定位</button>
+  </aside>
+
+  <div id="searchPanel" hidden></div>
+  <div class="help"><span>滚轮缩放</span><span>拖拽画布</span><span>点击节点展开</span><span>拖拽节点外侧调宽</span></div>
+  <div class="zoom-controls"><button id="zoomOut">−</button><output id="zoomValue">100%</output><button id="zoomIn">＋</button></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

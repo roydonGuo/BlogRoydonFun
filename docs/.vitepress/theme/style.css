@@ -99,12 +99,12 @@
     /**
      * Sidebar
      */
-    --vp-sidebar-width: 340px;
+    /*--vp-sidebar-width: 340px;*/
     --vp-c-divider: rgba(226, 226, 227, 0.25);
     --vp-c-gutter: rgba(226, 226, 227, 0.25);
     --vp-sidebar-bg-color: rgba(255, 255, 255, 0.25);
 
-    --vp-layout-max-width: 1600px;
+    --vp-layout-max-width: 1440px;
     /**
      *
      */
@@ -279,6 +279,10 @@ body {
 
 .container {
     max-width: 1440px !important;
+}
+
+header .container {
+    max-width: calc(var(--vp-layout-max-width) - 64px) !important;
 }
 
 .aside {

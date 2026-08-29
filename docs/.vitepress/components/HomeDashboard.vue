@@ -186,7 +186,7 @@ function formatDate(date: string): string {
           <header class="section-heading">
             <div id="featured-title" class="featured-title">
               <span ref="featuredFireRef" class="featured-fire" aria-hidden="true"/>
-              精选文章
+              <span>精选文章</span>
             </div>
             <div class="featured-tabs" aria-label="文章分类">
               <button
@@ -477,6 +477,7 @@ function formatDate(date: string): string {
 
 .feature-card {
   position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr);
   align-items: center;
@@ -493,6 +494,27 @@ function formatDate(date: string): string {
   transition: all 0.3s ease;
 }
 
+.feature-card::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  width: 200%;
+  aspect-ratio: 1;
+  background: var(--feature-gradient, linear-gradient(135deg, #64748b, #94a3b8));
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transition: opacity 0.3s ease;
+  animation: feature-gradient-spin 8s linear infinite paused;
+}
+
+.feature-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 .feature-card::after {
   position: absolute;
   right: 22px;
@@ -503,11 +525,24 @@ function formatDate(date: string): string {
   background: currentColor;
   content: '';
   opacity: 0.5;
+  z-index: 2;
 }
 
 .feature-card:hover {
-  border-color: color-mix(in srgb, currentColor 38%, var(--vp-c-divider));
-  box-shadow: 0 10px 20px color-mix(in srgb, currentColor 6%, transparent);
+  border-color: color-mix(in srgb, currentColor 50%, var(--vp-c-divider));
+  box-shadow: 0 10px 20px color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.feature-card:hover::before,
+.feature-card:focus-visible::before {
+  opacity: 0.2;
+  animation-play-state: running;
+}
+
+@keyframes feature-gradient-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 .feature-icon {
@@ -585,7 +620,7 @@ function formatDate(date: string): string {
   color: var(--vp-c-text-1);
   font-size: 16px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.4;
 }
 
 .stats-bar dd {
@@ -1252,6 +1287,10 @@ function formatDate(date: string): string {
 
 @media (prefers-reduced-motion: reduce) {
   .feature-track {
+    animation: none;
+  }
+
+  .feature-card::before {
     animation: none;
   }
 
