@@ -92,15 +92,19 @@
     <Teleport to="body">
       <Transition name="equipment-modal">
         <div v-if="selected" class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/70 p-4 backdrop-blur-[10px]" role="dialog" aria-modal="true" aria-labelledby="equipment-modal-title" @click.self="closeEquipment">
-          <div class="equipment-holo-stage" :style="selectedHoloStyle">
+          <div
+              ref="holoStage"
+              class="equipment-holo-stage"
+              :style="selectedHoloStyle"
+              @pointermove="handleHoloPointerMove"
+              @pointerenter="handleHoloPointerEnter"
+              @pointerleave="handleHoloPointerLeave"
+          >
               <div class="equipment-holo-ambient" aria-hidden="true"></div>
               <div
                   ref="holoCard"
                   class="equipment-holo-card"
                   :class="{'is-resetting': isHoloResetting}"
-                  @pointermove="handleHoloPointerMove"
-                  @pointerenter="handleHoloPointerEnter"
-                  @pointerleave="handleHoloPointerLeave"
               >
                 <div class="equipment-holo-inner">
                   <div class="equipment-holo-diffraction" aria-hidden="true"></div>
@@ -186,6 +190,7 @@ const currentYear = new Date().getFullYear()
 const keyword = ref('')
 const activeFilter = ref<(typeof filters)[number]['value']>('all')
 const selected = ref<Equipment | null>(null)
+const holoStage = ref<HTMLElement | null>(null)
 const holoCard = ref<HTMLElement | null>(null)
 const isHoloResetting = ref(false)
 const masonryGrid = ref<HTMLElement | null>(null)
@@ -238,9 +243,10 @@ function resetHoloCard() {
 function handleHoloPointerMove(event: PointerEvent) {
   if (event.pointerType === 'touch') return
   const card = holoCard.value
-  if (!card) return
+  const stage = holoStage.value
+  if (!card || !stage) return
 
-  const rect = card.getBoundingClientRect()
+  const rect = stage.getBoundingClientRect()
   if (!rect.width || !rect.height) return
   const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left))
   const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top))
@@ -458,6 +464,8 @@ body.equipment-page-active .VPFooter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin: -14px;
+  padding: 14px;
   perspective: 1500px;
   isolation: isolate;
 }
