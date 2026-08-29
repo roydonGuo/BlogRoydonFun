@@ -10,6 +10,7 @@
     "acquiredAt": "2025-09",
     "status": "在用",
     "review": "影像稳定，生态联动最省心。",
+    "borderGradient": "linear-gradient(135deg, #ff6a2a 0%, #ffb36b 46%, #7c2d12 100%)",
     "specs": [
       {"label": "存储容量", "value": "256GB"},
       {"label": "颜色", "value": "星宇橙"}
@@ -29,6 +30,7 @@
     "acquiredAt": "2026-02",
     "status": "在用",
     "review": "续航扎实，Android 主力体验很全面。",
+    "borderGradient": "linear-gradient(135deg, #2563eb 0%, #7c3aed 52%, #22d3ee 100%)",
     "specs": [
       {"label": "运行内存", "value": "16GB"},
       {"label": "存储容量", "value": "512GB"},
@@ -49,6 +51,7 @@
     "acquiredAt": "2025-11",
     "status": "在用",
     "review": "大屏流畅，影音和轻办公都很顺手。",
+    "borderGradient": "linear-gradient(135deg, #8056f0 0%, #198be1 100%)",
     "specs": [
       {"label": "运行内存", "value": "16GB"},
       {"label": "存储容量", "value": "512GB"},
@@ -69,6 +72,7 @@
     "acquiredAt": "2023-02",
     "status": "在用",
     "review": "性能释放直接，移动开发也够用。",
+    "borderGradient": "linear-gradient(135deg, #7e9afd 0%, #37ebf7 100%)",
     "specs": [
       {"label": "屏幕尺寸", "value": "17.3 英寸"},
       {"label": "刷新率", "value": "165Hz"},
@@ -91,6 +95,7 @@
     "acquiredAt": "2024-06",
     "status": "主力使用",
     "review": "多任务表现稳定，日常编译响应很快。",
+    "borderGradient": "linear-gradient(135deg, #0071c5 0%, #38bdf8 52%, #dbeafe 100%)",
     "specs": [
       {"label": "类型", "value": "桌面处理器"},
       {"label": "型号", "value": "Intel Core i5-14600K"},
@@ -114,6 +119,7 @@
     "acquiredAt": "2024-06",
     "status": "主力使用",
     "review": "白色主题辨识度很高，接口与扩展也很实用。",
+    "borderGradient": "linear-gradient(135deg, #0235d7 0%, #08e5f8 100%)",
     "specs": [
       {"label": "类型", "value": "桌面主板"},
       {"label": "型号", "value": "ROG STRIX B760-G GAMING WIFI S"},
@@ -135,6 +141,7 @@
     "acquiredAt": "2026-06",
     "status": "主力使用",
     "review": "性能与颜值兼顾，还得是改色好看。",
+    "borderGradient": "linear-gradient(135deg, #f882ba 0%, #555bfd 100%)",
     "specs": [
       {"label": "类型", "value": "桌面显卡"},
       {"label": "GPU", "value": "AMD Radeon RX 9070 XT"},
@@ -157,6 +164,7 @@
     "acquiredAt": "2025-07",
     "status": "在用",
     "review": "4K 画面细腻，Mini LED 观感很有冲击力。",
+    "borderGradient": "linear-gradient(135deg, #c5a1fd 0%, #c5e4fe 100%)",
     "specs": [
       {"label": "尺寸", "value": "31.5 英寸"},
       {"label": "颜色", "value": "黑色"},
@@ -179,6 +187,7 @@
     "acquiredAt": "2024-6",
     "status": "在用",
     "review": "2K 画面清晰，流畅度和色彩都很舒服。",
+    "borderGradient": "linear-gradient(135deg, #ef4444 0%, #f97316 42%, #8b5cf6 100%)",
     "specs": [
       {"label": "尺寸", "value": "27 英寸"},
       {"label": "颜色", "value": "黑色"},
@@ -200,6 +209,7 @@
     "acquiredAt": "2026-04",
     "status": "在用",
     "review": "配列实用，长时间输入节奏不错。",
+    "borderGradient": "linear-gradient(135deg, #e0f2fe 0%, #60a5fa 48%, #a78bfa 100%)",
     "specs": [
       {"label": "配列", "value": "98 配列"},
       {"label": "轴体", "value": "冰魄轴"},
@@ -220,6 +230,7 @@
     "acquiredAt": "2025-11",
     "status": "在用",
     "review": "操作轻快，日常使用足够顺手。",
+    "borderGradient": "linear-gradient(135deg, #be123c 0%, #fb7185 48%, #fbbf24 100%)",
     "specs": [
       {"label": "具体型号", "value": "SC680"},
       {"label": "颜色", "value": "湘妃红"}
