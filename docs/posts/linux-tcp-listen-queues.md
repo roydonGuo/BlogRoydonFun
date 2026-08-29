@@ -220,7 +220,7 @@ Accept Queue 需求 ≈ 峰值握手完成速率 × 可容忍的最长 Accept �
 
 下面的 sysctl 片段只展示配置关系，不是推荐生产值：
 
-```conf
+```text
 # /etc/sysctl.d/99-tcp-listen.conf
 # 数值必须由目标机器内存、峰值新建连接速率和压测结果决定
 net.core.somaxconn = 4096

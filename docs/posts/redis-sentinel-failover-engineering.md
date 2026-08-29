@@ -103,7 +103,7 @@ Sentinel 先排除与旧主节点断开过久等不可靠 Replica，再按以下
 
 下面示例用于解释参数含义，不是生产默认答案：
 
-```conf
+```text
 # 监控名为 cache-primary 的主节点；2 表示认定 ODOWN 所需的 quorum
 sentinel monitor cache-primary 10.0.1.10 6379 2
 
@@ -172,7 +172,7 @@ Sentinel 多数派 → 晋升新主节点 ← 客户端 B
 
 可以在主节点设置：
 
-```conf
+```text
 # 至少有 1 个延迟不超过 10 秒的 Replica，主节点才接受写入
 min-replicas-to-write 1
 min-replicas-max-lag 10

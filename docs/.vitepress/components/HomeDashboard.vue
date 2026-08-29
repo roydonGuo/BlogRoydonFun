@@ -174,13 +174,13 @@ function formatDate(date: string): string {
           </div>
         </div>
 
-        <dl class="stats-bar home-panel" aria-label="博客内容统计">
-          <div><span class="stat-icon stat-brand"><RiArticleLine aria-hidden="true"/></span><span><dt>{{ posts.length }}</dt><dd>文章总数</dd></span></div>
-          <div><span class="stat-icon stat-mint"><RiFolderLine aria-hidden="true"/></span><span><dt>{{ categories.size }}</dt><dd>分类总数</dd></span></div>
-          <div><span class="stat-icon stat-amber"><RiPriceTag3Line aria-hidden="true"/></span><span><dt>{{ tagStats.length }}</dt><dd>标签总数</dd></span></div>
-          <div><span class="stat-icon stat-rose"><RiFileTextLine aria-hidden="true"/></span><span><dt>30万+</dt><dd>总字数</dd></span></div>
-          <div><span class="stat-icon stat-violet"><RiTimeLine aria-hidden="true"/></span><span><dt>{{ writingYears }}年+</dt><dd>写作时长</dd></span></div>
-        </dl>
+        <div class="stats-bar home-panel" role="list" aria-label="博客内容统计">
+          <div role="listitem"><span class="stat-icon stat-brand"><RiArticleLine aria-hidden="true"/></span><span><strong class="stat-value">{{ posts.length }}</strong><small class="stat-label">文章总数</small></span></div>
+          <div role="listitem"><span class="stat-icon stat-mint"><RiFolderLine aria-hidden="true"/></span><span><strong class="stat-value">{{ categories.size }}</strong><small class="stat-label">分类总数</small></span></div>
+          <div role="listitem"><span class="stat-icon stat-amber"><RiPriceTag3Line aria-hidden="true"/></span><span><strong class="stat-value">{{ tagStats.length }}</strong><small class="stat-label">标签总数</small></span></div>
+          <div role="listitem"><span class="stat-icon stat-rose"><RiFileTextLine aria-hidden="true"/></span><span><strong class="stat-value">30万+</strong><small class="stat-label">总字数</small></span></div>
+          <div role="listitem"><span class="stat-icon stat-violet"><RiTimeLine aria-hidden="true"/></span><span><strong class="stat-value">{{ writingYears }}年+</strong><small class="stat-label">写作时长</small></span></div>
+        </div>
 
         <section class="featured-section home-panel" aria-labelledby="featured-title">
           <header class="section-heading">
@@ -616,15 +616,17 @@ function formatDate(date: string): string {
   border-left: 1px solid var(--vp-c-divider);
 }
 
-.stats-bar dt {
+.stats-bar .stat-value {
+  display: block;
   color: var(--vp-c-text-1);
   font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
 }
 
-.stats-bar dd {
-  margin: 4px 0 0;
+.stats-bar .stat-label {
+  display: block;
+  margin-top: 4px;
   color: var(--vp-c-text-3);
   font-size: 12px;
 }
