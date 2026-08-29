@@ -544,6 +544,12 @@ body.equipment-page-active .VPFooter {
   filter: blur(60px);
   opacity: .8;
   pointer-events: none;
+  transition: opacity .35s ease, transform .45s cubic-bezier(.2, .8, .2, 1);
+}
+
+.equipment-holo-stage:hover .equipment-holo-ambient {
+  opacity: .96;
+  transform: scale(1.06);
 }
 
 .equipment-holo-card {
@@ -573,12 +579,18 @@ body.equipment-page-active .VPFooter {
   transform: rotateX(var(--equipment-holo-rotate-x)) rotateY(var(--equipment-holo-rotate-y));
   transform-style: preserve-3d;
   filter: drop-shadow(0 28px 34px rgba(0, 0, 0, .82));
-  transition: transform .1s cubic-bezier(.2, .8, .2, 1);
+  transition: transform .1s cubic-bezier(.2, .8, .2, 1), filter .35s ease;
   will-change: transform;
 }
 
+.equipment-holo-stage:hover .equipment-holo-card {
+  filter:
+    drop-shadow(0 30px 38px rgba(0, 0, 0, .84))
+    drop-shadow(0 0 18px color-mix(in srgb, var(--equipment-holo-glow-end) 24%, transparent));
+}
+
 .equipment-holo-card.is-resetting {
-  transition: transform .6s cubic-bezier(.2, .8, .2, 1);
+  transition: transform .6s cubic-bezier(.2, .8, .2, 1), filter .35s ease;
 }
 
 .equipment-holo-card::before,
@@ -606,7 +618,7 @@ body.equipment-page-active .VPFooter {
   background-position: var(--equipment-holo-bg-x) var(--equipment-holo-bg-y);
   background-size: 260% 260%;
   mix-blend-mode: screen;
-  opacity: calc(var(--equipment-holo-active) * .42);
+  opacity: calc(var(--equipment-holo-active) * .55);
   filter: blur(7px);
   transition: opacity .4s ease;
 }
@@ -624,7 +636,7 @@ body.equipment-page-active .VPFooter {
     );
   background-size: 150px 150px, 100% 100%, 100% 100%;
   mix-blend-mode: screen;
-  opacity: calc(var(--equipment-holo-active) * .45 + .06);
+  opacity: calc(var(--equipment-holo-active) * .58 + .06);
   transition: opacity .4s ease;
 }
 
@@ -654,7 +666,7 @@ body.equipment-page-active .VPFooter {
   );
   background-size: 180% 180%;
   mix-blend-mode: color-dodge;
-  opacity: calc(var(--equipment-holo-active) * .28);
+  opacity: calc(var(--equipment-holo-active) * .38);
   filter: blur(10px);
   -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, .82) 58%, transparent 88%);
   mask-image: radial-gradient(ellipse at center, #000 0%, rgba(0, 0, 0, .82) 58%, transparent 88%);
@@ -701,7 +713,7 @@ body.equipment-page-active .VPFooter {
     transparent 76%
   );
   mix-blend-mode: screen;
-  opacity: calc(var(--equipment-holo-active) * .45);
+  opacity: calc(var(--equipment-holo-active) * .58);
   filter: blur(6px);
 }
 
@@ -791,6 +803,7 @@ body.equipment-page-active .VPFooter {
   .equipment-masonry-item,
   .equipment-modal-enter-active,
   .equipment-modal-leave-active,
+  .equipment-holo-ambient,
   .equipment-holo-card,
   .equipment-holo-card::before,
   .equipment-holo-card::after {
