@@ -20,6 +20,7 @@ import {
 } from '@remixicon/vue'
 import type {CategoryFeature} from '../composables/usePostFilter'
 import {features, monthlyArticleStats, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
+import LoadingImage from './LoadingImage.vue'
 
 type FeaturedMode = 'top' | 'ai' | 'backend'
 
@@ -203,7 +204,12 @@ function formatDate(date: string): string {
           <div class="featured-grid">
             <article v-for="post in featuredPosts" :key="post.url" class="featured-card">
               <a :href="post.url" class="featured-cover">
-                <img :src="post.cover" :alt="post.title" loading="lazy">
+                <LoadingImage
+                    class="featured-cover-media"
+                    image-class="featured-cover-image"
+                    :src="post.cover"
+                    :alt="post.title"
+                />
               </a>
               <div class="featured-body">
                 <a :href="post.url"><h3>{{ post.title }}</h3></a>
@@ -766,14 +772,19 @@ function formatDate(date: string): string {
   background: var(--vp-c-bg-soft);
 }
 
-.featured-cover img {
+.featured-cover-media {
+  width: 100%;
+  height: 100%;
+}
+
+.featured-cover :deep(.featured-cover-image) {
   width: 100%;
   height: 100%;
   margin: 0;
   object-fit: cover;
 }
 
-.featured-card:hover .featured-cover img {
+.featured-card:hover .featured-cover :deep(.featured-cover-image) {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }

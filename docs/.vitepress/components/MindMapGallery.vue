@@ -66,9 +66,13 @@
                 class="mind-map-masonry-item mind-map-card group relative mb-4 block w-[calc((100%-48px)/4)] cursor-pointer overflow-hidden rounded-[20px] bg-[#080b16] p-0 text-left text-white max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
                 :style="{ aspectRatio: `${mindMap.coverWidth} / ${mindMap.coverHeight}` }"
                 :aria-label="`打开思维导图：${mindMap.name}`" @click="openMindMap(mindMap)">
-          <img
-              class="absolute inset-0 !m-0 h-full w-full object-contain transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.02]"
-              :src="mindMap.cover" alt="" aria-hidden="true" loading="lazy">
+          <LoadingImage
+              class="absolute inset-0 h-full w-full bg-[#080b16]"
+              image-class="absolute inset-0 !m-0 h-full w-full object-contain transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.02]"
+              :src="mindMap.cover"
+              :alt="mindMap.coverAlt"
+              aria-hidden="true"
+          />
           <div class="absolute inset-0 bg-gradient-to-b from-black/1 via-transparent to-black/25"
                aria-hidden="true"></div>
           <div
@@ -198,6 +202,7 @@ import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import type Masonry from 'masonry-layout'
 import {RiArrowRightUpLine, RiCloseLine, RiSearchLine, RiTimeLine} from '@remixicon/vue'
 import mindMapData from '../../mind-map/mind-maps.json'
+import LoadingImage from './LoadingImage.vue'
 
 interface MindMap {
   id: number;

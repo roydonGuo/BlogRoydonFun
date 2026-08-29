@@ -44,19 +44,29 @@
       <div ref="masonryGrid" class="relative">
         <div class="equipment-masonry-sizer w-[calc((100%-48px)/4)] max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full" aria-hidden="true"></div>
         <button v-for="(item, index) in visibleEquipment" :key="item.id" type="button"
-                class="equipment-masonry-item equipment-card group relative mb-4 w-[calc((100%-48px)/4)] cursor-pointer overflow-hidden rounded-[20px] border border-black/10 bg-[#080b16] p-0 text-left text-white dark:border-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full"
+                class="equipment-masonry-item equipment-card group relative mb-4 w-[calc((100%-48px)/4)] cursor-pointer overflow-hidden rounded-[20px] border-0 bg-[#080b16] p-0 text-left text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-[1400px]:w-[calc((100%-32px)/3)] max-[1100px]:w-[calc((100%-16px)/2)] max-[760px]:w-full"
                 :aria-label="`查看 ${item.name} 装备详情`" @click="openEquipment(item)">
           <!-- 图片按自身宽高比撑开整张卡片，不设置固定高度或统一 aspect-ratio。 -->
-          <img class="equipment-card-cover block !m-0 h-auto w-full transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.025]" :src="item.cover" :alt="item.coverAlt">
-          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#070a12]/95 via-[#070a12]/55 via-45% to-transparent to-72%" aria-hidden="true"></div>
+          <LoadingImage
+              class="equipment-cover-media w-full bg-[#080b16]"
+              image-class="equipment-card-cover block !m-0 h-auto w-full"
+              :src="item.cover"
+              :alt="item.coverAlt"
+          />
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#070a12]/90 via-[#070a12]/30 via-45% to-transparent to-72%" aria-hidden="true"></div>
           <span class="absolute left-4 top-4 rounded-full border border-white/30 bg-white/85 px-3 py-1 text-[10px] !font-black tracking-[.08em] text-[#080b16] shadow-sm backdrop-blur-[10px]">
             {{ item.featured ? 'FEATURED' : item.categoryLabel }}
           </span>
+          <RiArrowRightUpLine
+              size="34"
+              class="absolute right-4 top-4 translate-y-1 text-white opacity-0 drop-shadow-[0_2px_5px_rgba(0,0,0,.45)] transition duration-200 group-hover:translate-y-0 group-hover:opacity-100"
+              aria-hidden="true"
+          />
           <div class="absolute inset-x-0 bottom-0 p-5 text-white">
             <p class="!m-0 text-[10px] !font-black tracking-[.14em] text-white/70">{{ item.categoryLabel }} · {{ item.status }}</p>
             <h2 class="!mb-0 !mt-2 !border-0 !py-0 !text-[23px] !font-black !leading-[1.12] tracking-[-.04em] text-white">{{ item.name }}</h2>
             <p class="!mb-0 !mt-2 text-[12px] font-medium leading-[1.55] text-white/85">{{ item.review }}</p>
-            <p class="!mb-0 !mt-2 text-[11px] font-bold leading-[1.5] text-white/75">{{ item.brand }} · {{ item.model }}</p>
+<!--            <p class="!mb-0 !mt-2 text-[11px] font-bold leading-[1.5] text-white/75">{{ item.brand }} · {{ item.model }}</p>-->
             <footer class="mt-4 flex items-end justify-between gap-4 border-t border-white/20 pt-3">
               <p class="!m-0 min-w-0 break-words text-[10px] font-bold leading-[1.45] text-white/70">{{ item.sku }}</p>
               <span class="flex shrink-0 items-center gap-1.5 text-[10px] font-black text-white/75">
@@ -84,7 +94,13 @@
         <div v-if="selected" class="fixed inset-0 z-[1000] flex items-center justify-center bg-[#040712]/70 p-4 backdrop-blur-[10px]" role="dialog" aria-modal="true" aria-labelledby="equipment-modal-title" @click.self="closeEquipment">
           <article class="equipment-modal-card grid max-h-[88vh] w-[min(1120px,96vw)] grid-cols-[60%_40%] overflow-hidden rounded-[28px] bg-bg text-text-1 shadow-[0_36px_100px_rgba(0,0,0,.35)] max-[900px]:block max-[900px]:overflow-y-auto">
             <div class="relative min-h-[360px] overflow-hidden bg-[#080b16] max-[900px]:min-h-[260px]">
-              <img class="block !m-0 h-full w-full object-cover" :src="selected.cover" :alt="selected.coverAlt">
+              <LoadingImage
+                  class="absolute inset-0 h-full w-full bg-[#080b16]"
+                  image-class="block !m-0 h-full w-full object-cover"
+                  :src="selected.cover"
+                  :alt="selected.coverAlt"
+                  loading="eager"
+              />
               <div class="absolute inset-0 bg-gradient-to-t from-[#040712]/75 via-transparent to-transparent"></div>
             </div>
             <div class="relative overflow-y-auto p-6 max-[900px]:overflow-visible">
@@ -117,8 +133,9 @@
 <script setup lang="ts">
 import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import type Masonry from 'masonry-layout'
-import {RiCloseLine, RiSearchLine, RiTimeLine} from '@remixicon/vue'
+import {RiArrowRightUpLine, RiCloseLine, RiSearchLine, RiTimeLine} from '@remixicon/vue'
 import equipmentData from '../../equipment/equipment.json'
+import LoadingImage from './LoadingImage.vue'
 
 type EquipmentCategory = 'phone' | 'tablet' | 'computer' | 'display' | 'peripheral'
 
@@ -308,8 +325,16 @@ body.equipment-page-active .VPFooter {
 }
 
 .equipment-card:hover {
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 42%, transparent);
   box-shadow: 0 12px 30px rgba(15, 23, 42, .11);
+}
+
+.equipment-card .loading-image__image.equipment-card-cover {
+  will-change: transform;
+}
+
+.equipment-card:hover .loading-image__image.equipment-card-cover {
+  transform: scale(1.05);
+  transition: opacity .25s ease, transform .6s cubic-bezier(.2, .8, .2, 1);
 }
 
 .equipment-masonry-item.is-equipment-entering {

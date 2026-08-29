@@ -63,9 +63,12 @@
           <div
               class="relative overflow-hidden bg-bg-soft"
           >
-            <img
-                class="block !m-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
-                :src="project.cover" :alt="project.coverAlt">
+            <LoadingImage
+                class="w-full"
+                image-class="block !m-0 h-full w-full object-cover transition duration-[600ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
+                :src="project.cover"
+                :alt="project.coverAlt"
+            />
             <span
                 class="absolute left-3 top-3 rounded-full bg-white/60 px-3 py-0.5 !text-[10px] !font-black tracking-[.08em] text-[#080b16] backdrop-blur-[10px]">{{
                 project.featured ? 'FEATURED' : project.categoryLabel
@@ -109,7 +112,13 @@
             <section
                 class="project-modal-media relative min-w-0 overflow-hidden bg-[#080b16] max-[760px]:h-[42vh] max-[760px]:min-h-[300px]"
                 aria-label="项目截图轮播">
-              <img class="block !m-0 h-full w-full object-cover" :src="activeSlide.src" :alt="activeSlide.alt">
+              <LoadingImage
+                  class="h-full w-full bg-[#080b16]"
+                  image-class="block !m-0 h-full w-full object-cover"
+                  :src="activeSlide.src"
+                  :alt="activeSlide.alt"
+                  loading="eager"
+              />
               <div class="absolute inset-0 bg-gradient-to-t from-[#040712]/80 via-transparent to-[#040712]/25"></div>
               <p class="absolute left-6 top-6 m-0 rounded-full border border-white/30 px-[11px] py-[7px] text-[9px] !font-black tracking-[.16em] text-white backdrop-blur-[10px]">
                 {{ String(slideIndex + 1).padStart(2, '0') }} / {{ String(selected.slides.length).padStart(2, '0') }} ·
@@ -199,6 +208,7 @@ import {
   RiGithubFill
 } from '@remixicon/vue'
 import projectData from '../../projects/projects.json'
+import LoadingImage from './LoadingImage.vue'
 
 interface Slide {
   src: string;
@@ -486,7 +496,7 @@ body.projects-page-active .VPFooter {
 
 .project-modal-enter-from .project-modal-media {
   opacity: 0;
-  transform: translate3d(-18px, 0, 0) scale(1.025);
+  transform: translate3d(-18px, 0, 0) scale(1.05);
 }
 
 .project-modal-enter-from .project-modal-info {

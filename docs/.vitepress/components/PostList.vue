@@ -26,7 +26,12 @@
             </div>
           </div>
           <div class="card-cover">
-            <img :src="post.cover" :alt="post.title" loading="lazy" />
+            <LoadingImage
+                class="post-cover-media"
+                image-class="post-cover-image"
+                :src="post.cover"
+                :alt="post.title"
+            />
           </div>
         </a>
       </article>
@@ -61,6 +66,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import LoadingImage from './LoadingImage.vue'
 import {
   filteredPosts,
   activeFilter,
@@ -305,14 +311,19 @@ function formatDate(date: string) {
   background: var(--vp-c-bg-mute);
 }
 
-.card-cover img {
+.post-cover-media {
+  width: 100%;
+  height: 100%;
+}
+
+.card-cover :deep(.post-cover-image) {
   width: 100%;
   height: 100%;
   object-fit: cover;
   margin: 0;
 }
 
-.post-card:hover .card-cover img {
+.post-card:hover .card-cover :deep(.post-cover-image) {
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }

@@ -3,6 +3,7 @@ import {computed, nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
 import {useRoute} from 'vitepress'
 import {data as posts} from '../../posts/posts.data'
 import {features} from '../composables/usePostFilter'
+import LoadingImage from './LoadingImage.vue'
 import {
   RiUserSmileLine,
   RiProfileLine,
@@ -190,7 +191,12 @@ async function locateCurrentPost(): Promise<void> {
           <li v-for="post in recommended" :key="post.url">
             <a :href="post.url" class="recommended-item">
               <div class="recommended-cover">
-                <img :src="post.cover" :alt="post.title" loading="lazy">
+                <LoadingImage
+                    class="recommended-cover-media"
+                    image-class="recommended-cover-image"
+                    :src="post.cover"
+                    :alt="post.title"
+                />
               </div>
               <div class="recommended-body">
                 <span class="recommended-name">{{ post.title }}</span>
@@ -625,7 +631,12 @@ async function locateCurrentPost(): Promise<void> {
   background: var(--vp-c-divider);
 }
 
-.recommended-cover img {
+.recommended-cover-media {
+  width: 100%;
+  height: 100%;
+}
+
+.recommended-cover :deep(.recommended-cover-image) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -633,7 +644,7 @@ async function locateCurrentPost(): Promise<void> {
   transition: transform 0.35s ease;
 }
 
-.recommended-item:hover .recommended-cover img {
+.recommended-item:hover .recommended-cover :deep(.recommended-cover-image) {
   transform: scale(1.05);
 }
 
