@@ -54,8 +54,8 @@
               :alt="item.coverAlt"
           />
           <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#070a12]/90 via-[#070a12]/30 via-45% to-transparent to-72%" aria-hidden="true"></div>
-          <span class="absolute left-4 top-4 rounded-full border border-white/30 bg-white/85 px-3 py-1 text-[10px] !font-black tracking-[.08em] text-[#080b16] shadow-sm backdrop-blur-[10px]">
-            {{ item.featured ? 'FEATURED' : item.categoryLabel }}
+          <span class="equipment-card-badge">
+            <span>{{ item.featured ? 'FEATURED' : item.categoryLabel }}</span>
           </span>
           <RiArrowRightUpLine
               size="34"
@@ -416,6 +416,67 @@ body.equipment-page-active .VPFooter {
 
 .equipment-card:hover {
   box-shadow: 0 12px 30px rgba(15, 23, 42, .11);
+}
+
+.equipment-card-badge {
+  position: absolute;
+  z-index: 3;
+  top: 16px;
+  left: 16px;
+  isolation: isolate;
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, .42);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .07) 48%, rgba(255, 255, 255, .16)),
+    rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .97);
+  box-shadow:
+    0 10px 28px rgba(2, 6, 23, .26),
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    inset 0 -1px 0 rgba(255, 255, 255, .12),
+    inset 1px 0 0 rgba(255, 255, 255, .2),
+    inset -1px 0 0 rgba(255, 255, 255, .1);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-shadow: 0 1px 4px rgba(2, 6, 23, .56);
+  -webkit-backdrop-filter: blur(18px) saturate(185%);
+  backdrop-filter: blur(18px) saturate(185%);
+}
+
+.equipment-card-badge::before {
+  position: absolute;
+  z-index: 0;
+  top: -70%;
+  left: 6%;
+  width: 72%;
+  height: 125%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .62), transparent 68%);
+  filter: blur(5px);
+  content: '';
+  pointer-events: none;
+}
+
+.equipment-card-badge::after {
+  position: absolute;
+  z-index: 1;
+  inset: 1px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: inherit;
+  content: '';
+  pointer-events: none;
+}
+
+.equipment-card-badge > span {
+  position: relative;
+  z-index: 2;
 }
 
 .equipment-card .loading-image__image.equipment-card-cover {

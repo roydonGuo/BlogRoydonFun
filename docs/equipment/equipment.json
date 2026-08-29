@@ -15,7 +15,7 @@
       {"label": "存储容量", "value": "256GB"},
       {"label": "颜色", "value": "星宇橙"}
     ],
-    "cover": "/images/equipment/iphone 17 pro max.webp",
+    "cover": "/images/equipment/iphone17promax.webp",
     "coverAlt": "iPhone 17 Pro Max",
     "featured": true
   },
@@ -36,7 +36,7 @@
       {"label": "存储容量", "value": "512GB"},
       {"label": "颜色", "value": "黑色"}
     ],
-    "cover": "/images/equipment/honor magic 7 pro.png",
+    "cover": "/images/equipment/honormagic7pro.webp",
     "coverAlt": "荣耀 Magic7 Pro 设备占位封面",
     "featured": true
   },
@@ -58,7 +58,7 @@
       {"label": "颜色", "value": "黑色"},
       {"label": "配件", "value": "vivo Pencil 3"}
     ],
-    "cover": "/images/equipment/vivo pad 5 pro.webp",
+    "cover": "/images/equipment/vivopad5pro.webp",
     "coverAlt": "vivo Pad5 Pro 设备占位封面"
   },
   {
@@ -81,7 +81,7 @@
       {"label": "运行内存", "value": "32GB"},
       {"label": "存储容量", "value": "2TB"}
     ],
-    "cover": "/images/equipment/jiaolong17k.png",
+    "cover": "/images/equipment/jiaolong17k.webp",
     "coverAlt": "机械革命蛟龙 17K 17.3 英寸笔记本设备占位封面"
   },
   {
@@ -172,7 +172,7 @@
       {"label": "背光", "value": "Mini LED"},
       {"label": "刷新率", "value": "144Hz"}
     ],
-    "cover": "/images/equipment/ktc.png",
+    "cover": "/images/equipment/ktc.webp",
     "coverAlt": "KTC M32P10 31.5 英寸黑色 4K 144Hz Mini LED 显示器设备占位封面",
     "featured": true
   },
@@ -195,7 +195,7 @@
       {"label": "面板", "value": "IPS"},
       {"label": "刷新率", "value": "180Hz"}
     ],
-    "cover": "/images/equipment/xg27acs.png",
+    "cover": "/images/equipment/xg27acs.webp",
     "coverAlt": "华硕 ROG XG27ACS 绝杀 27 英寸黑色 2K 180Hz IPS 显示器设备占位封面"
   },
   {
@@ -216,7 +216,7 @@
       {"label": "配色", "value": "白透"},
       {"label": "电池容量", "value": "10000mAh"}
     ],
-    "cover": "/images/equipment/f98prov3.png",
+    "cover": "/images/equipment/f98prov3.webp",
     "coverAlt": "狼蛛 F98 Pro V3 白透冰魄轴 10000mAh 键盘设备占位封面"
   },
   {
@@ -235,7 +235,7 @@
       {"label": "具体型号", "value": "SC680"},
       {"label": "颜色", "value": "湘妃红"}
     ],
-    "cover": "/images/equipment/sc680.png",
+    "cover": "/images/equipment/sc680.webp",
     "coverAlt": "狼蛛 SC680 湘妃红鼠标设备占位封面"
   }
 ]
