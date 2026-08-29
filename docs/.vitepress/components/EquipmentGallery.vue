@@ -751,11 +751,11 @@ body.equipment-page-active .VPFooter {
   border: 1px solid rgba(255, 255, 255, .38);
   border-radius: 999px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, .07) 48%, rgba(255, 255, 255, .16)),
+    linear-gradient(135deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .07) 48%, rgba(255, 255, 255, .16)),
     rgba(255, 255, 255, .08);
   box-shadow:
     0 8px 24px rgba(2, 6, 23, .24),
-    inset 0 1px 0 rgba(255, 255, 255, .58),
+    inset 0 1px 0 rgba(255, 255, 255, .28),
     inset 0 -1px 0 rgba(255, 255, 255, .12),
     inset 1px 0 0 rgba(255, 255, 255, .18),
     inset -1px 0 0 rgba(255, 255, 255, .1);
