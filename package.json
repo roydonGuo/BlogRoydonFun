@@ -16,6 +16,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
+    "@giscus/vue": "^3.1.1",
     "@remixicon/vue": "^4.9.0",
     "imagesloaded": "^5.0.0",
     "lottie-web": "^5.13.0",

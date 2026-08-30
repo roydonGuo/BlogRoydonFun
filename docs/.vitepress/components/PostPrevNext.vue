@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useRoute } from 'vitepress'
-import { data as posts } from '../../posts/posts.data'
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import {useRoute} from 'vitepress'
+import {data as posts} from '../../posts/posts.data'
+import GiscusComment from './GiscusComment.vue' // 评论模块
 
 const route = useRoute()
 const showBackToTop = ref(false)
@@ -24,8 +25,8 @@ const prevPost = computed(() => {
 const nextPost = computed(() => {
   const nextIndex = currentIndex.value + 1
   return currentIndex.value >= 0 && nextIndex < posts.length
-    ? posts[nextIndex]
-    : undefined
+      ? posts[nextIndex]
+      : undefined
 })
 
 const showPager = computed(() => {
@@ -54,35 +55,39 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <nav v-if="showPager" class="post-prev-next" aria-label="Post pagination">
-    <div class="post-pager">
-      <a v-if="prevPost" class="post-pager-link prev" :href="prevPost.url">
-        <span class="post-pager-desc">&#19978;&#19968;&#31687;</span>
-        <span class="post-pager-title">{{ prevPost.title }}</span>
-      </a>
-    </div>
+  <nav v-if="showPager">
+    <div class="post-prev-next" aria-label="Post pagination">
+      <div class="post-pager">
+        <a v-if="prevPost" class="post-pager-link prev" :href="prevPost.url">
+          <span class="post-pager-desc">&#19978;&#19968;&#31687;</span>
+          <span class="post-pager-title">{{ prevPost.title }}</span>
+        </a>
+      </div>
 
-    <div class="post-pager">
-      <a v-if="nextPost" class="post-pager-link next" :href="nextPost.url">
-        <span class="post-pager-desc">&#19979;&#19968;&#31687;</span>
-        <span class="post-pager-title">{{ nextPost.title }}</span>
-      </a>
+      <div class="post-pager">
+        <a v-if="nextPost" class="post-pager-link next" :href="nextPost.url">
+          <span class="post-pager-desc">&#19979;&#19968;&#31687;</span>
+          <span class="post-pager-title">{{ nextPost.title }}</span>
+        </a>
+      </div>
     </div>
+    <GiscusComment/>
   </nav>
 
   <!-- 仅在文章详情路由中提供固定于右下角的返回顶部入口。 -->
   <button
-    v-if="isPostDetail"
-    type="button"
-    class="detail-back-to-top"
-    :class="{ 'is-visible': showBackToTop }"
-    :tabindex="showBackToTop ? 0 : -1"
-    aria-label="返回文章顶部"
-    title="返回顶部"
-    @click="scrollToTop"
+      v-if="isPostDetail"
+      type="button"
+      class="detail-back-to-top"
+      :class="{ 'is-visible': showBackToTop }"
+      :tabindex="showBackToTop ? 0 : -1"
+      aria-label="返回文章顶部"
+      title="返回顶部"
+      @click="scrollToTop"
   >
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="m18 15-6-6-6 6" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m18 15-6-6-6 6"/>
     </svg>
   </button>
 </template>
@@ -138,6 +143,7 @@ onBeforeUnmount(() => {
     grid-column-gap: 16px;
   }
 }
+
 .detail-back-to-top {
   position: fixed;
   right: 28px;
