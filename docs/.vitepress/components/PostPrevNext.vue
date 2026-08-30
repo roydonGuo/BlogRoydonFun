@@ -96,8 +96,8 @@ onBeforeUnmount(() => {
 .post-prev-next {
   display: grid;
   grid-row-gap: 8px;
-  margin-top: 64px;
-  padding-top: 24px;
+  margin-top: 2rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--vp-c-divider);
 }
 
