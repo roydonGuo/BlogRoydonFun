@@ -1,7 +1,7 @@
 ---
 title: DNS 解析工程实践：递归查询、缓存与故障治理
 date: 2026-08-12
-category: 后端开发
+category: 计算机网络
 cover: /images/posts/dns-resolution-cache-engineering-knowledge-map.webp
 tags: [dns, network, java, cache]
 excerpt: 从一次域名查询出发，讲清 Stub Resolver、递归与迭代查询、权威数据、正负缓存和 Java 地址缓存，并给出超时隔离、切流发布与可观测性实践。

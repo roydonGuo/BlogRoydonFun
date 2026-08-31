@@ -1,7 +1,7 @@
 ---
 title: Redis 数据类型工程实践：String/Hash/List/Set/ZSet 内部编码、场景与选型陷阱
 date: 2026-08-21
-category: 后端开发
+category: Redis
 cover: /images/posts/redis-data-types-engineering-knowledge-map.webp
 tags: [redis, string, hash, zset, listpack]
 excerpt: Redis 的 type 和 encoding 是两件事：同一种类型在底层会按数据大小自动切换紧凑编码与通用结构，且转换不可逆。选型时先想清访问模式，再决定用哪种数据类型，否则容易踩到大 key、编码膨胀、序列化冗余等坑。

@@ -1,7 +1,7 @@
 ---
 title: IP MTU 与分片工程实践：PMTUD、MSS 与黑洞排障
 date: 2026-08-26
-category: 后端开发
+category: 计算机网络
 cover: /images/posts/ip-mtu-fragmentation-pmtud-engineering-knowledge-map.webp
 tags: [network, ip, mtu, pmtud, tcp, linux]
 excerpt: MTU 问题往往表现为“小包正常、大包卡住”。理解链路 MTU、路径 MTU、IPv4/IPv6 分片、TCP MSS 与 PMTUD 的边界，才能从超时表象定位隧道、负载均衡或防火墙造成的黑洞。

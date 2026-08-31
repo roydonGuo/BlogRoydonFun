@@ -99,14 +99,15 @@
     /**
      * Sidebar
      */
-    /*--vp-sidebar-width: 340px;*/
     --vp-c-divider: rgba(226, 226, 227, 0.25);
     --vp-c-gutter: rgba(226, 226, 227, 0.25);
+    /*--vp-sidebar-width: 320px;*/
     --vp-sidebar-bg-color: rgba(255, 255, 255, 0.25);
+    --vp-sidebar-width: 320px;
 
     --vp-layout-max-width: 1440px;
     /**
-     *
+     * Layout
      */
     --vp-c-bg-alt: rgba(246, 246, 247, 0.9);
     --vp-c-bg: rgba(255, 255, 255, 0.9);

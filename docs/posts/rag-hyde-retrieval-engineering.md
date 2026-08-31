@@ -1,7 +1,7 @@
 ---
 title: RAG HyDE 工程实践：假设文档检索、融合与失败边界
 date: 2026-08-30
-category: 后端开发
+category: AI
 cover: /images/posts/rag-hyde-retrieval-engineering-knowledge-map.webp
 tags: [ai, rag, hyde, spring-ai, retrieval]
 excerpt: HyDE 先生成一段像知识库正文的假设文档，再用它检索真实资料，从而缩小短问题与长文档之间的表达差距；生产系统还必须保留原问题召回、权限过滤、结果融合、超时降级和离线评测。

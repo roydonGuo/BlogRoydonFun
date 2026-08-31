@@ -172,9 +172,6 @@ async function locateCurrentPost(): Promise<void> {
           <a href="/about/" class="flex items-center justify-center gap-1">
             <RiUserSmileLine size="18px"/>
             关于</a>
-          <a href="/resume/" class="flex items-center justify-center gap-1">
-            <RiProfileLine size="18px"/>
-            简历</a>
           <a href="https://github.com/roydonGuo" target="_blank" rel="noopener noreferrer"
              class="flex items-center justify-center gap-1">
             <RiGithubLine size="18px"/>
@@ -387,7 +384,7 @@ async function locateCurrentPost(): Promise<void> {
 
 .ethan-links {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
@@ -662,7 +659,7 @@ async function locateCurrentPost(): Promise<void> {
   color: var(--vp-c-text-1);
   font-size: 13px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;

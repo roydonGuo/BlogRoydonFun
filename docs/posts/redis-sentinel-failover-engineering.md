@@ -1,7 +1,7 @@
 ---
 title: Redis Sentinel 故障转移工程实践：主观下线、客观下线与数据安全
 date: 2026-08-19
-category: 后端开发
+category: Redis
 cover: /images/posts/redis-sentinel-failover-engineering-knowledge-map.webp
 tags: [redis, sentinel, 高可用]
 excerpt: Sentinel 解决的是非分片 Redis 的故障发现、主节点切换与服务发现，不会把异步复制变成强一致。本文讲清 SDOWN、ODOWN、Leader 选举、Replica 晋升、客户端重连，以及网络分区下如何收紧数据丢失窗口。

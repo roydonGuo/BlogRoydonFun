@@ -1,7 +1,7 @@
 ---
 title: MySQL 8.4 InnoDB 行存储工程实践：页、记录格式与溢出边界
 date: 2026-08-27
-category: 后端开发
+category: MySQL
 cover: /images/posts/mysql-innodb-row-storage-engineering-knowledge-map.webp
 tags: [mysql, innodb]
 excerpt: InnoDB 不是把一行 SQL 数据原样写入文件，而是把聚簇索引记录组织进页，再由段和区管理空间。理解记录头、NULL 位图、变长字段、隐藏列与行外存储，才能解释宽表报错、页分裂和回表成本。

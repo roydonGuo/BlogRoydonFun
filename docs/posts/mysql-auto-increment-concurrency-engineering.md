@@ -1,7 +1,7 @@
 ---
 title: MySQL 8.4 AUTO_INCREMENT 并发工程实践：锁模式、批量插入与复制边界
 date: 2026-08-30
-category: 后端开发
+category: MySQL
 cover: /images/posts/mysql-auto-increment-concurrency-engineering-knowledge-map.webp
 tags: [mysql, innodb, auto-increment, concurrency, replication]
 excerpt: AUTO_INCREMENT 只负责并发分配唯一递增值，不保证连续、无空洞或业务时序。本文讲清 MySQL 8.4 的三种自增锁模式、批量插入行为、复制约束，以及 Java 批处理如何安全取得生成主键。
