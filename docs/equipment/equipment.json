@@ -1,46 +1,5 @@
 [
   {
-    "id": "iphone-17-pro-max",
-    "name": "iPhone 17 Pro Max",
-    "brand": "Apple",
-    "category": "phone",
-    "categoryLabel": "手机",
-    "model": "iPhone 17 Pro Max",
-    "sku": "256GB / 星宇橙",
-    "acquiredAt": "2025-09",
-    "status": "在用",
-    "review": "影像稳定，生态联动最省心。",
-    "borderGradient": "linear-gradient(135deg, #ff6a2a 0%, #ffb36b 46%, #7c2d12 100%)",
-    "specs": [
-      {"label": "存储容量", "value": "256GB"},
-      {"label": "颜色", "value": "星宇橙"}
-    ],
-    "cover": "/images/equipment/iphone17promax.webp",
-    "coverAlt": "iPhone 17 Pro Max",
-    "featured": true
-  },
-  {
-    "id": "honor-magic7-pro",
-    "name": "HONOR Magic7 Pro",
-    "brand": "荣耀",
-    "category": "phone",
-    "categoryLabel": "手机",
-    "model": "Magic7 Pro",
-    "sku": "16GB + 512GB / 黑色",
-    "acquiredAt": "2026-02",
-    "status": "在用",
-    "review": "续航扎实，Android 主力体验很全面。",
-    "borderGradient": "linear-gradient(135deg, #2563eb 0%, #7c3aed 52%, #22d3ee 100%)",
-    "specs": [
-      {"label": "运行内存", "value": "16GB"},
-      {"label": "存储容量", "value": "512GB"},
-      {"label": "颜色", "value": "黑色"}
-    ],
-    "cover": "/images/equipment/honormagic7pro.webp",
-    "coverAlt": "荣耀 Magic7 Pro 设备占位封面",
-    "featured": true
-  },
-  {
     "id": "vivo-pad5-pro",
     "name": "vivo Pad5 Pro",
     "brand": "vivo",
