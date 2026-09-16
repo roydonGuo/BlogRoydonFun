@@ -21,6 +21,7 @@ import {
 import type {CategoryFeature} from '../composables/usePostFilter'
 import {features, monthlyArticleStats, posts, selectedCategory, selectedTag} from '../composables/usePostFilter'
 import LoadingImage from './LoadingImage.vue'
+import GargantuaAscii from './GargantuaAscii.vue'
 
 type FeaturedMode = 'top' | 'ai' | 'backend'
 
@@ -141,8 +142,8 @@ function formatDate(date: string): string {
         </div>
       </div>
 
-      <div class="hero-visual" aria-label="Ethan 蓝莓标志">
-        <img src="/1fad0.svg" alt="Ethan 蓝莓标志" class="hero-berry">
+      <div class="hero-visual">
+        <GargantuaAscii />
       </div>
     </section>
 
@@ -308,12 +309,19 @@ function formatDate(date: string): string {
   font: inherit;
 }
 
+:global(html),
+:global(body) {
+  overflow-x: clip;
+}
+
 .home-hero {
+  position: relative;
   display: grid;
-  min-height: 360px;
+  min-height: 460px;
   grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
   align-items: center;
-  gap: 40px;
+  gap: 20px;
+  overflow: visible;
 }
 
 .hero-copy {
@@ -417,18 +425,9 @@ function formatDate(date: string): string {
 
 .hero-visual {
   position: relative;
-  display: grid;
   min-height: 340px;
-  place-items: center;
-}
-
-.hero-berry {
-  position: relative;
-  z-index: 2;
-  width: min(520px, 50%);
-  margin: 0;
-  filter: drop-shadow(0 24px 32px rgba(52, 75, 185, 0.26));
-  transform: rotate(-3deg);
+  overflow: visible;
+  z-index: 1;
 }
 
 .home-overview {
@@ -1143,32 +1142,18 @@ function formatDate(date: string): string {
   }
 
   .home-hero {
-    min-height: 0;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    min-height: 460px;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+    gap: 0;
     padding-top: 28px;
   }
 
   .hero-copy {
     padding-left: 0;
-    text-align: center;
-  }
-
-  .hero-copy h1,
-  .hero-name {
-    margin-inline: auto;
-  }
-
-  .hero-actions {
-    justify-content: center;
   }
 
   .hero-visual {
     min-height: 300px;
-  }
-
-  .hero-berry {
-    width: 260px;
   }
 
   .hero-note {
@@ -1203,7 +1188,23 @@ function formatDate(date: string): string {
   }
 
   .home-hero {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 12px;
     padding-top: 20px;
+  }
+
+  .hero-copy {
+    text-align: center;
+  }
+
+  .hero-copy h1,
+  .hero-name {
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
   }
 
   .hero-greeting {
@@ -1236,10 +1237,6 @@ function formatDate(date: string): string {
 
   .hero-visual {
     min-height: 250px;
-  }
-
-  .hero-berry {
-    width: 210px;
   }
 
   .hero-note {
