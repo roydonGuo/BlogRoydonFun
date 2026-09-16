@@ -1,9 +1,9 @@
 ---
 title: Java volatile 与 happens-before 工程实践：可见性、有序性与安全发布
 date: 2026-09-01
-category: Java
+category: 后端开发
 cover: /images/posts/java-volatile-happens-before-safe-publication-knowledge-map.webp
-tags: [java, concurrency, volatile, happens-before, jmm]
+tags: [java, concurrency, volatile, jmm]
 excerpt: volatile 的核心不是“强制读主存”，而是为同一变量的写与后续读建立 happens-before，让写前状态安全发布；它不提供互斥，也不能把复合操作变成原子操作。本文用停止标志、不可变快照和版本化热更新讲清适用边界。
 ---
 
